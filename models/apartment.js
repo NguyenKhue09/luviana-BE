@@ -18,6 +18,10 @@ const apartmentSchema = new mongoose.Schema({
         default: 0,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    }
 
 })
 
