@@ -2,8 +2,18 @@ import express from "express"
 import connectDB from "./config/config.js"
 import dotenv from "dotenv"
 
-
 const app = express();
+
+// Lib 
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
+import csurf from 'csurf'
+import mongoSanitize from 'express-mongo-sanitize'
+import rateLimit from "express-rate-limit"
+import favicon  from 'serve-favicon'
+import path from 'path'
+import upload from './middlewares/upload.middleware.js'
 
 app.use(express.json());
 
@@ -11,6 +21,28 @@ connectDB();
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
+
+// Apply library
+// app.use(favicon(path.join(__dirname, 'public','logoIcon.ico'))); // favicon
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(express.static('public'));
+app.use(cookieParser(process.env.SECRET_COOKIES));
+app.use(upload.single('avatar'));
+// app.use(csurf({ cookie: true }));
+app.use(session({
+  secret: process.env.SECRET_SESSION,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: parseInt(process.env.SESSION_TIMEOUT) || 60000000 }
+}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(
+    mongoSanitize({
+      replaceWith: '_',
+    }),
+);
 
 // Delete later
 

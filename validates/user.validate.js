@@ -3,6 +3,7 @@ const userService = require('../services/user.services');
 //Function: wont let user create new user when missing data
 //Input: creating user form 
 //Output:  allow to move to next function or not
+// Only use when sign up with web's user
 module.exports.createUser = async (req, res, next) => {
   var errors = [];
 
@@ -20,14 +21,14 @@ module.exports.createUser = async (req, res, next) => {
 
   if(!regName.test(req.body.name)){
     errors.push("Họ và tên không hợp lệ");
-}
-
-  if (!req.body.username) { //check if there is user name
-    errors.push("Yêu cầu nhập User Name");
   }
 
   if (!req.body.email) {
     errors.push("Yêu cầu có Email");
+  }
+
+  if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email))) {
+    errors.push("Email không hợp lệ");
   }
 
   if (!req.body.password) { //check if there is password 
@@ -40,6 +41,26 @@ module.exports.createUser = async (req, res, next) => {
 
   if (req.body.repassword != req.body.password) {
     errors.push("Mật khẩu không trùng nhau, xin vui lòng thử lại!!!");
+  }
+
+  if (!req.body.password.length < 6) {
+    errors.push("Độ dài tối thiểu là 6 ký tự")
+  }
+
+  var passwordPoint = passwordStrength(req.body.password) 
+  var passwordStrength = ""
+  
+  switch(passwordPoint) {
+    case 0: 
+      passwordStrength = "Mật khẩu yếu"
+    case 25: 
+      passwordStrength = "Mật khẩu khá yếu"
+    case 50:
+      passwordStrength = "Mật khẩu trung bình"
+    case 75:
+      passwordStrength = "Mật khẩu tốt"
+    case 100:
+      passwordStrength = "Mật khẩu mạnh"
   }
 
   if (errors.length > 0) {
@@ -79,4 +100,43 @@ module.exports.loginValidate= (req, res, next) => {
   next(); // move to next middleware(function
 }
 
+function passwordStrength(password, message) {
+  var strength=0;
+
+  if (password.match(/[a-z]+/)){
+      strength+=1;
+  }
+
+  if (password.match(/[A-Z]+/)){
+      strength+=1;
+  }
+
+  if (password.match(/[0-9]+/)){
+      strength+=1;
+  }
+
+  if (password.match(/[$@#&!]+/)){
+      strength+=1;
+
+  }
+
+  switch(strength){
+    case 0:
+        return 0;
+
+    case 1:
+        return 25;
+
+    case 2:
+        return 50;
+
+    case 3:
+        return 75;
+
+    case 4:
+        return 100;
+  }
+
+  return 100
+}
 
