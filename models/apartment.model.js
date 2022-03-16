@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import Address from "./address.js"
+import Address from "./address.model.js"
 
 
 
