@@ -11,7 +11,7 @@ const apartmentSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ["motel", "hotel", "homestay", "house", "apartment"]
+        enum: ["motel", "hotel", "homestay", "house", "apartment", "resort"]
     },
     rating: {
         type: Number,
