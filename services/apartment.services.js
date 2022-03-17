@@ -26,3 +26,29 @@ async function getAllApartment() {
         }
     }
 }
+
+async function addNewApartment(newApartment) {
+    try {
+        const apartment = await Apartment.create(newApartment);
+
+        if(!apartment) {
+            return {
+                success: false,
+                message: "Add new apartment failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Add new apartment successfully!",
+            data: apartments
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
