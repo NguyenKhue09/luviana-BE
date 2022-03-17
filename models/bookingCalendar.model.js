@@ -8,29 +8,29 @@ const bookingCalendarSchema = new mongoose.Schema({
     customer: {
         type: mongoose.Types.ObjectId,
         ref: User,
-        required: true
+        required: [true, "Customer id of booking calendar is required!"]
     },
     owner: {
         type: mongoose.Types.ObjectId,
         ref: User,
-        required: true 
+        required: [true, "Owner of booking calendar is required!"] 
     },
     beginDate: {
         type: Date,
-        required: true
+        required: [true, "Begin date of booking calendar is required!"]
     },
     endDate: {
         type: Date,
-        required: true
+        required: [true, "End date of booking calendar is required!"]
     },
     room: {
         type: mongoose.Types.ObjectId,
         ref: Room,
-        required: true
+        required: [true, "Id room of booking calendar is required!"]
     },
     cost: {
         type: Number,
-        required: true
+        required: [true, "Cost of booking calendar is required!"]
     }
 })
 

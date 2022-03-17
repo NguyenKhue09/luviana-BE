@@ -5,23 +5,23 @@ import mongoose from "mongoose"
 const vouchertSchema = new mongoose.Schema({
     code: {
         type: String,
-        required: true
+        required: [true, "Code of voucher is required!"]
     },
     discount: {
         type: Number,
-        required: true
+        required: [true, "Discount of voucher is required!"]
     },
     type: {
         type: String,
-        required: true
+        required: [true, "Type of voucher is required!"]
     },
     beginDate: {
         type: Date,
-        required: true
+        required: [true, "Begin date of voucher is required!"]
     },
     endDate: {
         type: Date,
-        required: true
+        required: [true, "End date of voucher is required!"]
     }
 })
 
