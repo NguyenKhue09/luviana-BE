@@ -89,6 +89,32 @@ async function login(email, password) {
     }
 }
 
+async function updateUser(userData, userId) {
+    try {
+        const  result = User.findByIdAndUpdate(userId, userData)
+
+        if(!result) {
+            return {
+                success: false,
+                message: "Update user information failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Update user information successfully!",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        } 
+    }
+}
+  
 export const UserService = { 
     getUser,
     registerUser,
