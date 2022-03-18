@@ -1,4 +1,4 @@
-import User from "../models/user.model";
+import User from "../models/user.model.js";
 
 
 
@@ -7,7 +7,7 @@ async function getUser(userId) {
         const user = await User.findById(userId)
         if(!user) {
             return {
-                success: false,
+                success: true,
                 message: "User not found!",
                 data: null
             }
@@ -27,9 +27,9 @@ async function getUser(userId) {
     }
 }
 
-async function registerUser(username, password, email) {
+async function registerUser(avatar, username, password, email) {
     try {
-        const user = await User.create({username, password, email})
+        const user = await User.create({avatar, username, password, email})
         if(!user) {
             return {
                 success: false,
@@ -76,7 +76,7 @@ async function login(email, password) {
 
         return {
             success: true,
-            message: "Login successfull!",
+            message: "Login successful!",
             data: user
         }
 
@@ -88,4 +88,9 @@ async function login(email, password) {
         };
     }
 }
-  
+
+export const UserService = { 
+    getUser,
+    registerUser,
+    login
+}
