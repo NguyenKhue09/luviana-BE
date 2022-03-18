@@ -1,4 +1,4 @@
-import Apartment from "../models/apartment.model";
+import Apartment from "../models/apartment.model.js";
 
 
 async function getAllApartment() {
@@ -51,4 +51,9 @@ async function addNewApartment(newApartment) {
             data: null
         }
     }
+}
+
+export const ApartmentService = {
+    getAllApartment,
+    addNewApartment
 }
