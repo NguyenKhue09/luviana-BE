@@ -4,23 +4,23 @@ import mongoose from "mongoose"
 const addressSchema = new mongoose.Schema({
     apartmentNumber: {
         type: String,
-        required: true
+        required: [true, "Apartment number is required!"]
     },
     street: {
         type: String,
-        required: true
+        required: [true, "Street is required!"]
     },
     district: {
         type: String,
-        required: true
+        required: [true, "District is required!"]
     },
     province: {
         type: String,
-        required: true
+        required: [true, "Province is required!"]
     }, 
     country: {
         type: String,
-        required: true
+        required: [true, "Country is required"]
     }
 })
 

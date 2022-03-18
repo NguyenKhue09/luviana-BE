@@ -7,32 +7,32 @@ import Apartment from "./apartment";
 const roomSchema = new mongoose.Schema({
     apartmentId: {
         type: mongoose.Types.ObjectId,
-        required: true,
+        required: [true, "Apartment id of room is required!"],
         ref: Apartment
     },
     price: {
         type: Number,
-        required: true
+        required: [true, "Price of room is required!"]
     },
     description: {
         type: String,
-        required: true
+        required: [true, "Description of room is required!"]
     },
     capacity: {
         type: Number,
-        required: true
+        required: [true, "Capacity of room is required!"]
     },
     rating: {
         type: Number,
-        required: true
+        required: [true, "Rating of room is required!"]
     },
     thumbnail: {
         type: String,
-        required: true
+        required: [true, "Thumbnail of room is required!"]
     },
     pictures: [{
         type: String,
-        required: true
+        required: [true, "Pictures of room is required!"]
     }],
     isAvailable: {
         type: Boolean,
@@ -41,7 +41,7 @@ const roomSchema = new mongoose.Schema({
     },
     facilities: [{
         type: String,
-        required: true
+        required: [true, "Facilities of room is required!"]
     }]
 })
 
