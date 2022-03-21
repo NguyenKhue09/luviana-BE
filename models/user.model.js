@@ -14,7 +14,7 @@ var validateEmail = function(email) {
 };
 
 const userSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: [true, "Please provide a username"]
     },
@@ -69,7 +69,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.matchPasswords = async function (password) {
 
-    console.log(await this.model("posts").find({}));
+    console.log(await this.model("User").find({}));
 
     return await argon2.verify(this.password, password);
 };
