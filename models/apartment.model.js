@@ -5,7 +5,7 @@ import Address from "./address.model.js"
 
 const apartmentSchema = new mongoose.Schema({
     address: {
-        type: mongoose.Types.ObjectId(),
+        type: mongoose.Schema.Types.ObjectId,
         required: [true, "Address of appartment is required!"],
         ref: Address
     },

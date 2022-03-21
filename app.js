@@ -2,6 +2,7 @@ import express from "express"
 import connectDB from "./config/config.js"
 import dotenv from "dotenv"
 import { UserRouter } from "./routes/user.route.js"
+import { ApartmentRouter } from "./routes/apartment.route.js"
 
 const app = express();
 
@@ -18,6 +19,7 @@ import upload from './middlewares/upload.middleware.js'
 
 app.use(express.json());
 app.use("/user", UserRouter);
+app.use("/apartment", ApartmentRouter);
 
 connectDB(); 
 dotenv.config();
