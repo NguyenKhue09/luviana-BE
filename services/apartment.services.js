@@ -1,4 +1,4 @@
-import Apartment from "../models/apartment.model";
+import Apartment from "../models/apartment.model.js";
 
 
 async function getAllApartment() {
@@ -64,7 +64,7 @@ async function getOneApartment(apartmentId) {
                 data: null
             }
         }
-
+        
         return {
             success: true,
             message: "Find apartment successful!",
@@ -105,7 +105,7 @@ async function updateApartment(apartmentId, apartmentData) {
     }
 }
 
-export const ApartmentFunc = {
+export const ApartmentService = {
     getAllApartment,
     addNewApartment,
     getOneApartment,
