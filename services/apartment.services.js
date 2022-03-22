@@ -79,6 +79,32 @@ async function getOneApartment(apartmentId) {
     }
 }
 
+async function getOneApartmentByName (apartmentName) {
+    try {
+        const apartment = await Apartment.find({apartmentName});
+
+        if(!apartment) {
+            return {
+                success: false,
+                message: "Apartment not found!",
+                data: null
+            }
+        }
+        
+        return {
+            success: true,
+            message: "Find apartment successful!",
+            data: apartment
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        } 
+    }
+}
+
 async function updateApartment(apartmentId, apartmentData) {
     try {
         const apartment = await Apartment.findOneAndUpdate({apartmentId}, apartmentData)
