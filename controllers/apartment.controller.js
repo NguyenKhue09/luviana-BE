@@ -1,6 +1,16 @@
 import { ApartmentService } from "../services/apartment.services.js"
 
-async function getAllApartment(req, res) {
+async function getApartment(req, res) {
+    let { page, apartmentPerPage } = req.query;
+    if (page != null || apartmentPerPage != null) {
+        if (page == null) page = 0;
+        if (apartmentPerPage == null) apartmentPerPage = 5;
+        const response = await ApartmentService.getApartmentByPage(apartmentPerPage, page);
+        if (response.success) {
+            return res.json(response)
+        }
+        else return res.status(500).json(response)
+    }
     const result = await ApartmentService.getAllApartment()
     if (result.success)
         return res.json(result)
@@ -67,7 +77,7 @@ async function addNewApartmentv2(req, res) {
     }
 }
 export const ApartmentController = {
-    getAllApartment,
+    getApartment,
     addNewApartment,
     addNewApartmentv2
 }
