@@ -199,8 +199,34 @@ async function updateApartment(apartmentId, apartmentData) {
     }
 }
 
-async function filterApartment(name, ) {
+async function filterApartment(name, district, province, country , aparmentPerPage, currentPage) {
+
+    var matchAddress = { $match: {}}
+
+    if(district != null) {
+        matchAddress.$match = {
+            ...matchAddress.$match,
+            "$location.district" : { $in : district}
+        }
+    }
+
+    if(province != null) {
+        matchAddress.$match = {
+            ...matchAddress.$match,
+            "$location.province" : { $in : province}
+        }
+    }
+
+    if(country != null) {
+        matchAddress.$match = {
+            ...matchAddress.$match,
+            "$location.country" : { $in : country}
+        }
+    }
+
     try {
+        const maxDocument = await Apartment.estimatedDocumentCount();
+        const maxPage = parseInt(maxDocument/aparmentPerPage, 10);
         const result = await Apartment.aggregate([
             {
                 $lookup:
@@ -208,15 +234,19 @@ async function filterApartment(name, ) {
                     from: Address,
                     localField: "_id",
                     foreignField: "_id",
-                    as: "address"
+                    as: "location"
                   }
-             }
+            },
+            { $regexMatch: { input: "$name" , regex: name , options: "i" } },
+            matchAddress,
+            { $skip : aparmentPerPage *  currentPage},
+            { $limit : aparmentPerPage }
         ])
 
         if(result.length == 0) {
             return {
-                success: false,
-                message: "Filter apartment failed!",
+                success: true,
+                message: "Filter apartment not found!",
                 data: null
             }
         }
@@ -224,7 +254,10 @@ async function filterApartment(name, ) {
         return {
             success: true,
             message: "Filter apartment successfully",
-            data: result
+            data: {
+                apartment: result,
+                totalPage: maxPage
+            }
         }
     } catch (error) {
         return {
@@ -242,5 +275,6 @@ export const ApartmentService = {
     addNewApartment,
     getOneApartment,
     updateApartment,
-    addNewApartmentV2
+    addNewApartmentV2,
+    filterApartment
 } 
