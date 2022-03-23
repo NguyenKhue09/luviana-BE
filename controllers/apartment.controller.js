@@ -1,11 +1,11 @@
 import { ApartmentService } from "../services/apartment.services.js"
 
 async function getApartment(req, res) {
-    let { page, apartmentPerPage } = req.query;
+    let { name, district, province, country, page, apartmentPerPage } = req.query;
     if (page != null || apartmentPerPage != null) {
         if (page == null) page = 0;
         if (apartmentPerPage == null) apartmentPerPage = 5;
-        const response = await ApartmentService.getApartmentByPage(apartmentPerPage, page);
+        const response = await ApartmentService.getApartmentByPage(name, district, province, country, apartmentPerPage, page);
         if (response.success) {
             return res.json(response)
         }
@@ -121,9 +121,11 @@ async function updateApartment(req, res) {
     }
 }
 
+
 export const ApartmentController = {
     getApartment,
     getOneApartment,
     addNewApartment,
-    addNewApartmentv2
+    addNewApartmentv2,
+    updateApartment
 }
