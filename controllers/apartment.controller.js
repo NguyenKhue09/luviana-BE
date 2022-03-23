@@ -76,8 +76,54 @@ async function addNewApartmentv2(req, res) {
         })
     }
 }
+
+async function getOneApartment(req, res) {
+    const { id } = req.params;
+
+    if (!id) 
+        return res.status(400).json({
+            success: false,
+            message: "Please provide room id",
+            data: null
+        });
+    const response = await ApartmentService.getOneApartment(id)
+
+    if (response.success) {
+        return res.json(response)
+    } else {
+        return res.status(404).json(response)
+    }
+}
+
+async function updateApartment(req, res) {
+    const { apartmentId, apartmentData } = req.body;
+    
+    if (!apartmentId) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide apartment id",
+            data: null
+        })
+    }
+    if (!apartmentData) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide data to update",
+            data: null
+        })
+    }
+
+    const response = await ApartmentService.updateApartment(apartmentId, apartmentData);
+    if (response.success) {
+        return res.json(response)
+    } else {
+        return res.status(400).json(response)
+    }
+}
+
 export const ApartmentController = {
     getApartment,
+    getOneApartment,
     addNewApartment,
     addNewApartmentv2
 }
