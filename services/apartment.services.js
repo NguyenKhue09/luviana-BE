@@ -142,21 +142,21 @@ async function getOneApartment(apartmentId) {
     }
 }
 
-async function getOneApartmentByName (apartmentName) {
+async function getApartmentByName (apartmentName) {
     try {
-        const apartment = await Apartment.find({apartmentName});
+        const apartment = await Apartment.find({name: { $regex: apartmentName, $options: "i" }});
 
         if(!apartment) {
             return {
                 success: false,
-                message: "Apartment not found!",
+                message: "Apartments not found!",
                 data: null
             }
         }
         
         return {
             success: true,
-            message: "Find apartment successful!",
+            message: "Find apartments successful!",
             data: apartment
         }
     } catch (error) {
@@ -196,6 +196,7 @@ async function updateApartment(apartmentId, apartmentData) {
 
 export const ApartmentService = {
     getAllApartment,
+    getApartmentByName,
     getApartmentByPage,
     addNewApartment,
     getOneApartment,
