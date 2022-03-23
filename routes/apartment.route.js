@@ -4,5 +4,7 @@ import { ApartmentController } from "../controllers/apartment.controller.js"
 const ApartmentRouter = express.Router()
 
 ApartmentRouter.get("/all", ApartmentController.getAllApartment)
+ApartmentRouter.post("/add-new-apartment", ApartmentController.addNewApartment)
+ApartmentRouter.post("/add-new-apartmentv2", ApartmentController.addNewApartmentv2)
 
 export { ApartmentRouter };

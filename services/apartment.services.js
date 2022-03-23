@@ -1,4 +1,5 @@
 import Apartment from "../models/apartment.model.js";
+import Address from "../models/address.model.js"
 
 
 async function getAllApartment() {
@@ -27,27 +28,89 @@ async function getAllApartment() {
     }
 }
 
-async function addNewApartment(newApartment) {
+async function getApartmentByPage(aparmentPerPage, currentPage) {
     try {
-        const apartment = await Apartment.create(newApartment);
+        const result = await Apartment.find({}).skip(currentPage * aparmentPerPage).limit(aparmentPerPage)
 
-        if(!apartment) {
+        if(result.length == 0) {
             return {
                 success: false,
-                message: "Add new apartment failed!",
+                message: `Get apartment page ${currentPage} failed!`,
                 data: null
             }
         }
 
         return {
             success: true,
-            message: "Add new apartment successfully!",
-            data: apartments
+            message: `Get apartment page ${currentPage} successfully!`,
+            data: result
         }
     } catch (error) {
         return {
             success: false,
             message: error.message,
+            data: null
+        }
+    }
+}
+
+async function addNewApartment(address, name, type, rating, description) {
+    const session = await Address.startSession();
+    try {
+
+        var resultTransaction = await session.withTransaction(async() => {
+
+            const newAddress = await Address.create([address], {session})
+            if(newAddress.length > 0) {
+                const newApartment = await Apartment.create({address: newAddress[0]._id, name, type, rating, description})
+
+                if(!newApartment) {
+                    throw "Create new aparment failed failed!";
+                }
+            } else {
+                throw "Create address of apartment failed!"
+            }
+        })
+
+        session.endSession();
+        return {
+            success: true,
+            message: "Add new apartment successfully",
+            data: resultTransaction
+        }
+    } catch (error) {
+
+        session.endSession();
+        return {
+            success: false,
+            message: error,
+            data: null
+        }
+    }
+}
+
+async function addNewApartmentV2(address, name,  type, rating, description) {
+    const session = await Address.startSession();
+    try {
+
+        var resultTransaction = await session.withTransaction(async() => {
+
+            const newAddress = await Address.create([address], {session})
+            const newApartment = await Apartment.create([{address: newAddress[0]._id, name, type, rating, description}], {session})
+        })
+
+        session.endSession();
+        return {
+            success: true,
+            message: "Add new apartment successfully",
+            data: resultTransaction
+        }
+    } catch (error) {
+
+        session.endSession();
+        return {
+            success: false,
+            message: error,
             data: null
         }
     }
@@ -107,7 +170,9 @@ async function updateApartment(apartmentId, apartmentData) {
 
 export const ApartmentService = {
     getAllApartment,
+    getApartmentByPage,
     addNewApartment,
     getOneApartment,
-    updateApartment
+    updateApartment,
+    addNewApartmentV2
 } 
