@@ -203,24 +203,31 @@ async function filterApartment(name, district, province, country , aparmentPerPa
 
     var matchAddress = { $match: {}}
 
+    if(name != null) {
+        matchAddress.$match = {
+            ...matchAddress.$match,
+            "name" : { $regex: name, $options: "i" }
+        }
+    }
+
     if(district != null) {
         matchAddress.$match = {
             ...matchAddress.$match,
-            "$location.district" : { $in : district}
+            "location.district" : { $in : district}
         }
     }
 
     if(province != null) {
         matchAddress.$match = {
             ...matchAddress.$match,
-            "$location.province" : { $in : province}
+            "location.province" : { $in : province}
         }
     }
 
     if(country != null) {
         matchAddress.$match = {
             ...matchAddress.$match,
-            "$location.country" : { $in : country}
+            "location.country" : { $in : country}
         }
     }
 
@@ -231,16 +238,18 @@ async function filterApartment(name, district, province, country , aparmentPerPa
             {
                 $lookup:
                   {
-                    from: Address,
-                    localField: "_id",
+                    from: "addresses",
+                    localField: "address",
                     foreignField: "_id",
                     as: "location"
                   }
             },
-            { $regexMatch: { input: "$name" , regex: name , options: "i" } },
+            {
+                 $unwind: "$location"
+            }, 
             matchAddress,
-            { $skip : aparmentPerPage *  currentPage},
-            { $limit : aparmentPerPage }
+            { $skip : parseInt(aparmentPerPage) * parseInt(currentPage)},
+            { $limit : parseInt(aparmentPerPage) }
         ])
 
         if(result.length == 0) {
