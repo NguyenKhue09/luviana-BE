@@ -31,6 +31,8 @@ async function getAllApartment() {
 async function getApartmentByPage(aparmentPerPage, currentPage) {
     try {
         const result = await Apartment.find({}).skip(currentPage * aparmentPerPage).limit(aparmentPerPage)
+        const maxDocument = await Apartment.estimatedDocumentCount();
+        const maxPage = parseInt(maxDocument/aparmentPerPage, 10);
 
         if(result.length == 0) {
             return {
@@ -43,7 +45,10 @@ async function getApartmentByPage(aparmentPerPage, currentPage) {
         return {
             success: true,
             message: `Get apartment page ${currentPage} successfully!`,
-            data: result
+            data: {
+                apartment: result,
+                totalPage: maxPage
+            }
         }
     } catch (error) {
         return {
@@ -191,6 +196,42 @@ async function updateApartment(apartmentId, apartmentData) {
             message: error.message,
             data: null
         } 
+    }
+}
+
+async function filterApartment(name, ) {
+    try {
+        const result = await Apartment.aggregate([
+            {
+                $lookup:
+                  {
+                    from: Address,
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "address"
+                  }
+             }
+        ])
+
+        if(result.length == 0) {
+            return {
+                success: false,
+                message: "Filter apartment failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Filter apartment successfully",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
     }
 }
 
