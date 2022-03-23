@@ -16,10 +16,9 @@ import rateLimit from "express-rate-limit"
 import favicon  from 'serve-favicon'
 import path from 'path'
 import upload from './middlewares/upload.middleware.js'
+import RoomRouter from "./routes/room.router.js"
 
 app.use(express.json());
-app.use("/user", UserRouter);
-app.use("/apartment", ApartmentRouter);
 
 connectDB(); 
 dotenv.config();
@@ -47,6 +46,10 @@ app.use(
       replaceWith: '_',
     }),
 );
+
+app.use("/user", UserRouter);
+app.use("/apartment", ApartmentRouter);
+app.use("/room", RoomRouter)
 
 // Delete later
 
@@ -100,10 +103,6 @@ app.get('/resort/detail/:id', (req, res) => {
 
 app.get('/room/detail/:id', (req, res) => {
   res.send('room detail page')
-})
-
-app.get('/room', (req, res) => {
-  res.send('room page')
 })
 
 

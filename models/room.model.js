@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
-import { required } from "nodemon/lib/config";
-import Apartment from "./apartment";
+import Apartment from "./apartment.model.js";
 
 
 
