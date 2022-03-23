@@ -2,6 +2,15 @@ import { ApartmentService } from "../services/apartment.services.js"
 
 async function getApartment(req, res) {
     let { name, district, province, country, page, apartmentPerPage } = req.query;
+    if (district != null)
+        district = district.split(",")
+    if (country != null)
+        country = country.split(",")
+    if (province != null)
+        province = province.split(",")
+
+    console.log(district)
+    
     if (page != null || apartmentPerPage != null) {
         if (page == null) page = 0;
         if (apartmentPerPage == null) apartmentPerPage = 5;
