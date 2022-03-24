@@ -213,21 +213,21 @@ async function filterApartment(name, district, province, country , aparmentPerPa
     if(district != null) {
         matchAddress.$match = {
             ...matchAddress.$match,
-            "location.district" : { $in : district}
+            "address.district" : { $in : district}
         }
     }
 
     if(province != null) {
         matchAddress.$match = {
             ...matchAddress.$match,
-            "location.province" : { $in : province}
+            "address.province" : { $in : province}
         }
     }
 
     if(country != null) {
         matchAddress.$match = {
             ...matchAddress.$match,
-            "location.country" : { $in : country}
+            "address.country" : { $in : country}
         }
     }
 
@@ -235,18 +235,6 @@ async function filterApartment(name, district, province, country , aparmentPerPa
         const maxDocument = await Apartment.estimatedDocumentCount();
         const maxPage = parseInt(maxDocument/aparmentPerPage, 10);
         const result = await Apartment.aggregate([
-            {
-                $lookup:
-                  {
-                    from: "addresses",
-                    localField: "address",
-                    foreignField: "_id",
-                    as: "location"
-                  }
-            },
-            {
-                 $unwind: "$location"
-            }, 
             matchAddress,
             { $skip : parseInt(aparmentPerPage) * parseInt(currentPage)},
             { $limit : parseInt(aparmentPerPage) }
