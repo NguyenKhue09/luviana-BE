@@ -27,6 +27,74 @@ async function getRoomBySortPrice() {
     }
 }
 
+async function searchRoom(checkinDate, checkoutDate, people, city) {
+    try {
+        const result = await Room.aggregate([
+            {
+                $match: {
+                    "capacity": people
+                },
+            },
+            {
+                $lookup: {
+                    from: "apartments",
+                    localField: "apartmentId",
+                    foreignField: "_id",
+                    as: "apartment"
+                },
+            },
+            {
+                $unwind: "$apartment"
+            },
+            {
+                $match: {
+                    "apartment.address.province": city
+                }
+            },
+            {
+                $lookup: {
+                    from: "bookingcalendars",
+                    localField: "_id",
+                    foreignField: "room",
+                    as: "bookingcalendar"
+                },
+            },
+            {
+                $match: {
+                    'bookingcalendar.beginDate': {
+                        $ne: new Date(checkinDate),
+                    },
+                    'bookingcalendar.endDate': {
+                        $ne: new Date(checkoutDate),
+                    }
+                }
+            }
+        ])
+
+        if(result.length == 0) {
+            return {
+                success: true,
+                message: "Rooms not found!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Find rooms available successfully",
+            data: result
+        }
+
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+            data: null
+        }
+    }
+}
+
 export const RoomServices = {
-    getRoomBySortPrice
+    getRoomBySortPrice,
+    searchRoom
 }

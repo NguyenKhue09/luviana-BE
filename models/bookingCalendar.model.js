@@ -30,7 +30,7 @@ const bookingCalendarSchema = new mongoose.Schema({
     },
     cost: {
         type: Number,
-        required: [true, "Cost of booking calendar is required!"]
+        required: [true, "Cost of booking calendar is required! "]
     }
 })
 
