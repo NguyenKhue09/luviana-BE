@@ -130,7 +130,6 @@ async function updateApartment(req, res) {
     }
 }
 
-
 export const ApartmentController = {
     getApartment,
     getOneApartment,
