@@ -1,13 +1,33 @@
 import mongoose from "mongoose"
-import Address from "./address.model.js"
 
 
 
 const apartmentSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: [true, "Name of apartment is required!"]
+    },
     address: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: [true, "Address of appartment is required!"],
-        ref: Address
+        apartmentNumber: {
+            type: String,
+            required: [true, "Apartment number is required!"]
+        },
+        street: {
+            type: String,
+            required: [true, "Street is required!"]
+        },
+        district: {
+            type: String,
+            required: [true, "District is required!"]
+        },
+        province: {
+            type: String,
+            required: [true, "Province is required!"]
+        }, 
+        country: {
+            type: String,
+            required: [true, "Country is required"]
+        }
     },
     type: {
         type: String,

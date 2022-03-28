@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
-import { required } from "nodemon/lib/config";
-import Apartment from "./apartment";
+import Apartment from "./apartment.model.js";
 
 
 
@@ -32,7 +31,6 @@ const roomSchema = new mongoose.Schema({
     },
     pictures: [{
         type: String,
-        required: [true, "Pictures of room is required!"]
     }],
     isAvailable: {
         type: Boolean,

@@ -100,7 +100,7 @@ module.exports.loginValidate= (req, res, next) => {
   next(); // move to next middleware(function
 }
 
-function passwordStrength(password, message) {
+function passwordStrength(password) {
   var strength=0;
 
   if (password.match(/[a-z]+/)){

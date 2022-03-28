@@ -118,5 +118,6 @@ async function updateUser(userData, userId) {
 export const UserService = { 
     getUser,
     registerUser,
-    login
+    login,
+    updateUser
 }
