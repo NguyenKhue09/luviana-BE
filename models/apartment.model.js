@@ -42,6 +42,9 @@ const apartmentSchema = new mongoose.Schema({
     description: {
         type: String,
         required: [true, "Description of appartment is required!"]
+    },
+    voucher: { 
+        type: mongoose.Schema.Types.ObjectId
     }
 
 })
