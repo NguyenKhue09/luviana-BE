@@ -1,3 +1,4 @@
+import { add } from "nodemon/lib/rules";
 import { RoomServices } from "../services/room.services.js";
 
 async function getRoom(req, res) {
@@ -32,7 +33,54 @@ async function searchRoom (req, res) {
     }
 }
 
+async function postRoom (req, res) {
+    const { apartmentId, price, description, capacity, rating, thumbnail, pictures, isAvailable, facilities} = req.body;
+
+    var newData = { apartmentId, price, description, capacity, rating, thumbnail, pictures, isAvailable, facilities};
+
+    var addNewRoom = await RoomServices.addNewRoom(newData);
+
+    if (addNewRoom.success) {
+        if (result.data) return res.json(result)
+        else return res.status(404).json(result)
+    } else {
+        return res.status(500).json(result)
+    }
+}
+
+async function updateRoom (req, res) {
+    const roomId = req.body.roomId;
+    const { apartmentId, price, description, capacity, rating, thumbnail, pictures, isAvailable, facilities} = req.body;
+
+    var updateData = { apartmentId, price, description, capacity, rating, thumbnail, pictures, isAvailable, facilities};
+
+    var updateRoom = await RoomServices.updateRoom(roomId, updateData);
+
+    if (updateRoom.success) {
+        if (result.data) return res.json(result)
+        else return res.status(404).json(result)
+    } else {
+        return res.status(500).json(result)
+    }
+}
+
+async function deleteRoom (req, res) {
+    const roomId = req.body.roomId;
+
+    var deleteRoom = await RoomServices.deleteRoom(roomId);
+
+    if (deleteRoom.success) {
+        if (result.data) return res.json(result)
+        else return res.status(404).json(result)
+    } else {
+        return res.status(500).json(result)
+    }
+}
+
 export const RoomController = {
     getRoom, 
-    searchRoom
+    searchRoom,
+    postRoom,
+    updateRoom,
+    deleteRoom
 }

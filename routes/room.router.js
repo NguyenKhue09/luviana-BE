@@ -3,7 +3,12 @@ import { RoomController } from "../controllers/room.controller.js"
 
 const RoomRouter = express.Router()
 
-RoomRouter.get("/get", RoomController.getRoom);
+RoomRouter
+    .get(RoomController.getRoom)
+    .post(RoomController.postRoom)
+    .put(RoomController.updateRoom)
+    .delete(RoomController.deleteRoom)
+
 
 RoomRouter.get("/search", RoomController.searchRoom);
 
