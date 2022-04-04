@@ -1,19 +1,26 @@
 import { RoomServices } from "../services/room.services.js";
 
 async function getRoom(req, res) {
-    const response = await RoomServices.getRoomBySortPrice()
-    if (response.success) {
-        return res.json(response)
+    const { highToLow } = req.query;
+    if (highToLow) {
+        const response = await RoomServices.getRoomBySortPriceReverse()
+        if (response.success) {
+            return res.json(response)
+        } else {
+            return res.status(500).json(response)
+        }
     } else {
-        return res.status(500).json(response)
+        const response = await RoomServices.getRoomBySortPrice()
+        if (response.success) {
+            return res.json(response)
+        } else {
+            return res.status(500).json(response)
+        }
     }
 }
 
 async function searchRoom (req, res) {
-    var checkinDate = req.body.checkinDate
-    var checkoutDate = req.body.checkoutDate
-    var people = req.body.people
-    var city = req.body.city
+    const { checkinDate, checkoutDate, people, city } = req.body;
 
     var rooms = await RoomServices.searchRoom(checkinDate, checkoutDate, people, city)
 
@@ -25,14 +32,7 @@ async function searchRoom (req, res) {
     }
 }
 
-async function sortRoom(req, res) {
-    // true or false 
-    const { highToLow } = req.query;
-
-    
-
-}
-
 export const RoomController = {
-    getRoom
+    getRoom, 
+    searchRoom
 }

@@ -27,6 +27,32 @@ async function getRoomBySortPrice() {
     }
 }
 
+async function getRoomBySortPriceReverse() {
+    try {
+
+        const result = await Room.find({}).sort({"price": -1})
+
+        if(result.length == 0) {
+            return {
+                success: false,
+                message: "Get room by sort price failed!",
+                data: result
+            }
+        }
+        return {
+            success: true,
+            message: "Get room by sort price successfully",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error,
+            data: null
+        }
+    }
+}
+
 async function searchRoom(checkinDate, checkoutDate, people, city) {
     try {
         const result = await Room.aggregate([
@@ -125,5 +151,6 @@ async function addNewRoom(data) {
 export const RoomServices = {
     getRoomBySortPrice,
     searchRoom,
-    addNewRoom
+    addNewRoom,
+    getRoomBySortPriceReverse
 }
