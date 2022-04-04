@@ -122,8 +122,63 @@ async function addNewRoom(data) {
     }
 }
 
+async function updateRoom(roomId, data) {
+    try {
+        const result = await Room.findByIdAndUpdate(roomId, data)
+
+        if(!result) {
+            return {
+                success: false,
+                message: "update room failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Update room successfully",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
+
+async function deleteRoom(roomId) {
+    try {
+        const result = await Room.findByIdAndDelete(roomId)
+
+        if(!result) {
+            return {
+                success: false,
+                message: "Delete room failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Delete room successfully",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
+
+
 export const RoomServices = {
     getRoomBySortPrice,
     searchRoom,
-    addNewRoom
+    addNewRoom,
+    updateRoom,
+    deleteRoom
 }
