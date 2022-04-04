@@ -21,7 +21,7 @@ async function getRoomBySortPrice() {
     } catch (error) {
         return {
             success: false,
-            message: error,
+            message: error.message,
             data: null
         }
     }
@@ -88,7 +88,35 @@ async function searchRoom(checkinDate, checkoutDate, people, city) {
     } catch (error) {
         return {
             success: false,
-            message: error,
+            message: error.message,
+            data: null
+        }
+    }
+}
+
+async function addNewRoom(data) {
+    try {
+        
+        const result = await Room.create(data)
+
+        if(!result) {
+            return {
+                success: false,
+                message: "Add new room failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Add new room successfully",
+            data: result
+        }
+
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
             data: null
         }
     }
@@ -96,5 +124,6 @@ async function searchRoom(checkinDate, checkoutDate, people, city) {
 
 export const RoomServices = {
     getRoomBySortPrice,
-    searchRoom
+    searchRoom,
+    addNewRoom
 }

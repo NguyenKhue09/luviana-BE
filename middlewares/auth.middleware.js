@@ -3,38 +3,49 @@ const userModel = require('../models/user.model.js')
 //Function: middleware of user rights  
 //Input: userId from cookie
 //Output: allow it to go to the next function or not 
-module.exports.requireUser = async (req, res, next) => {
-    //console.log(req.signedCookies.adminId);
+module,exports.requireUser = (req, res, next) => {
+    var authHeader = req.headers['authorizationtoken'];
+
+    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
+    if (_.isNil(authHeader)) return resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
     
-    if(req.signedCookies.adminId === undefined) {       
-        if (!req.signedCookies.userId) {
-            req.session.from = req.originalUrl;
-            res.redirect('/login');
-            return;
-        }
+    var token = authHeader.split(' ')[1];
+    var decodedToken = null;
+    
+    try {
+      decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      var currentUser = await User.get({name: decodedToken.userName});
+      if (_.isNil(currentUser)) return resHelper(res, 400, {error: 'bad request'}, 'Bad request');
+      res.locals.user = currentUser;
+    } catch (error) {
+      return resHelper(res, 400, {error: 'bad request'}, 'Bad request');
     }
 
+    if (_.isNil(decodedToken)) return resHelper(res, 400, {error: 'bad request'}, 'Bad request');
     next();
-};
+  }
 
 //Function: middleware of admin rights  
 //Input: adminId from cookie 
 //Output:  allow it to go to the next function or not 
 module.exports.requireAdmin = (req, res, next) => { 
-    if(!req.signedCookies.adminId){
-        req.session.from = req.originalUrl;
-        res.redirect('/login/admin');
-        return;
+    var authHeader = req.headers['authorizationAdmintoken'];
+
+    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
+    if (_.isNil(authHeader)) return resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
+    
+    var token = authHeader.split(' ')[1];
+    var decodedToken = null;
+    
+    try {
+      decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      var currentUser = await User.get({name: decodedToken.userName});
+      if (_.isNil(currentUser)) return resHelper(res, 400, {error: 'bad request'}, 'Bad request');
+      res.locals.admin = currentUser;
+    } catch (error) {
+      return resHelper(res, 400, {error: 'bad request'}, 'Bad request');
     }
 
-    var admin = Admin.find({ _id: req.signedCookies.userId });
-
-    if(!admin) {
-        req.session.from = req.originalUrl;
-        res.redirect('/login/admin');
-        return;
-    }
-
-    res.locals.admin=admin;
+    if (_.isNil(decodedToken)) return resHelper(res, 400, {error: 'bad request'}, 'Bad request');
     next();
 };
