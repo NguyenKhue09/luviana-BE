@@ -4,6 +4,10 @@ import Apartment from "./apartment.model.js";
 
 
 const roomSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: [true, "Room name is required!"]
+    },
     apartmentId: {
         type: mongoose.Types.ObjectId,
         required: [true, "Apartment id of room is required!"],
@@ -13,13 +17,17 @@ const roomSchema = new mongoose.Schema({
         type: Number,
         required: [true, "Price of room is required!"]
     },
-    description: {
+    bedName: {
         type: String,
-        required: [true, "Description of room is required!"]
+        required: [true, "Beb name of room is required!"]
     },
     capacity: {
-        type: Number,
+        type: String,
         required: [true, "Capacity of room is required!"]
+    },
+    square: {
+        type: String,
+        required: [true, "Room square is required!"]
     },
     rating: {
         type: Number,
@@ -29,9 +37,6 @@ const roomSchema = new mongoose.Schema({
         type: String,
         required: [true, "Thumbnail of room is required!"]
     },
-    pictures: [{
-        type: String,
-    }],
     isAvailable: {
         type: Boolean,
         default: true,
