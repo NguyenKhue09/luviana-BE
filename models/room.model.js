@@ -31,7 +31,6 @@ const roomSchema = new mongoose.Schema({
     },
     pictures: [{
         type: String,
-        required: [true, "Pictures of room is required!"]
     }],
     isAvailable: {
         type: Boolean,

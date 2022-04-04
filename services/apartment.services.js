@@ -1,5 +1,4 @@
 import Apartment from "../models/apartment.model.js";
-import Address from "../models/address.model.js"
 
 
 async function getAllApartment() {
@@ -60,32 +59,21 @@ async function getApartmentByPage(aparmentPerPage, currentPage) {
 }
 
 async function addNewApartment(address, name, type, rating, description) {
-    const session = await Address.startSession();
     try {
 
-        var resultTransaction = await session.withTransaction(async() => {
+      
+        const newApartment = await Apartment.create({address, name, type, rating, description})
 
-            const newAddress = await Address.create([address], {session})
-            if(newAddress.length > 0) {
-                const newApartment = await Apartment.create({address: newAddress[0]._id, name, type, rating, description})
+        if(!newApartment) {
+            throw "Create new aparment failed failed!";
+        }
 
-                if(!newApartment) {
-                    throw "Create new aparment failed failed!";
-                }
-            } else {
-                throw "Create address of apartment failed!"
-            }
-        })
-
-        session.endSession();
         return {
             success: true,
             message: "Add new apartment successfully",
-            data: resultTransaction
+            data: newApartment
         }
     } catch (error) {
-
-        session.endSession();
         return {
             success: false,
             message: error,
@@ -94,32 +82,6 @@ async function addNewApartment(address, name, type, rating, description) {
     }
 }
 
-async function addNewApartmentV2(address, name,  type, rating, description) {
-    const session = await Address.startSession();
-    try {
-
-        var resultTransaction = await session.withTransaction(async() => {
-
-            const newAddress = await Address.create([address], {session})
-            const newApartment = await Apartment.create([{address: newAddress[0]._id, name, type, rating, description}], {session})
-        })
-
-        session.endSession();
-        return {
-            success: true,
-            message: "Add new apartment successfully",
-            data: resultTransaction
-        }
-    } catch (error) {
-
-        session.endSession();
-        return {
-            success: false,
-            message: error,
-            data: null
-        }
-    }
-}
 
 async function getOneApartment(apartmentId) {
     try {
@@ -213,21 +175,21 @@ async function filterApartment(name, district, province, country , aparmentPerPa
     if(district != null) {
         matchAddress.$match = {
             ...matchAddress.$match,
-            "location.district" : { $in : district}
+            "address.district" : { $in : district}
         }
     }
 
     if(province != null) {
         matchAddress.$match = {
             ...matchAddress.$match,
-            "location.province" : { $in : province}
+            "address.province" : { $in : province}
         }
     }
 
     if(country != null) {
         matchAddress.$match = {
             ...matchAddress.$match,
-            "location.country" : { $in : country}
+            "address.country" : { $in : country}
         }
     }
 
@@ -235,18 +197,6 @@ async function filterApartment(name, district, province, country , aparmentPerPa
         const maxDocument = await Apartment.estimatedDocumentCount();
         const maxPage = parseInt(maxDocument/aparmentPerPage, 10);
         const result = await Apartment.aggregate([
-            {
-                $lookup:
-                  {
-                    from: "addresses",
-                    localField: "address",
-                    foreignField: "_id",
-                    as: "location"
-                  }
-            },
-            {
-                 $unwind: "$location"
-            }, 
             matchAddress,
             { $skip : parseInt(aparmentPerPage) * parseInt(currentPage)},
             { $limit : parseInt(aparmentPerPage) }
@@ -284,6 +234,5 @@ export const ApartmentService = {
     addNewApartment,
     getOneApartment,
     updateApartment,
-    addNewApartmentV2,
     filterApartment
 } 
