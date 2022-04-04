@@ -58,11 +58,11 @@ async function getApartmentByPage(aparmentPerPage, currentPage) {
     }
 }
 
-async function addNewApartment(address, name, type, rating, description) {
+async function addNewApartment(address, name, type, rating, description, thumbnail, pictures) {
     try {
 
       
-        const newApartment = await Apartment.create({address, name, type, rating, description})
+        const newApartment = await Apartment.create({address, name, type, rating, description, thumbnail, pictures})
 
         if(!newApartment) {
             throw "Create new aparment failed failed!";
