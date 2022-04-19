@@ -51,9 +51,9 @@ async function searchRoom (req, res) {
 
 async function postRoom (req, res) {
     try {
-        const { apartmentId, price, description, capacity, rating, thumbnail, pictures, isAvailable, facilities} = req.body;
+        const { bedName, name, square, apartmentId, price, capacity, rating, thumbnail, isAvailable, facilities} = req.body;
 
-        var newData = { apartmentId, price, description, capacity, rating, thumbnail, pictures, isAvailable, facilities};
+        var newData = { bedName, name, square, apartmentId, price, capacity, rating, thumbnail, isAvailable, facilities};
 
         var addNewRoom = await RoomServices.addNewRoom(newData);
 
