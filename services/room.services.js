@@ -203,6 +203,7 @@ async function deleteRoom(roomId) {
 
 export const RoomServices = {
     getRoomBySortPrice,
+    getRoomBySortPriceReverse,
     searchRoom,
     addNewRoom,
     updateRoom,
