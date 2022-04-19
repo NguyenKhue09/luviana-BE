@@ -117,24 +117,6 @@ async function deleteRoom (req, res) {
     }
 }
 
-async function searchRoom(req, res) {
-    try {
-        const { checkinDate, checkoutDate, people, city } = req.query;
-        const response = RoomController.searchRoom(checkinDate, checkoutDate, people, city);
-        if (response.success) {
-            res.json(response);
-        } else {
-            res.status(400).json(response);
-        }
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: error,
-            data: null
-        })
-    }
-}
-
 export const RoomController = {
     getRoom, 
     searchRoom,
