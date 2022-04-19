@@ -106,6 +106,5 @@ export const ApartmentController = {
     getApartment,
     getOneApartment,
     addNewApartment,
-    addNewApartmentv2,
     updateApartment
 }
