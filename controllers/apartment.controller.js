@@ -39,8 +39,9 @@ async function addNewApartment(req, res) {
         const rating = req.body.rating
         const type  = req.body.type
         const description = req.body.description
+        const thumbnail = req.body.thumbnail
 
-        const result = await ApartmentService.addNewApartment(address, name, type, rating, description)
+        const result = await ApartmentService.addNewApartment(address, name, type, rating, description, thumbnail)
 
         if(result.success) {
             return res.status(200).json(result)
