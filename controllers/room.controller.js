@@ -1,4 +1,3 @@
-import { add } from "nodemon/lib/rules";
 import { RoomServices } from "../services/room.services.js";
 
 async function getRoom(req, res) {
@@ -74,16 +73,6 @@ async function deleteRoom (req, res) {
         else return res.status(404).json(result)
     } else {
         return res.status(500).json(result)
-    }
-}
-
-async function searchRoom(req, res) {
-    const { checkinDate, checkoutDate, people, city } = req.query;
-    const response = RoomController.searchRoom(checkinDate, checkoutDate, people, city);
-    if (response.success) {
-        res.json(response);
-    } else {
-        res.status(400).json(response);
     }
 }
 
