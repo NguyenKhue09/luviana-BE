@@ -35,10 +35,10 @@ async function searchRoom (req, res) {
         var rooms = await RoomServices.searchRoom(checkinDate, checkoutDate, people, city)
 
         if (rooms.success) {
-            if (result.data) return res.json(result)
-            else return res.status(404).json(result)
+            if (result.data) return res.json(rooms)
+            else return res.status(404).json(rooms)
         } else {
-            return res.status(500).json(result)
+            return res.status(500).json(rooms)
         }
     } catch (error) {
         return res.status(500).json({
@@ -58,10 +58,10 @@ async function postRoom (req, res) {
         var addNewRoom = await RoomServices.addNewRoom(newData);
 
         if (addNewRoom.success) {
-            if (result.data) return res.json(result)
-            else return res.status(404).json(result)
+            if (result.data) return res.json(addNewRoom)
+            else return res.status(404).json(addNewRoom)
         } else {
-            return res.status(500).json(result)
+            return res.status(500).json(addNewRoom)
         }
     } catch (error) {
         return res.status(500).json({
@@ -82,10 +82,10 @@ async function updateRoom (req, res) {
         var updateRoom = await RoomServices.updateRoom(roomId, updateData);
 
         if (updateRoom.success) {
-            if (result.data) return res.json(result)
-            else return res.status(404).json(result)
+            if (result.data) return res.json(updateRoom)
+            else return res.status(404).json(updateRoom)
         } else {
-            return res.status(500).json(result)
+            return res.status(500).json(updateRoom)
         }
     } catch (error) {
         return res.status(500).json({
@@ -103,10 +103,10 @@ async function deleteRoom (req, res) {
         var deleteRoom = await RoomServices.deleteRoom(roomId);
 
         if (deleteRoom.success) {
-            if (result.data) return res.json(result)
-            else return res.status(404).json(result)
+            if (result.data) return res.json(deleteRoom)
+            else return res.status(404).json(deleteRoom)
         } else {
-            return res.status(500).json(result)
+            return res.status(500).json(deleteRoom)
         }
     } catch (error) {
         return res.status(500).json({
