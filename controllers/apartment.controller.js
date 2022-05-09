@@ -76,7 +76,7 @@ async function getOneApartment(req, res) {
     if (response.success) {
         return res.json(response)
     } else {
-        return res.status(404).json(response)
+        return res.status(400).json(response)
     }
 }
 
@@ -99,8 +99,10 @@ async function updateApartment(req, res) {
     }
 
     const response = await ApartmentService.updateApartment(apartmentId, apartmentData);
+    console.log("apartmentId: " + apartmentId)
+    console.log(response)
     if (response.success) {
-        return res.json(response)
+        return res.status(200).json(response)
     } else {
         return res.status(400).json(response)
     }
