@@ -6,20 +6,20 @@ async function getRoom(req, res) {
         if (highToLow) {
             const response = await RoomServices.getRoomBySortPriceReverse()
             if (response.success) {
-                return res.json(response)
+                return res.status(200).json(response)
             } else {
-                return res.status(500).json(response)
+                return res.status(400).json(response)
             }
         } else {
             const response = await RoomServices.getRoomBySortPrice()
             if (response.success) {
-                return res.json(response)
+                return res.status(200).json(response)
             } else {
-                return res.status(500).json(response)
+                return res.status(400).json(response)
             }
         }
     } catch (error) {
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
             message: error,
             data: null
@@ -35,13 +35,13 @@ async function searchRoom (req, res) {
         var rooms = await RoomServices.searchRoom(checkinDate, checkoutDate, people, city)
 
         if (rooms.success) {
-            if (rooms.data) return res.json(rooms)
+            if (rooms.data) return res.status(200).json(rooms)
             else return res.status(404).json(rooms)
         } else {
-            return res.status(500).json(rooms)
+            return res.status(400).json(rooms)
         }
     } catch (error) {
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
             message: error,
             data: null
@@ -79,13 +79,13 @@ async function postRoom (req, res) {
         var addNewRoom = await RoomServices.addNewRoom(newData);
 
         if (addNewRoom.success) {
-            if (addNewRoom.data) return res.json(addNewRoom)
+            if (addNewRoom.data) return res.status(200).json(addNewRoom)
             else return res.status(404).json(addNewRoom)
         } else {
-            return res.status(500).json(addNewRoom)
+            return res.status(400).json(addNewRoom)
         }
     } catch (error) {
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
             message: error,
             data: null
@@ -103,13 +103,13 @@ async function updateRoom (req, res) {
         var updateRoom = await RoomServices.updateRoom(roomId, updateData);
 
         if (updateRoom.success) {
-            if (updateRoom.data) return res.json(updateRoom)
+            if (updateRoom.data) return res.status(200).json(updateRoom)
             else return res.status(404).json(updateRoom)
         } else {
-            return res.status(500).json(updateRoom)
+            return res.status(400).json(updateRoom)
         }
     } catch (error) {
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
             message: error,
             data: null
@@ -127,10 +127,10 @@ async function deleteRoom (req, res) {
             if (deleteRoom.data) return res.json(deleteRoom)
             else return res.status(404).json(deleteRoom)
         } else {
-            return res.status(500).json(deleteRoom)
+            return res.status(400).json(deleteRoom)
         }
     } catch (error) {
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
             message: error,
             data: null

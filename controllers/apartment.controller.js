@@ -30,7 +30,6 @@ async function getApartment(req, res) {
 
 async function addNewApartment(req, res) {
     try {
-        console.log("Req body: " + req.body)
         const address = {
             apartmentNumber: req.body.apartmentNumber,
             street: req.body.street,
@@ -99,8 +98,7 @@ async function updateApartment(req, res) {
     }
 
     const response = await ApartmentService.updateApartment(apartmentId, apartmentData);
-    console.log("apartmentId: " + apartmentId)
-    console.log(response)
+    
     if (response.success) {
         return res.status(200).json(response)
     } else {

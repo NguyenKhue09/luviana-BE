@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for models/apartment.model.js</title>
+    <title>Code coverage report for models/room.model.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">models</a> apartment.model.js</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">models</a> room.model.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -115,19 +115,12 @@
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -172,78 +165,61 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import mongoose from "mongoose"
+import Apartment from "./apartment.model.js";
 &nbsp;
 &nbsp;
 &nbsp;
-const apartmentSchema = new mongoose.Schema({
+const roomSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Name of apartment is required!"]
+        required: [true, "Room name is required!"]
     },
-    address: {
-        apartmentNumber: {
-            type: String,
-            required: [true, "Apartment number is required!"]
-        },
-        street: {
-            type: String,
-            required: [true, "Street is required!"]
-        },
-        district: {
-            type: String,
-            required: [true, "District is required!"]
-        },
-        province: {
-            type: String,
-            required: [true, "Province is required!"]
-        }, 
-        country: {
-            type: String,
-            required: [true, "Country is required"]
-        }
+    apartmentId: {
+        type: mongoose.Types.ObjectId,
+        required: [true, "Apartment id of room is required!"],
+        ref: Apartment
+    },
+    price: {
+        type: Number,
+        required: [true, "Price of room is required!"]
+    },
+    bedName: {
+        type: String,
+        required: [true, "Beb name of room is required!"]
+    },
+    capacity: {
+        type: String,
+        required: [true, "Capacity of room is required!"]
+    },
+    square: {
+        type: String,
+        required: [true, "Room square is required!"]
+    },
+    rating: {
+        type: Number,
+        required: [true, "Rating of room is required!"]
     },
     thumbnail: {
         type: String,
         required: [true, "Thumbnail of room is required!"]
     },
-    pictures: [{
-        type: String,
-    }],
-    type: {
-        type: String,
-        required: [true, "Type of appartment is required!"],
-        enum: ["motel", "hotel", "homestay", "house", "apartment", "resort"]
+    isAvailable: {
+        type: Boolean,
+        default: true,
+        required: true
     },
-    rating: {
-        type: Number,
-        default: 0,
-    },
-    description: {
+    facilities: [{
         type: String,
-        required: [true, "Description of appartment is required!"]
-    },
-    voucher: { 
-        type: mongoose.Schema.Types.ObjectId
-    }
-&nbsp;
+        required: [true, "Facilities of room is required!"]
+    }]
 })
 &nbsp;
-const Apartment = mongoose.model("Apartment", apartmentSchema);
+const Room = mongoose.model("Room", roomSchema);
 &nbsp;
-export default Apartment
-&nbsp;</pre></td></tr></table></pre>
+export default Room</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
