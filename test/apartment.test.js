@@ -30,8 +30,8 @@ describe('Good apartment results', function() {
         expect(res.status).toBe(200)
     })
 
-    test('respond detail /624e6113322e96c3e532b6ce', async() => {
-        const res = await request(app).get('/apartment/detail/624e6113322e96c3e532b6ce')
+    test('respond detail /624e6b6b54287c2c7ee048b2', async() => {
+        const res = await request(app).get('/apartment/detail/624e6b6b54287c2c7ee048b2')
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
     })
@@ -51,7 +51,6 @@ describe('Good apartment results', function() {
         }
         const res = await request(app)
         .post('/apartment/add-new-apartment')
-        .type('json')
         .send(newData)
         
         expect(res.statusCode).toBe(200)
@@ -59,16 +58,15 @@ describe('Good apartment results', function() {
 
     test('put update apartment', async() => {
         const updateData = {
-            "apartmentId": "625e6cab6481197e77317050",
+            "apartmentId": "62778cf7e1b2e19ce11dedb8",
             "apartmentData": {
-                "name": "Khách sạn Hoàng Thuỳ 2",
-                "rating": 3,
-                "type": "hotels"
+                "name": "Khách sạn Hoàng Thuỳ",
+                "rating": 4,
+                "type": "hotel"
             }
         }
         const res = await request(app)
         .put('/apartment/update')
-        .type('json')
         .send(updateData)
 
         expect(res.statusCode).toBe(200)
@@ -97,7 +95,6 @@ describe('Fail apartment results', function() {
         }
         const res = await request(app)
         .post('/apartment/add-new-apartment')
-        .type('json')
         .send(newData)
         
         expect(res.statusCode).toBe(500)
@@ -113,7 +110,6 @@ describe('Fail apartment results', function() {
         }
         const res = await request(app)
         .put('/apartment/update')
-        .type('json')
         .send(updateData)
 
         expect(res.statusCode).toBe(400)
@@ -130,7 +126,6 @@ describe('Fail apartment results', function() {
         }
         const res = await request(app)
         .put('/apartment/update')
-        .type('json')
         .send(updateData)
 
         expect(res.statusCode).toBe(400)
