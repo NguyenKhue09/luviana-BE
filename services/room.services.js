@@ -1,4 +1,5 @@
 import Room from "../models/room.model.js";
+import Apartment from "../models/apartment.model.js"
 
 
 async function getRoomBySortPrice() {
@@ -120,6 +121,60 @@ async function searchRoom(checkinDate, checkoutDate, people, city) {
     }
 }
 
+async function searchRoomV2(checkinDate, checkoutDate, people, city) {
+    try {
+        
+        const result = await Apartment.aggregate([
+            {
+                $match: {
+                    "address.province": city
+                }
+            },
+            {
+                $lookup: {
+                    from: "rooms",
+                    localField: "_id",
+                    foreignField: "apartmentId",
+                    as: "rooms"
+                },
+            },
+            {
+                $project: {
+                    "description": 0,
+                    "pictures": 0,
+                    "__v": 0
+                }
+            },
+            {
+                $match: {
+                    "rooms.capacity": people
+                }
+            }
+        ])
+
+        if(result.length == 0) {
+            return {
+                success: true,
+                message: "Rooms not found!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Find rooms available successfully",
+            data: result
+        }
+
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
+
 async function addNewRoom(data) {
     try {
         
@@ -205,6 +260,7 @@ export const RoomServices = {
     getRoomBySortPrice,
     getRoomBySortPriceReverse,
     searchRoom,
+    searchRoomV2,
     addNewRoom,
     updateRoom,
     deleteRoom
