@@ -4,6 +4,7 @@ import { RoomController } from "../controllers/room.controller.js"
 const RoomRouter = express.Router()
 
 RoomRouter
+    .route("/")
     .get(RoomController.getRoom)
     .post(RoomController.postRoom)
     .put(RoomController.updateRoom)

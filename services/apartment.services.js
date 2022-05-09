@@ -137,8 +137,7 @@ async function getApartmentByName (apartmentName) {
 
 async function updateApartment(apartmentId, apartmentData) {
     try {
-        const apartment = await Apartment.findOneAndUpdate({apartmentId}, apartmentData)
-
+        const apartment = await Apartment.findByIdAndDelete(apartmentId, apartmentData)
         if(!apartment) {
             return {
                 success: false,
