@@ -16,18 +16,21 @@ async function getApartment(req, res) {
         if (apartmentPerPage == null) apartmentPerPage = 5;
         const response = await ApartmentService.filterApartment(name, district, province, country, apartmentPerPage, page);
         if (response.success) {
-            return res.json(response)
+            return res.status(200).json(response)
         }
         else return res.status(500).json(response)
     }
     const result = await ApartmentService.getAllApartment()
-    if (result.success)
-        return res.json(result)
+    if (result.success) {
+        return res.status(200).json(result)
+    }
+        
     else return res.status(500).json(result)
 }
 
 async function addNewApartment(req, res) {
     try {
+        console.log("Req body: " + req.body)
         const address = {
             apartmentNumber: req.body.apartmentNumber,
             street: req.body.street,
@@ -49,6 +52,7 @@ async function addNewApartment(req, res) {
             return res.status(500).json(result)
         }
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: error,
@@ -72,7 +76,7 @@ async function getOneApartment(req, res) {
     if (response.success) {
         return res.json(response)
     } else {
-        return res.status(404).json(response)
+        return res.status(400).json(response)
     }
 }
 
@@ -95,8 +99,10 @@ async function updateApartment(req, res) {
     }
 
     const response = await ApartmentService.updateApartment(apartmentId, apartmentData);
+    console.log("apartmentId: " + apartmentId)
+    console.log(response)
     if (response.success) {
-        return res.json(response)
+        return res.status(200).json(response)
     } else {
         return res.status(400).json(response)
     }

@@ -18,8 +18,6 @@ import path from 'path'
 import upload from './middlewares/upload.middleware.js'
 import RoomRouter from "./routes/room.router.js"
 
-app.use(express.json());
-
 connectDB(); 
 dotenv.config();
 
