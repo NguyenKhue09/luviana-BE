@@ -35,7 +35,7 @@ async function searchRoom (req, res) {
         var rooms = await RoomServices.searchRoom(checkinDate, checkoutDate, people, city)
 
         if (rooms.success) {
-            if (result.data) return res.json(rooms)
+            if (rooms.data) return res.json(rooms)
             else return res.status(404).json(rooms)
         } else {
             return res.status(500).json(rooms)
@@ -51,14 +51,14 @@ async function searchRoom (req, res) {
 
 async function postRoom (req, res) {
     try {
-        const { apartmentId, price, description, capacity, rating, thumbnail, pictures, isAvailable, facilities} = req.body;
+        const { bedName, name, square, apartmentId, price, capacity, rating, thumbnail, isAvailable, facilities} = req.body;
 
-        var newData = { apartmentId, price, description, capacity, rating, thumbnail, pictures, isAvailable, facilities};
+        var newData = { bedName, name, square, apartmentId, price, capacity, rating, thumbnail, isAvailable, facilities};
 
         var addNewRoom = await RoomServices.addNewRoom(newData);
 
         if (addNewRoom.success) {
-            if (result.data) return res.json(addNewRoom)
+            if (addNewRoom.data) return res.json(addNewRoom)
             else return res.status(404).json(addNewRoom)
         } else {
             return res.status(500).json(addNewRoom)
@@ -82,7 +82,7 @@ async function updateRoom (req, res) {
         var updateRoom = await RoomServices.updateRoom(roomId, updateData);
 
         if (updateRoom.success) {
-            if (result.data) return res.json(updateRoom)
+            if (updateRoom.data) return res.json(updateRoom)
             else return res.status(404).json(updateRoom)
         } else {
             return res.status(500).json(updateRoom)
@@ -103,7 +103,7 @@ async function deleteRoom (req, res) {
         var deleteRoom = await RoomServices.deleteRoom(roomId);
 
         if (deleteRoom.success) {
-            if (result.data) return res.json(deleteRoom)
+            if (deleteRoom.data) return res.json(deleteRoom)
             else return res.status(404).json(deleteRoom)
         } else {
             return res.status(500).json(deleteRoom)
