@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import User from "./user.model";
-import BookingCalendar from "./bookingCalendar.model";
+import User from "./user.model.js";
+import BookingCalendar from "./bookingCalendar.model.js";
 
 const billSchema = new mongoose.Schema({
     userId: {
@@ -14,13 +14,15 @@ const billSchema = new mongoose.Schema({
     },
     userBookingInfos: {
         userName: {
-            type: String
+            type: String,
+            required: [true, "UserName of userBookingInfos is required!"],
         },
         email: {
             type: String
         },
         phone: {
-            type: String
+            type: String,
+            required: [true, "Phone of userBookingInfos is required!"],
         }
     },
     note: {
@@ -29,7 +31,8 @@ const billSchema = new mongoose.Schema({
     bookingCalendar: [
         {
             type: mongoose.Types.ObjectId,
-            ref: BookingCalendar
+            ref: BookingCalendar,
+            required: [true, "BookingCalendarId of bill is required"]
         }
     ],
     totalCost: {
