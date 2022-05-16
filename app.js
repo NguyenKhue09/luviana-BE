@@ -3,6 +3,7 @@ import connectDB from "./config/config.js"
 import dotenv from "dotenv"
 import { UserRouter } from "./routes/user.route.js"
 import { ApartmentRouter } from "./routes/apartment.route.js"
+import { BlogRouter } from "./routes/blog.route.js"
 
 const app = express();
 
@@ -50,6 +51,7 @@ app.use(
 app.use("/user", UserRouter);
 app.use("/apartment", ApartmentRouter);
 app.use("/room", RoomRouter)
+app.use("/blog", BlogRouter);
 
 // Delete later
 
