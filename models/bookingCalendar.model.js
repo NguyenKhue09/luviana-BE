@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
-import User from "./user";
-import Room from "./room";
+import User from "./user.model.js";
+import Room from "./room.model.js";
 
 
 const bookingCalendarSchema = new mongoose.Schema({
@@ -26,10 +26,6 @@ const bookingCalendarSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: Room,
         required: [true, "Id room of booking calendar is required!"]
-    },
-    cost: {
-        type: Number,
-        required: [true, "Cost of booking calendar is required! "]
     }
 })
 
