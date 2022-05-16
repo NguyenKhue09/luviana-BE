@@ -15,7 +15,7 @@ const blogtSchema = new mongoose.Schema({
     ],
     content: {
         type: String,
-        required: [true, "Content of blog is reuired!"]
+        required: [true, "Content of blog is required!"]
     },
     date: {
         type: Date,

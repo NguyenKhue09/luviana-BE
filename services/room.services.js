@@ -118,6 +118,7 @@ async function searchRoom(checkinDate, checkoutDate, people, city) {
 }
 
 async function searchRoomV2(checkinDate, checkoutDate, people, city) {
+  
   try {
     const result = await Apartment.aggregate([
       {
@@ -324,6 +325,10 @@ async function deleteRoom(roomId) {
     };
   }
 }
+
+// get room by apartmentId
+// get room by Id
+
 
 export const RoomServices = {
   getRoomBySortPrice,

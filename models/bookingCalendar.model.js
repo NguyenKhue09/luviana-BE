@@ -3,7 +3,6 @@ import User from "./user";
 import Room from "./room";
 
 
-
 const bookingCalendarSchema = new mongoose.Schema({
     customer: {
         type: mongoose.Types.ObjectId,
