@@ -1,5 +1,5 @@
-import res from 'express/lib/response';
-import { BlogService } from '../services/blog.service.js';
+import { BlogService } from '../services/blog.services.js';
+import fs from "fs"
 
 async function addNewBlog(req, res) {
     const { author, content, pictures, date, comments } = req.body;
@@ -73,7 +73,7 @@ async function getBlogById(req, res) {
         message: "Please provide Blog Id.",
         data: null
     })
-    
+
     try {
         const result = await BlogService.getBlogById(blogId);
 
@@ -125,9 +125,20 @@ async function getAllBlog(req, res) {
     }
 }
 
+async function uploadImage(req, res) {
+    const file = req.file
+    if (!file) {
+        const error = new Error('Please upload a file')
+        error.httpStatusCode = 400
+        return next(error)
+    }
+    res.send(file.filename)
+}
+
 export const BlogController = {
     addNewBlog,
     updateBlog,
     getBlogById,
-    getAllBlog
+    getAllBlog,
+    uploadImage
 }

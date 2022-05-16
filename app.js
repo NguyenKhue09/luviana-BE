@@ -32,7 +32,7 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(express.static('public'));
 app.use(cookieParser(process.env.SECRET_COOKIES));
-app.use(upload.single('avatar'));
+
 // app.use(csurf({ cookie: true }));
 app.use(session({
   secret: process.env.SECRET_SESSION,

@@ -103,7 +103,7 @@ async function getAllBlog() {
 
         return {
                 success: true,
-                message: "Get all blog successful",
+                message: "Get all blog successfully",
                 data: result
             }
         
@@ -116,7 +116,7 @@ async function getAllBlog() {
     }
 }
 
-export default BlogServices = {
+export const BlogService = {
     addNewBlog,
     updateBlog,
     getAllBlog
