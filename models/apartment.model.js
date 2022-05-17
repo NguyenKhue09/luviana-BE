@@ -1,11 +1,15 @@
 import mongoose from "mongoose"
-
+import User from "./user.model.js";
 
 
 const apartmentSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Name of apartment is required!"]
+    },
+    owner: {
+        type: mongoose.Types.ObjectId,
+        ref: User
     },
     address: {
         apartmentNumber: {
@@ -51,8 +55,11 @@ const apartmentSchema = new mongoose.Schema({
     },
     voucher: { 
         type: mongoose.Schema.Types.ObjectId
+    },
+    isPending: {
+        type: Boolean,
+        default: false
     }
-
 })
 
 const Apartment = mongoose.model("Apartment", apartmentSchema);

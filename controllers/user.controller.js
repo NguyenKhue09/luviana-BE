@@ -21,6 +21,7 @@ async function registerUser(req, res) {
     if (result.success) {
         return res.json(result)
     } else {
+        console.log(result)
         return res.status(500).json(result)
     }
 }
