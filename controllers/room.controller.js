@@ -72,7 +72,7 @@ async function searchRoomV2 (req, res) {
 
 async function searchRoomByApartmentId (req, res) {
     try {
-        const { apartmentId } = req.query;
+        const { apartmentId } = req.params;
 
         var rooms = await RoomServices.getRomByApartmentId(apartmentId)
 
@@ -80,7 +80,7 @@ async function searchRoomByApartmentId (req, res) {
             if (rooms.data) return res.json(rooms)
             else return res.status(404).json(rooms)
         } else {
-            return res.status(500).json(rooms)
+            return res.status(400).json(rooms)
         }
     } catch (error) {
         return res.status(500).json({

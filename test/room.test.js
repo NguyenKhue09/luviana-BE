@@ -95,6 +95,14 @@ describe('Good room results', function() {
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
     });
+
+    test('respond to search rooms by apartments id', async() => {
+        const res = await request(app)
+        .get('/room/apartment/62568eb25e56e6dbd7b7886d')
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    });
 });
 
 describe('Fail room results', function() {
@@ -169,6 +177,14 @@ describe('Fail room results', function() {
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(400)
+    });
+
+    test('Fail respond to search rooms by apartments id', async() => {
+        const res = await request(app)
+        .get('/room/apartment/62568eb25e56e6dbd7b788ac')
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(404)
     });
 
 })
