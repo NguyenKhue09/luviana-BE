@@ -70,6 +70,27 @@ async function searchRoomV2 (req, res) {
     }
 }
 
+async function searchRoomByApartmentId (req, res) {
+    try {
+        const { apartmentId } = req.query;
+
+        var rooms = await RoomServices.getRomByApartmentId(apartmentId)
+
+        if (rooms.success) {
+            if (rooms.data) return res.json(rooms)
+            else return res.status(404).json(rooms)
+        } else {
+            return res.status(500).json(rooms)
+        }
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error,
+            data: null
+        })
+    }
+}
+
 async function postRoom (req, res) {
     try {
         const { bedName, name, square, apartmentId, price, capacity, rating, thumbnail, isAvailable, facilities} = req.body;
@@ -142,6 +163,7 @@ export const RoomController = {
     getRoom, 
     searchRoom,
     searchRoomV2,
+    searchRoomByApartmentId,
     postRoom,
     updateRoom,
     deleteRoom

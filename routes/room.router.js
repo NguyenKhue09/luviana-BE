@@ -13,5 +13,6 @@ RoomRouter
 
 RoomRouter.get("/search", RoomController.searchRoom);
 RoomRouter.get("/searchV2", RoomController.searchRoomV2);
+RoomRouter.get("/apartment/:apartmentId", RoomController.searchRoomByApartmentId);
 
 export default RoomRouter;
