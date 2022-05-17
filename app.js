@@ -5,6 +5,7 @@ import { UserRouter } from "./routes/user.route.js"
 import { ApartmentRouter } from "./routes/apartment.route.js"
 import { BlogRouter } from "./routes/blog.route.js"
 import { BillRouter } from "./routes/bill.route.js"
+import { BookingCalendarRouter } from "./routes/booking_calendar.route.js"
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use("/apartment", ApartmentRouter);
 app.use("/room", RoomRouter)
 app.use("/blog", BlogRouter);
 app.use("/bill", BillRouter)
+app.use("/booking-calendar", BookingCalendarRouter)
 
 // Delete later
 
