@@ -53,7 +53,7 @@ async function searchRoomV2 (req, res) {
     try {
         const { checkinDate, checkoutDate, people, city } = req.body;
 
-        var rooms = await RoomServices.searchRoomV2(checkinDate, checkoutDate, people, city)
+        var rooms = await RoomServices.searchRoomV3(checkinDate, checkoutDate, people, city)
 
         if (rooms.success) {
             if (rooms.data) return res.json(rooms)
