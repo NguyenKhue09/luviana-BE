@@ -368,7 +368,7 @@ async function getRoomById(roomId) {
 
     return {
       success: true,
-      message: "Get room success",
+      message: "Get room successfully!",
       data: room,
     };
   } catch (error) {
