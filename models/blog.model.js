@@ -1,7 +1,8 @@
 import mongoose from "mongoose"
-import Comment from "./comment.js"
+import Comment from "./comment.model.js"
+import User from "./user.model.js"
 
-const blogtSchema = new mongoose.Schema({
+const blogSchema = new mongoose.Schema({
     author: {
         type: mongoose.Types.ObjectId,
         required: [true, "Author of blog is required!"],
@@ -15,7 +16,7 @@ const blogtSchema = new mongoose.Schema({
     ],
     content: {
         type: String,
-        required: [true, "Content of blog is reuired!"]
+        required: [true, "Content of blog is required!"]
     },
     date: {
         type: Date,
@@ -28,6 +29,6 @@ const blogtSchema = new mongoose.Schema({
     }],
 })
 
-const Blog = mongoose.model("Blog", blogtSchema);
+const Blog = mongoose.model("Blog", blogSchema);
 
 export default Blog

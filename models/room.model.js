@@ -45,7 +45,11 @@ const roomSchema = new mongoose.Schema({
     facilities: [{
         type: String,
         required: [true, "Facilities of room is required!"]
-    }]
+    }],
+    isPending: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const Room = mongoose.model("Room", roomSchema);

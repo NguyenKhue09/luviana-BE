@@ -118,6 +118,7 @@ async function searchRoom(checkinDate, checkoutDate, people, city) {
 }
 
 async function searchRoomV2(checkinDate, checkoutDate, people, city) {
+  
   try {
     const result = await Apartment.aggregate([
       {
@@ -325,9 +326,65 @@ async function deleteRoom(roomId) {
   }
 }
 
+// get room by apartmentId
+async function getRomByApartmentId(apartmentId) {
+  try {
+    const rooms = await Room.find({apartmentId})
+
+    if(rooms.length === 0) {
+      return {
+        success: true,
+        message: "Empty rooms!",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Get rooms success",
+      data: rooms,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+}
+
+// get room by Id
+async function getRoomById(roomId) {
+  try {
+    const room = await Room.findById(roomId)
+
+    if(!room) {
+      return {
+        success: true,
+        message: "Room not found!",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Get room success",
+      data: room,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+}
+ 
 export const RoomServices = {
   getRoomBySortPrice,
   getRoomBySortPriceReverse,
+  getRomByApartmentId,
+  getRoomById,
   searchRoom,
   searchRoomV2,
   addNewRoom,
