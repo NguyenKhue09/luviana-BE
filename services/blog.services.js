@@ -60,6 +60,34 @@ async function updateBlog(data, blogId) {
     }
 }
 
+async function getBlogById(blogId) {
+    try {
+
+        const result = await Blog.findById(blogId)
+
+        if(!result) {
+            return {
+                success: false,
+                message: "Get blog by id failed!",
+                data: null
+            }
+        }
+
+        return {
+                success: true,
+                message: "Get blog by id successful",
+                data: result
+            }
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
+
 async function getAllBlog() {
     try {
 
@@ -75,7 +103,7 @@ async function getAllBlog() {
 
         return {
                 success: true,
-                message: "Get all blog successful",
+                message: "Get all blog successfully",
                 data: result
             }
         
@@ -88,7 +116,7 @@ async function getAllBlog() {
     }
 }
 
-export default BlogServices = {
+export const BlogService = {
     addNewBlog,
     updateBlog,
     getAllBlog

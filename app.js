@@ -3,6 +3,7 @@ import connectDB from "./config/config.js"
 import dotenv from "dotenv"
 import { UserRouter } from "./routes/user.route.js"
 import { ApartmentRouter } from "./routes/apartment.route.js"
+import { BlogRouter } from "./routes/blog.route.js"
 import { BillRouter } from "./routes/bill.route.js"
 
 const app = express();
@@ -31,7 +32,7 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(express.static('public'));
 app.use(cookieParser(process.env.SECRET_COOKIES));
-app.use(upload.single('avatar'));
+
 // app.use(csurf({ cookie: true }));
 app.use(session({
   secret: process.env.SECRET_SESSION,
@@ -50,6 +51,7 @@ app.use(
 app.use("/user", UserRouter);
 app.use("/apartment", ApartmentRouter);
 app.use("/room", RoomRouter)
+app.use("/blog", BlogRouter);
 app.use("/bill", BillRouter)
 
 // Delete later
