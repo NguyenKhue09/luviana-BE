@@ -1,8 +1,16 @@
 import { UserService } from "../services/user.services.js";
 import nodemailer from "nodemailer"
 import jwt from "jsonwebtoken"
-import fs from "fs"
 import { pugEngine } from "nodemailer-pug-engine"
+import cloudinaryInstance from "cloudinary"
+import streamifier from "streamifier"
+
+const cloudinary = cloudinaryInstance.v2
+cloudinary.config({ 
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET 
+  });
 
 async function getUser(req, res) {
     const { userId } = req.query
@@ -44,7 +52,7 @@ async function login(req, res) {
 async function signUp(req, res) {
     const userData = req.body;
     const { email } = userData;
-    const token = jwt.sign(userData, process.env.SECRET_TOKEN, { expiresIn: "1h"}); // token hết hạn 1 giờ
+    const token = jwt.sign(userData, process.env.SECRET_TOKEN, { expiresIn: "1h" }); // token hết hạn 1 giờ
     const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
@@ -116,15 +124,36 @@ async function activate(req, res) {
 }
 
 async function uploadAvatar(req, res) {
-    var img = fs.readFileSync(req.file.path);
-    var encode_image = img.toString('base64');
-    // Define a JSONobject for the image attributes for saving to database
-    
-    return res.json({
-        success: true,
-        message: "Upload avatar successfully",
-        data: `${process.env.SERVER_URL}/uploads/${req.file.filename}`
-    })
+    let streamUpload = (req) => {
+        return new Promise((resolve, reject) => {
+            let stream = cloudinary.uploader.upload_stream(
+                (error, result) => {
+                    if (result) {
+                        resolve(result);
+                    } else {
+                        reject(error);
+                    }
+                }
+            );
+
+            streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+    };
+
+    async function upload(req) {
+        return await streamUpload(req);
+    }
+
+    try {
+        const result = await upload(req);
+        return res.json({
+            success: true,
+            message: "Upload avatar successfully",
+            data: result.secure_url
+        })
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 export const UserController = {

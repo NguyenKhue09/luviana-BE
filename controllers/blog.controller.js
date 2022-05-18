@@ -111,17 +111,36 @@ async function getAllBlog(req, res) {
 }
 
 async function uploadImage(req, res) {
-    const file = req.file
-    if (!file) {
-        const error = new Error('Please upload a file')
-        error.httpStatusCode = 400
-        return next(error)
+    let streamUpload = (req) => {
+        return new Promise((resolve, reject) => {
+            let stream = cloudinary.uploader.upload_stream(
+                (error, result) => {
+                    if (result) {
+                        resolve(result);
+                    } else {
+                        reject(error);
+                    }
+                }
+            );
+
+            streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+    };
+
+    async function upload(req) {
+        return await streamUpload(req);
     }
-    return res.json({
-        success: true,
-        message: "Upload image successfully",
-        data: `${process.env.SERVER_URL}/uploads/${req.file.filename}`
-    })
+
+    try {
+        const result = await upload(req);
+        return res.json({
+            success: true,
+            message: "Upload image successfully",
+            data: result.secure_url
+        })
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 export const BlogController = {
