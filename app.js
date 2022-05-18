@@ -1,6 +1,8 @@
 import express from "express"
 import connectDB from "./config/config.js"
 import dotenv from "dotenv"
+import cors from 'cors';
+
 import { UserRouter } from "./routes/user.route.js"
 import { ApartmentRouter } from "./routes/apartment.route.js"
 import { BlogRouter } from "./routes/blog.route.js"
@@ -29,6 +31,7 @@ const PORT = process.env.PORT || 5000;
 
 // Apply library
 // app.use(favicon(path.join(__dirname, 'public','logoIcon.ico'))); // favicon
+app.use(cors());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(express.static('public'));
