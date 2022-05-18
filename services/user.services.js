@@ -114,10 +114,18 @@ async function updateUser(userData, userId) {
         } 
     }
 }
+
+async function isExist(email) {
+    const user = await User.findOne({ email });
+    if (!user) 
+        return false;
+    return true;
+}
   
 export const UserService = { 
     getUser,
     registerUser,
     login,
-    updateUser
+    updateUser,
+    isExist
 }

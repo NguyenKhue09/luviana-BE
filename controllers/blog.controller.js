@@ -1,5 +1,4 @@
 import { BlogService } from '../services/blog.services.js';
-import fs from "fs"
 
 async function addNewBlog(req, res) {
     const { author, content, pictures, date } = req.body;
