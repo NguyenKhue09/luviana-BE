@@ -117,7 +117,11 @@ async function uploadImage(req, res) {
         error.httpStatusCode = 400
         return next(error)
     }
-    res.send(file.filename)
+    return res.json({
+        success: true,
+        message: "Upload image successfully",
+        data: `${process.env.SERVER_URL}/uploads/${req.file.filename}`
+    })
 }
 
 export const BlogController = {

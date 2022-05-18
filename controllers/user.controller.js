@@ -119,14 +119,10 @@ async function uploadAvatar(req, res) {
     var img = fs.readFileSync(req.file.path);
     var encode_image = img.toString('base64');
     // Define a JSONobject for the image attributes for saving to database
-
-    var finalImg = {
-        contentType: req.file.mimetype,
-        image: Buffer.from(encode_image, 'base64')
-    };
+    
     return res.json({
         success: true,
-        message: "Upload avatar successful",
+        message: "Upload avatar successfully",
         data: `${process.env.SERVER_URL}/uploads/${req.file.filename}`
     })
 }
