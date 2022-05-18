@@ -102,6 +102,7 @@ describe('Fail test result for blog', function() {
     test('Respond to update a blog', async() => {
         const updateBlog = {
             "data": {
+                "author": "123123",
                 "content": "This is a testing blog",
                 "pictures": "https://assets.grab.com/wp-content/uploads/sites/11/2020/09/30172754/Hotels_Booking_1920x675.jpg"
             }, 
