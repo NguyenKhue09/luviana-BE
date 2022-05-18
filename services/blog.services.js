@@ -119,5 +119,6 @@ async function getAllBlog() {
 export const BlogService = {
     addNewBlog,
     updateBlog,
-    getAllBlog
+    getAllBlog,
+    getBlogById
 }
