@@ -41,21 +41,10 @@ async function updateBlog(req, res) {
     const { data, blogId } = req.body;
 
     try {
-        const result = await BlogService.updateBlog(data, blogId);
+        const response = await BlogService.updateBlog(data, blogId);
 
-        if (!result) {
-            return res.status(500).json({
-                success: false,
-                message: "Update blog failed!",
-                data: null
-            })
-        } else {
-            return res.json({
-                success: true,
-                message: "Update blog successfully!",
-                data: result
-            })
-        }
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
     } catch (e) {
         return res.status(500).json({
             success: false,
@@ -75,21 +64,10 @@ async function getBlogById(req, res) {
     })
 
     try {
-        const result = await BlogService.getBlogById(blogId);
+        const response = await BlogService.getBlogById(blogId);
 
-        if (!result) {
-            return res.status(500).json({
-                success: false,
-                message: "Get blog failed!",
-                data: null
-            })
-        } else {
-            return res.json({
-                success: true,
-                message: "Get blog successfully!",
-                data: result
-            })
-        }
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
     } catch (e) {
         return res.status(500).json({
             success: false,
