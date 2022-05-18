@@ -6,7 +6,7 @@ const BlogRouter = express.Router();
 
 BlogRouter.post("/", BlogController.addNewBlog);
 BlogRouter.get("/all", BlogController.getAllBlog);
-BlogRouter.get("/detail/:id", BlogController.getBlogById);
+BlogRouter.get("/detail/:blogId", BlogController.getBlogById);
 BlogRouter.put("/update", BlogController.updateBlog);
 BlogRouter.post("/upload", upload.single('thumbnail'), BlogController.uploadImage);
 
