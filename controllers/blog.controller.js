@@ -2,7 +2,7 @@ import { BlogService } from '../services/blog.services.js';
 import fs from "fs"
 
 async function addNewBlog(req, res) {
-    const { author, content, pictures, date, comments } = req.body;
+    const { author, content, pictures, date } = req.body;
 
     if (!author || !content || !pictures || !date) {
         return res.status(400).json({
@@ -13,7 +13,7 @@ async function addNewBlog(req, res) {
     }
 
     try {
-        const result = await BlogService.addNewBlog(data);
+        const result = await BlogService.addNewBlog(req.body);
 
         if (!result) {
             return res.status(500).json({
