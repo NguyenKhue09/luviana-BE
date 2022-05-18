@@ -31,7 +31,7 @@ async function getApartmentByPage(aparmentPerPage, currentPage) {
     try {
         const result = await Apartment.find({}).skip(currentPage * aparmentPerPage).limit(aparmentPerPage)
         const maxDocument = await Apartment.estimatedDocumentCount();
-        const maxPage = parseInt(maxDocument/aparmentPerPage, 10);
+        const maxPage = parseInt(maxDocument/parseInt(aparmentPerPage), 10);
 
         if(result.length == 0) {
             return {
