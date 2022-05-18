@@ -138,11 +138,32 @@ async function deleteRoom (req, res) {
     }
 }
 
+async function getRoomById(req, res) {
+    const { roomId } = req.params;
+    
+    try {
+        const response = await RoomServices.getRoomById(roomId);
+        if (response.success) {
+            return res.status(200).json(response)
+        } else {
+            return res.status(400).json(response)
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong!",
+            data: null
+        })
+    }
+}
+
 export const RoomController = {
     getRoom, 
     searchRoom,
     searchRoomV2,
     postRoom,
     updateRoom,
-    deleteRoom
+    deleteRoom,
+    getRoomById
 }
