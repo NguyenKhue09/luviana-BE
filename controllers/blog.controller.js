@@ -1,8 +1,7 @@
 import { BlogService } from '../services/blog.services.js';
-import fs from "fs"
 
 async function addNewBlog(req, res) {
-    const { author, content, pictures, date, comments } = req.body;
+    const { author, content, pictures, date } = req.body;
 
     if (!author || !content || !pictures || !date) {
         return res.status(400).json({
@@ -13,7 +12,7 @@ async function addNewBlog(req, res) {
     }
 
     try {
-        const result = await BlogService.addNewBlog(data);
+        const result = await BlogService.addNewBlog(req.body);
 
         if (!result) {
             return res.status(500).json({
@@ -40,22 +39,19 @@ async function addNewBlog(req, res) {
 async function updateBlog(req, res) {
     const { data, blogId } = req.body;
 
-    try {
-        const result = await BlogService.updateBlog(data, blogId);
+    if (!data.author) {
+        delete data["author"];
+    }
 
-        if (!result) {
-            return res.status(500).json({
-                success: false,
-                message: "Update blog failed!",
-                data: null
-            })
-        } else {
-            return res.json({
-                success: true,
-                message: "Update blog successfully!",
-                data: result
-            })
-        }
+    if (!data.comments) {
+        delete data["comment"];
+    }
+
+    try {
+        const response = await BlogService.updateBlog(data, blogId);
+
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
     } catch (e) {
         return res.status(500).json({
             success: false,
@@ -75,21 +71,10 @@ async function getBlogById(req, res) {
     })
 
     try {
-        const result = await BlogService.getBlogById(blogId);
+        const response = await BlogService.getBlogById(blogId);
 
-        if (!result) {
-            return res.status(500).json({
-                success: false,
-                message: "Get blog failed!",
-                data: null
-            })
-        } else {
-            return res.json({
-                success: true,
-                message: "Get blog successfully!",
-                data: result
-            })
-        }
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
     } catch (e) {
         return res.status(500).json({
             success: false,
