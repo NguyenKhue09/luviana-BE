@@ -95,6 +95,14 @@ describe('Good room results', function() {
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
     });
+
+    test('respond to search rooms by apartments id', async() => {
+        const res = await request(app)
+        .get('/room/apartment/62568eb25e56e6dbd7b7886d')
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    });
 });
 
 describe('Fail room results', function() {
@@ -171,19 +179,12 @@ describe('Fail room results', function() {
         expect(res.status).toBe(400)
     });
 
-    test('Fail response to search rooms', async() => {
-        const searchData = {
-            "checkinDate": "04/19/2022",
-            "checkoutDate":"04/21/2022",
-            "people": "4 người",
-            "city": "Đà Nẵng"
-        }
-
+    test('Fail respond to search rooms by apartments id', async() => {
         const res = await request(app)
-        .get('/room/search')
-        .send({})
+        .get('/room/apartment/62568eb25e56e6dbd7b788ac')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-        expect(res.status).toBe(400)
+        expect(res.status).toBe(404)
     });
+
 })

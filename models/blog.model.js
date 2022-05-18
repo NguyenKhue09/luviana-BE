@@ -24,7 +24,6 @@ const blogSchema = new mongoose.Schema({
     },
     comments: [{
         type: mongoose.Types.ObjectId,
-        required: [true, "Id comment of blog is required!"],
         ref: Comment
     }],
 })

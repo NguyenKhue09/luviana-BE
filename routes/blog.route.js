@@ -4,7 +4,7 @@ import upload from "../middlewares/upload.middleware.js";
 
 const BlogRouter = express.Router();
 
-BlogRouter.post("/add", BlogController.addNewBlog);
+BlogRouter.post("/", BlogController.addNewBlog);
 BlogRouter.get("/all", BlogController.getAllBlog);
 BlogRouter.get("/detail/:id", BlogController.getBlogById);
 BlogRouter.put("/update", BlogController.updateBlog);

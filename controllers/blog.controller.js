@@ -4,7 +4,7 @@ import fs from "fs"
 async function addNewBlog(req, res) {
     const { author, content, pictures, date, comments } = req.body;
 
-    if (!author || !content || !pictures || !date, !comments) {
+    if (!author || !content || !pictures || !date) {
         return res.status(400).json({
             success: false,
             message: "Missing required field!",
