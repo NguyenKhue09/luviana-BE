@@ -5,7 +5,7 @@ import fs from "fs"
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         let path = "public/uploads/";
-        fs.mkdirSync(path);
+        try { fs.mkdirSync(path); } catch (err) { }
         cb(null, path)
     },
     filename: function (req, file, cb) {
