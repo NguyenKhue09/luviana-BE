@@ -40,6 +40,14 @@ async function addNewBlog(req, res) {
 async function updateBlog(req, res) {
     const { data, blogId } = req.body;
 
+    if (!data.author) {
+        delete data["author"];
+    }
+
+    if (!data.comments) {
+        delete data["comment"];
+    }
+
     try {
         const response = await BlogService.updateBlog(data, blogId);
 
