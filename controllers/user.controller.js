@@ -51,6 +51,42 @@ async function login(req, res) {
 // Sign up with mail authentication
 async function signUp(req, res) {
     const userData = req.body;
+
+    if (!userData.email || !userData.password) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing required field!",
+            data: null
+        })
+    }
+
+    const passwordRegEx = /^(?=.*\d)(?=.*[a-zA-Z]).{6,}$/;
+
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email))) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid email address!",
+            data: null
+        })
+    }
+
+    const existingUser = await UserService.isExist(userData.email);
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "Your email has been taken, please use other email to signup",
+                data: null
+            });
+        }
+
+    if (!passwordRegEx.test(req.body.password)) { 
+        res.status(400).json({
+            success: false,
+            message: "Password must contains letters, digits and at least 6 characters",
+            data: null
+        });
+    }
+
     const { email } = userData;
     const token = jwt.sign(userData, process.env.SECRET_TOKEN, { expiresIn: "1h" }); // token hết hạn 1 giờ
     const transporter = nodemailer.createTransport({
@@ -152,7 +188,11 @@ async function uploadAvatar(req, res) {
             data: result.secure_url
         })
     } catch (err) {
-        console.log(err);
+        res.json(500).json({
+            success: false,
+            message: "Upload avatar failed",
+            data: null
+        })
     }
 }
 
