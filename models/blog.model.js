@@ -10,8 +10,7 @@ const blogSchema = new mongoose.Schema({
     },
     pictures: [
         {
-            type: String,
-            required: [true, "Picture of blog is required!"]
+            type: String
         }
     ],
     content: {

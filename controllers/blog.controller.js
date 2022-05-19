@@ -1,4 +1,5 @@
 import { BlogService } from '../services/blog.services.js';
+import { CommentService } from '../services/comment.services.js';
 import cloudinaryInstance from "cloudinary"
 import streamifier from "streamifier"
 
@@ -10,9 +11,9 @@ cloudinary.config({
   });
 
 async function addNewBlog(req, res) {
-    const { author, content, pictures } = req.body;
+    const data = req.body;
 
-    if (!author || !content || !pictures || !date) {
+    if (!data.author || !data.content) {
         return res.status(400).json({
             success: false,
             message: "Missing required field!",
@@ -20,24 +21,14 @@ async function addNewBlog(req, res) {
         })
     }
 
-    const date = new Date();
+    data.date = new Date();
 
     try {
-        const result = await BlogService.addNewBlog(req.body);
+        const response = await BlogService.addNewBlog(data);
 
-        if (!result) {
-            return res.status(500).json({
-                success: false,
-                message: "Create new blog failed!",
-                data: null
-            })
-        }
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
 
-        return res.json({
-            success: true,
-            message: "Create new blog successfully!",
-            data: result
-        })
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -48,7 +39,7 @@ async function addNewBlog(req, res) {
 }
 
 async function updateBlog(req, res) {
-    const { data, blogId } = req.body;
+    const { data, blogId, author } = req.body;
 
     if (!data.author) {
         delete data["author"];
@@ -62,8 +53,16 @@ async function updateBlog(req, res) {
         delete data["date"];
     }
 
+    if (data.content == "") {
+        return res.status(400).json({
+            success: false,
+            message: "Content cannot be empty!",
+            data: null
+        })
+    }
+
     try {
-        const response = await BlogService.updateBlog(data, blogId);
+        const response = await BlogService.updateBlog(data, blogId, author);
 
         if (response.success) return res.json(response)
         else return res.status(500).json(response)
@@ -158,10 +157,97 @@ async function uploadImage(req, res) {
     }
 }
 
+async function getBlogByAuthor(req, res) {
+    const { author } = req.params;
+    if (!author) {
+        res.status(400).json({
+            success: false,
+            message: "Please provide author id.",
+            data: null
+        })
+    }
+
+    try {
+        const response = await BlogService.getBlogByAuthor(author);
+
+        if (response.success) {
+            return res.json(response)
+        } else return res.status(500).json(response)
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `Unexpected error: ${e.message}`,
+            data: null
+        })
+    }
+}
+
+async function addComment(req, res) {
+    const { author, blogId, content } = req.body;
+
+    if (!author || !blogId || !content) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing required field!",
+            data: null
+        })
+    }
+
+    if (content == "") {
+        return res.status(400).json({
+            success: false,
+            message: "Content cannot be empty!",
+            data: null
+        })
+    }
+
+    try {
+        const response = await CommentService.addComment(author, blogId, content);
+
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `Something went wrong: ${e.message}`,
+            data: null
+        })
+    }
+}
+
+
+async function getCommentList(req, res) {
+    const { blogId } = req.params;
+
+    if (!blogId) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide blog id.",
+            data: null
+        })
+    }
+
+    try {
+        const response = await CommentService.getCommentList(blogId);
+
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `Something went wrong: ${e.message}`,
+            data: null
+        })
+    }
+}
+
 export const BlogController = {
     addNewBlog,
     updateBlog,
     getBlogById,
     getAllBlog,
-    uploadImage
+    uploadImage,
+    getBlogByAuthor,
+    addComment,
+    getCommentList
 }
