@@ -74,10 +74,15 @@ async function login(email, password) {
             };
         }
 
+        delete user.password
+
+        const accessToken = await user.getSignedToken()
+        const refreshToken =  await user.getRefreshToken()
+
         return {
             success: true,
             message: "Login successful!",
-            data: user
+            data: {...user, accessToken, refreshToken}
         }
 
     } catch (error) {
@@ -121,11 +126,72 @@ async function isExist(email) {
         return false;
     return true;
 }
+
+async function forgotPassword(email) {
+    try {
+        const user = await User.findOne({email})
+
+        if(!user) return {
+            success: false,
+            message: "This email does exists.",
+            data: null
+        }
+
+        const accessToken = await user.getSignedToken()
+
+        return {
+            success: true,
+            message:  "Get access token for forgotPassword success",
+            data: {
+                accessToken
+            }
+        }
+
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
+
+async function resetPassord(password, userId) {
+    try {
+        const user = await User.findById(userId)
+
+        if(!user) {
+            return {
+                success: false,
+                message: "User not found",
+                data: null
+            }
+        }
+
+        user.password  = password
+
+        await user.save()
+
+        return {
+            success: true,
+            message: "Reset password success",
+            data: user
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
   
 export const UserService = { 
     getUser,
     registerUser,
     login,
     updateUser,
+    forgotPassword,
+    resetPassord,
     isExist
 }
