@@ -20,7 +20,6 @@ import mongoSanitize from 'express-mongo-sanitize'
 import rateLimit from "express-rate-limit"
 import favicon  from 'serve-favicon'
 import path from 'path'
-import upload from './middlewares/upload.middleware.js'
 import RoomRouter from "./routes/room.router.js"
 import Bill from "./models/bill.model.js"
 
