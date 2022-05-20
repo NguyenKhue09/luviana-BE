@@ -35,35 +35,49 @@ async function addComment(author, blogId, content) {
     }
 }
 
-async function getCommentList(blogId) {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-    let result = []
-    
+async function getCommentList(blogId, page, limit) {
+   
     try {
-        const { comments } = await Blog.findOne({ _id: mongoose.Types.ObjectId(blogId) }, { comments: 1 }, { session })
-        if (!comments) {
+        const checkBlogExists = await Blog.exists({ _id: mongoose.Types.ObjectId(blogId) })
+        if (!checkBlogExists) {
+            return {
+                success: false,
+                message: "Blog is not exists!",
+                data: null
+            }
+        }
+
+        const result = await Blog.aggregate([
+            { $match: { _id: mongoose.Types.ObjectId(blogId) } },
+            { $project: { comments: 1, total: { $size: "$comments" } } },
+            { $set : { comments: {
+                $slice: [ "$comments", (page - 1) * limit, limit ]
+            }}}
+        ])
+
+        if (result.length == 0) {
             return {
                 success: true,
                 message: "No comments found!",
                 data: []
             }
         }
-        result = await Comment.find({ _id: { $in: comments } }, {}, { session })
-        await session.commitTransaction();
-        session.endSession();
+        const final = await Blog.populate(result, { path: "comments"});
+        final[0].currentPage = page
+        final[0].maxPage = Math.ceil(result[0].total / limit);
+        
+        return {
+            success: true,
+            message: "Comment list fetched!",
+            data: final[0]
+        }
+
     } catch (e) {
         return {
             success: false,
             message: e.message,
             data: null
         }
-    }
-
-    return {
-        success: true,
-        message: "Comment list fetched!",
-        data: result
     }
 }
 
