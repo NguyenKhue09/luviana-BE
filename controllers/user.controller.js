@@ -1,11 +1,20 @@
 import { UserService } from "../services/user.services.js";
 import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
-import fs from "fs";
 import { pugEngine } from "nodemailer-pug-engine";
 import { sendEmail } from "./sendEmail.js";
+import cloudinaryInstance from "cloudinary"
+import streamifier from "streamifier"
 
 const { CLIENT_URL } = process.env;
+
+
+const cloudinary = cloudinaryInstance.v2
+cloudinary.config({ 
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET 
+  });
 
 async function getUser(req, res) {
   const { userId } = req.query;
@@ -49,18 +58,52 @@ async function login(req, res) {
 
 // Sign up with mail authentication
 async function signUp(req, res) {
-  const userData = req.body;
-  const { email } = userData;
-  const token = jwt.sign(userData, process.env.SECRET_TOKEN, {
-    expiresIn: "1h",
-  }); // token hết hạn 1 giờ
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: process.env.SENDER,
-      pass: process.env.PASSWORD,
-    },
-  });
+    const userData = req.body;
+
+    if (!userData.email || !userData.password) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing required field!",
+            data: null
+        })
+    }
+
+    const passwordRegEx = /^(?=.*\d)(?=.*[a-zA-Z]).{6,}$/;
+
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email))) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid email address!",
+            data: null
+        })
+    }
+
+    const existingUser = await UserService.isExist(userData.email);
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "Your email has been taken, please use other email to signup",
+                data: null
+            });
+        }
+
+    if (!passwordRegEx.test(req.body.password)) { 
+        res.status(400).json({
+            success: false,
+            message: "Password must contains letters, digits and at least 6 characters",
+            data: null
+        });
+    }
+
+    const { email } = userData;
+    const token = jwt.sign(userData, process.env.SECRET_TOKEN, { expiresIn: "1h" }); // token hết hạn 1 giờ
+    const transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+            user: process.env.SENDER,
+            pass: process.env.PASSWORD,
+        },
+    });
 
   transporter.use(
     "compile",
@@ -236,15 +279,40 @@ async function getAccessToken(req, res) {
 }
 
 async function uploadAvatar(req, res) {
-  var img = fs.readFileSync(req.file.path);
-  var encode_image = img.toString("base64");
-  // Define a JSONobject for the image attributes for saving to database
+    let streamUpload = (req) => {
+        return new Promise((resolve, reject) => {
+            let stream = cloudinary.uploader.upload_stream(
+                (error, result) => {
+                    if (result) {
+                        resolve(result);
+                    } else {
+                        reject(error);
+                    }
+                }
+            );
 
-  return res.json({
-    success: true,
-    message: "Upload avatar successfully",
-    data: `${process.env.SERVER_URL}/uploads/${req.file.filename}`,
-  });
+            streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+    };
+
+    async function upload(req) {
+        return await streamUpload(req);
+    }
+
+    try {
+        const result = await upload(req);
+        return res.json({
+            success: true,
+            message: "Upload avatar successfully",
+            data: result.secure_url
+        })
+    } catch (err) {
+        res.json(500).json({
+            success: false,
+            message: "Upload avatar failed",
+            data: null
+        })
+    }
 }
 
 export const UserController = {
