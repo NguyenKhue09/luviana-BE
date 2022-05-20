@@ -29,9 +29,9 @@ async function getAllApartment() {
 
 async function getApartmentByPage(aparmentPerPage, currentPage, type) {
     try {
-        const filterType = {}
+        let filterType = {}
 
-        if(!type) {
+        if(type) {
             filterType = {type}
         }
 
