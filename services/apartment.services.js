@@ -226,6 +226,8 @@ async function filterApartment(name, district, province, country , aparmentPerPa
     }
 }
 
+// get apartment by type
+
 export const ApartmentService = {
     getAllApartment,
     getApartmentByName,
