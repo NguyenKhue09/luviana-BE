@@ -24,13 +24,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/user', UserRouter)
 
 describe('Good user results', function() {
-    test('respond to get user', async() => {
-        const res = await request(app)
-        .get('/user?userId=623442ba82b88524caae2232')
+    // test('respond to get user', async() => {
+    //     const res = await request(app)
+    //     .get('/user?userId=623442ba82b88524caae2232')
 
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-        expect(res.status).toBe(200)
-    })
+    //     expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+    //     expect(res.status).toBe(200)
+    // })
 
     // test('respond to register user', async() => {
     //     const newUser = {
@@ -87,7 +87,7 @@ describe('Fail user results', function() {
         .send(newUser)
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-        expect(res.status).toBe(500)
+        expect(res.status).toBe(400)
     })
 
     test('Fail to login', async() => {

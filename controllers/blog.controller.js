@@ -171,7 +171,7 @@ async function getBlogByAuthor(req, res) {
         const response = await BlogService.getBlogByAuthor(author);
 
         if (response.success) {
-            return res.json(response)
+            return res.status(200).json(response)
         } else return res.status(500).json(response)
     } catch (e) {
         return res.status(500).json({
