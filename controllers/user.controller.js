@@ -247,7 +247,6 @@ async function getAccessToken(req, res) {
   try {
     const { refreshtoken } = req.query;
     
-    console.log(refreshtoken)
     if (!refreshtoken)
       return res
         .status(400)
@@ -255,7 +254,6 @@ async function getAccessToken(req, res) {
 
     const user = jwt.verify(refreshtoken, process.env.SECRET_TOKEN_REFRESH);
 
-    console.log(user)
     if (!user.id) {
       return res
         .status(400)
@@ -266,13 +264,14 @@ async function getAccessToken(req, res) {
       expiresIn: "1d",
     });
 
-    return {
+    return res.json({
       success: true,
       message: "Get access token success",
       data: {
         accessToken,
       },
-    };
+    });
+    
   } catch (error) {
     return res
       .status(500)
