@@ -164,10 +164,10 @@ async function activate(req, res) {
       email
     );
     const { _id } = user;
-    const accessToken = jwt.sign({ _id }, process.env.SECRET_TOKEN, {
+    const accessToken = jwt.sign({ id }, process.env.SECRET_TOKEN, {
       expiresIn: "1d",
     });
-    const refreshToken = jwt.sign({ _id }, process.env.SECRET_TOKEN_REFRESH, {
+    const refreshToken = jwt.sign({ id }, process.env.SECRET_TOKEN_REFRESH, {
       expiresIn: "1y",
     });
     // await saveToken(email, refreshToken, accessToken);
@@ -246,7 +246,8 @@ async function resetPassword(req, res) {
 async function getAccessToken(req, res) {
   try {
     const { refreshtoken } = req.query;
-
+    
+    console.log(refreshtoken)
     if (!refreshtoken)
       return res
         .status(400)
@@ -254,13 +255,14 @@ async function getAccessToken(req, res) {
 
     const user = jwt.verify(refreshtoken, process.env.SECRET_TOKEN_REFRESH);
 
-    if (!user._id) {
+    console.log(user)
+    if (!user.id) {
       return res
         .status(400)
         .json({ success: false, message: "Please login now!", data: null });
     }
 
-    const accessToken = jwt.sign({ _id: user._id }, process.env.SECRET_TOKEN, {
+    const accessToken = jwt.sign({ id: user.id }, process.env.SECRET_TOKEN, {
       expiresIn: "1d",
     });
 
