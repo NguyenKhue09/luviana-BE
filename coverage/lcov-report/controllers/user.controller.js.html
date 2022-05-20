@@ -391,7 +391,8 @@
 <a name='L326'></a><a href='#L326'>326</a>
 <a name='L327'></a><a href='#L327'>327</a>
 <a name='L328'></a><a href='#L328'>328</a>
-<a name='L329'></a><a href='#L329'>329</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L329'></a><a href='#L329'>329</a>
+<a name='L330'></a><a href='#L330'>330</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -658,6 +659,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -885,10 +887,10 @@ async function <span class="fstat-no" title="function not covered" >activate(</s
       email
     );
     const { _id } = <span class="cstat-no" title="statement not covered" >user;</span>
-    const accessToken = <span class="cstat-no" title="statement not covered" >jwt.sign({ _id }, process.env.SECRET_TOKEN, {</span>
+    const accessToken = <span class="cstat-no" title="statement not covered" >jwt.sign({ id }, process.env.SECRET_TOKEN, {</span>
       expiresIn: "1d",
     });
-    const refreshToken = <span class="cstat-no" title="statement not covered" >jwt.sign({ _id }, process.env.SECRET_TOKEN_REFRESH, {</span>
+    const refreshToken = <span class="cstat-no" title="statement not covered" >jwt.sign({ id }, process.env.SECRET_TOKEN_REFRESH, {</span>
       expiresIn: "1y",
     });
     // await saveToken(email, refreshToken, accessToken);
@@ -922,11 +924,11 @@ async function <span class="fstat-no" title="function not covered" >forgotPasswo
         .json({ success: false, message: "Something went wrong", data: null });
     }
 &nbsp;
-    const access_token = <span class="cstat-no" title="statement not covered" >user.accessToken;</span>
+    const access_token = <span class="cstat-no" title="statement not covered" >user.data.accessToken;</span>
 &nbsp;
     const url = <span class="cstat-no" title="statement not covered" >`${CLIENT_URL}/user/reset-password/${access_token}`;</span>
 &nbsp;
-    const result = <span class="cstat-no" title="statement not covered" >await sendEmail(email, url, "Luviana - Reset your password");</span>
+    const result = <span class="cstat-no" title="statement not covered" >await sendEmail(email, user.data.username, url, "Luviana - Reset your password");</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (!result.success) {</span>
 <span class="cstat-no" title="statement not covered" >      return res</span>
@@ -967,31 +969,32 @@ async function <span class="fstat-no" title="function not covered" >resetPasswor
 async function <span class="fstat-no" title="function not covered" >getAccessToken(</span>req, res) {
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const { refreshtoken } = <span class="cstat-no" title="statement not covered" >req.query;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    if (refreshtoken)</span>
+    
+<span class="cstat-no" title="statement not covered" >    if (!refreshtoken)</span>
 <span class="cstat-no" title="statement not covered" >      return res</span>
         .status(400)
         .json({ success: false, message: "Please login now!", data: null });
 &nbsp;
     const user = <span class="cstat-no" title="statement not covered" >jwt.verify(refreshtoken, process.env.SECRET_TOKEN_REFRESH);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!user._id) {</span>
+<span class="cstat-no" title="statement not covered" >    if (!user.id) {</span>
 <span class="cstat-no" title="statement not covered" >      return res</span>
         .status(400)
         .json({ success: false, message: "Please login now!", data: null });
     }
 &nbsp;
-    const accessToken = <span class="cstat-no" title="statement not covered" >jwt.sign({ _id: user._id }, process.env.SECRET_TOKEN, {</span>
+    const accessToken = <span class="cstat-no" title="statement not covered" >jwt.sign({ id: user.id }, process.env.SECRET_TOKEN, {</span>
       expiresIn: "1d",
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return {</span>
+<span class="cstat-no" title="statement not covered" >    return res.json({</span>
       success: true,
       message: "Get access token success",
       data: {
         accessToken,
       },
-    };
+    });
+&nbsp;
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    return res</span>
       .status(500)
@@ -1054,7 +1057,7 @@ export const UserController = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Fri May 20 2022 10:40:01 GMT+0700 (Indochina Time)
+                at Fri May 20 2022 20:40:17 GMT+0700 (Indochina Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -1,9 +1,12 @@
+import jwt from "jsonwebtoken";
 
 //Function: middleware of user rights  
 //Input: userId from cookie
 //Output: allow it to go to the next function or not 
-export const requireUser = (req, res, next) => {
+function requireUser (req, res, next) {
     var authHeader = req.headers['authorizationtoken'];
+
+    console.log(authHeader)
 
     if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return  res.status(400).json({
       success: false,
@@ -24,12 +27,13 @@ export const requireUser = (req, res, next) => {
         })
       }
 
-      req.userId = decodedToken._id
+      req.userId = decodedToken.id
       next();
     } catch (error) {
+      console.log(error)
       return res.status(400).json({
         success: false,
-        message: "Authorize Failed",
+        message: error.message,
         data: null
       })
     }  
@@ -38,8 +42,8 @@ export const requireUser = (req, res, next) => {
 //Function: middleware of admin rights  
 //Input: adminId from cookie 
 //Output:  allow it to go to the next function or not 
-export const requireAdmin = (req, res, next) => { 
-    var authHeader = req.headers['authorizationAdmintoken'];
+function requireAdmin (req, res, next) { 
+    // var authHeader = req.headers['authorizationAdmintoken'];
 
     // if (authHeader && authHeader.split(' ')[0] !== 'Bearer') resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
     // if (_.isNil(authHeader)) return resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');

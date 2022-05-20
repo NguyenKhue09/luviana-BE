@@ -41,15 +41,15 @@ async function addNewBlog(req, res) {
 async function updateBlog(req, res) {
     const { data, blogId, author } = req.body;
 
-    if (!data.author) {
+    if (data.author != undefined) {
         delete data["author"];
     }
 
-    if (!data.comments) {
+    if (data.comments != undefined) {
         delete data["comment"];
     }
 
-    if (!data.date) {
+    if (data.date != undefined) {
         delete data["date"];
     }
 

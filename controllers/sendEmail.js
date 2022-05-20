@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer"
 import { pugEngine } from "nodemailer-pug-engine"
 
-export const sendEmail = async(email, url, txt) => {
+export const sendEmail = async(email, username, url, txt) => {
     const transporter = nodemailer.createTransport({
         service: "Gmail",
         auth: {
@@ -21,21 +21,22 @@ export const sendEmail = async(email, url, txt) => {
         subject: txt,
         template: "template",
         ctx: {
-            name: userData.username,
+            name: username,
             url: url
         }
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-            return {
-                success: false,
-                message: "Some thing wrong went send email!"
-            };
-        } else {
-            console.log("Email sent: " + info.response);
-            return { message: `Email has been sent to ${email}`, success: true};
+    try {
+        transporter.sendMail(mailOptions);
+
+        return {
+            success: true,
+            message: "Send mail success. Check your email"
         }
-    });
+    } catch (error) {
+        return {
+            success: true,
+            message: error.message
+        }
+    }
 }
