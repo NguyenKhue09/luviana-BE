@@ -164,10 +164,10 @@ async function activate(req, res) {
       email
     );
     const { _id } = user;
-    const accessToken = jwt.sign({ _id }, process.env.SECRET_TOKEN, {
+    const accessToken = jwt.sign({ id }, process.env.SECRET_TOKEN, {
       expiresIn: "1d",
     });
-    const refreshToken = jwt.sign({ _id }, process.env.SECRET_TOKEN_REFRESH, {
+    const refreshToken = jwt.sign({ id }, process.env.SECRET_TOKEN_REFRESH, {
       expiresIn: "1y",
     });
     // await saveToken(email, refreshToken, accessToken);
@@ -201,11 +201,11 @@ async function forgotPassword(req, res) {
         .json({ success: false, message: "Something went wrong", data: null });
     }
 
-    const access_token = user.accessToken;
+    const access_token = user.data.accessToken;
 
     const url = `${CLIENT_URL}/user/reset-password/${access_token}`;
 
-    const result = await sendEmail(email, url, "Luviana - Reset your password");
+    const result = await sendEmail(email, user.data.username, url, "Luviana - Reset your password");
 
     if (!result.success) {
       return res
@@ -246,31 +246,32 @@ async function resetPassword(req, res) {
 async function getAccessToken(req, res) {
   try {
     const { refreshtoken } = req.query;
-
-    if (refreshtoken)
+    
+    if (!refreshtoken)
       return res
         .status(400)
         .json({ success: false, message: "Please login now!", data: null });
 
     const user = jwt.verify(refreshtoken, process.env.SECRET_TOKEN_REFRESH);
 
-    if (!user._id) {
+    if (!user.id) {
       return res
         .status(400)
         .json({ success: false, message: "Please login now!", data: null });
     }
 
-    const accessToken = jwt.sign({ _id: user._id }, process.env.SECRET_TOKEN, {
+    const accessToken = jwt.sign({ id: user.id }, process.env.SECRET_TOKEN, {
       expiresIn: "1d",
     });
 
-    return {
+    return res.json({
       success: true,
       message: "Get access token success",
       data: {
         accessToken,
       },
-    };
+    });
+
   } catch (error) {
     return res
       .status(500)

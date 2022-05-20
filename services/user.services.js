@@ -82,7 +82,7 @@ async function login(email, password) {
         return {
             success: true,
             message: "Login successful!",
-            data: {...user, accessToken, refreshToken}
+            data: {...user._doc, accessToken, refreshToken}
         }
 
     } catch (error) {
@@ -143,6 +143,7 @@ async function forgotPassword(email) {
             success: true,
             message:  "Get access token for forgotPassword success",
             data: {
+                ...user._doc,
                 accessToken
             }
         }
