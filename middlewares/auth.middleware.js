@@ -3,7 +3,7 @@ const userModel = require('../models/user.model.js')
 //Function: middleware of user rights  
 //Input: userId from cookie
 //Output: allow it to go to the next function or not 
-module,exports.requireUser = (req, res, next) => {
+module.exports.requireUser = (req, res, next) => {
     var authHeader = req.headers['authorizationtoken'];
 
     if (authHeader && authHeader.split(' ')[0] !== 'Bearer') resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
