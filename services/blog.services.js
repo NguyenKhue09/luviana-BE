@@ -205,14 +205,7 @@ async function getLikeNumber(blogId) {
 
     try {
         const result = await Users_likes.countDocuments({ blogId: blogId })
-        if (!result) {
-            return {
-                success: false,
-                message: "Get like number failed!",
-                data: null
-            }
-        }
-
+        
         return {
             success: true,
             message: "Get like number successfully!",
