@@ -247,7 +247,7 @@ async function getAccessToken(req, res) {
   try {
     const { refreshtoken } = req.query;
 
-    if (refreshtoken)
+    if (!refreshtoken)
       return res
         .status(400)
         .json({ success: false, message: "Please login now!", data: null });
