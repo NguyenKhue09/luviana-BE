@@ -27,10 +27,16 @@ async function getAllApartment() {
     }
 }
 
-async function getApartmentByPage(aparmentPerPage, currentPage) {
+async function getApartmentByPage(aparmentPerPage, currentPage, type) {
     try {
-        const result = await Apartment.find({}).skip(currentPage * aparmentPerPage).limit(aparmentPerPage)
-        const maxDocument = await Apartment.estimatedDocumentCount();
+        const filterType = {}
+
+        if(!type) {
+            filterType = {type : { $elemMatch: { $eq: type} }}
+        }
+
+        const result = await Apartment.find(filterType).skip(currentPage * aparmentPerPage).limit(aparmentPerPage)
+        const maxDocument = await Apartment.estimatedDocumentCount(filterType);
         const maxPage = parseInt(maxDocument/parseInt(aparmentPerPage), 10);
 
         if(result.length == 0) {
@@ -225,8 +231,6 @@ async function filterApartment(name, district, province, country , aparmentPerPa
         }
     }
 }
-
-// get apartment by type
 
 export const ApartmentService = {
     getAllApartment,
