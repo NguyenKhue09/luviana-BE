@@ -32,7 +32,7 @@ async function getApartmentByPage(aparmentPerPage, currentPage, type) {
         const filterType = {}
 
         if(!type) {
-            filterType = {type : { $elemMatch: { $eq: type} }}
+            filterType = {type}
         }
 
         const result = await Apartment.find(filterType).skip(currentPage * aparmentPerPage).limit(aparmentPerPage)
