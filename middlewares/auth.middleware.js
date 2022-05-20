@@ -2,41 +2,44 @@
 //Function: middleware of user rights  
 //Input: userId from cookie
 //Output: allow it to go to the next function or not 
-function requireUser (req, res, next) {
+export const requireUser = (req, res, next) => {
     var authHeader = req.headers['authorizationtoken'];
 
-    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
+    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return  res.status(400).json({
+      success: false,
+      message: "Authorize Failed",
+      data: null
+    })
     
     var token = authHeader.split(' ')[1];
     var decodedToken = null;
     
     try {
       decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
-      req.userId = decodedToken._id
-    } catch (error) {
-      res.status(400).json({
-        success: false,
-        message: "Authorize Failed",
-        data: null
-      })
-    }
+      if (decodedToken == null) {
+        return res.status(400).json({
+          success: false,
+          message: "Authorize Failed",
+          data: null
+        })
+      }
 
-    if (decodedToken == null) {
-      res.status(400).json({
+      req.userId = decodedToken._id
+      next();
+    } catch (error) {
+      return res.status(400).json({
         success: false,
         message: "Authorize Failed",
         data: null
       })
-    }
-    
-    next();
+    }  
   }
 
 //Function: middleware of admin rights  
 //Input: adminId from cookie 
 //Output:  allow it to go to the next function or not 
-function requireAdmin (req, res, next) { 
-    // var authHeader = req.headers['authorizationAdmintoken'];
+export const requireAdmin = (req, res, next) => { 
+    var authHeader = req.headers['authorizationAdmintoken'];
 
     // if (authHeader && authHeader.split(' ')[0] !== 'Bearer') resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
     // if (_.isNil(authHeader)) return resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
