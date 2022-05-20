@@ -24,7 +24,7 @@ function requireUser (req, res, next) {
         })
       }
 
-      req.userId = decodedToken._id
+      req.userId = decodedToken.id
       next();
     } catch (error) {
       return res.status(400).json({
