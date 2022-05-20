@@ -1,9 +1,12 @@
+import jwt from "jsonwebtoken";
 
 //Function: middleware of user rights  
 //Input: userId from cookie
 //Output: allow it to go to the next function or not 
 function requireUser (req, res, next) {
     var authHeader = req.headers['authorizationtoken'];
+
+    console.log(authHeader)
 
     if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return  res.status(400).json({
       success: false,
@@ -27,9 +30,10 @@ function requireUser (req, res, next) {
       req.userId = decodedToken.id
       next();
     } catch (error) {
+      console.log(error)
       return res.status(400).json({
         success: false,
-        message: "Authorize Failed",
+        message: error.message,
         data: null
       })
     }  

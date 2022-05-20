@@ -143,6 +143,7 @@ async function forgotPassword(email) {
             success: true,
             message:  "Get access token for forgotPassword success",
             data: {
+                ...user._doc,
                 accessToken
             }
         }

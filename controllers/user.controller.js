@@ -201,11 +201,11 @@ async function forgotPassword(req, res) {
         .json({ success: false, message: "Something went wrong", data: null });
     }
 
-    const access_token = user.accessToken;
+    const access_token = user.data.accessToken;
 
     const url = `${CLIENT_URL}/user/reset-password/${access_token}`;
 
-    const result = await sendEmail(email, url, "Luviana - Reset your password");
+    const result = await sendEmail(email, user.data.username, url, "Luviana - Reset your password");
 
     if (!result.success) {
       return res
@@ -271,7 +271,7 @@ async function getAccessToken(req, res) {
         accessToken,
       },
     });
-    
+
   } catch (error) {
     return res
       .status(500)
