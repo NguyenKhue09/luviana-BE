@@ -12,5 +12,10 @@ BlogRouter.post("/upload", upload.single('thumbnail'), BlogController.uploadImag
 BlogRouter.get("/author/:author", BlogController.getBlogByAuthor)
 BlogRouter.post("/comment", BlogController.addComment)
 BlogRouter.get("/comment/:blogId", BlogController.getCommentList)
+BlogRouter.get("/like/:blogId", BlogController.getLikeNumber)
+BlogRouter.route("/like")
+    .get(BlogController.getLikedBlogsByUser)
+    .post(BlogController.likeBlog)
+    .delete(BlogController.unlikeBlog)
 
 export { BlogRouter };

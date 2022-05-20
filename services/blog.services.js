@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import Blog from "../models/blog.model.js"
+import Users_likes from "../models/users_likes.model.js"
+import User from "../models/user.model.js"
 
 async function addNewBlog(data) {
 
@@ -142,10 +144,160 @@ async function getBlogByAuthor(author) {
     }
 }
 
+async function likeBlog(userId, blogId) {
+
+    const checkUserIdExists = await User.exists({ _id: mongoose.Types.ObjectId(userId) })
+    const checkBlogExists = await Blog.exists({ _id: mongoose.Types.ObjectId(blogId) })
+
+    if (!checkUserIdExists) {
+        return {
+            success: false,
+            message: "userId is not exists!",
+            data: null
+        }
+    }
+
+    if (!checkBlogExists) {
+        return {
+            success: false,
+            message: "Blog is not exists!",
+            data: null
+        }
+    }
+
+    try {
+        const result = await Users_likes.create({
+            userId: mongoose.Types.ObjectId(userId),
+            blogId: mongoose.Types.ObjectId(blogId)
+        });
+
+        if (!result) {
+            return {
+                success: false,
+                message: "Like blog failed!",
+                data: null
+            }
+        } else {
+            return {
+                success: true,
+                message: "Like blog successfully!",
+                data: result
+            }
+        }
+    } catch (e) {
+        return {
+            success: false,
+            message: `Unexpected error: ${e.message}`,
+            data: null
+        }
+    }
+}
+
+async function getLikeNumber(blogId) {
+    const checkBlogExists = await Blog.exists({ _id: mongoose.Types.ObjectId(blogId) })
+    if (!checkBlogExists) {
+        return {
+            success: false,
+            message: "Blog is not exists!",
+            data: null
+        }
+    }
+
+    try {
+        const result = await Users_likes.countDocuments({ blogId: blogId })
+        if (!result) {
+            return {
+                success: false,
+                message: "Get like number failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Get like number successfully!",
+            data: result
+        }
+    } catch (e) {
+        return {
+            success: false,
+            message: `Unexpected error: ${e.message}`,
+            data: null
+        }
+    }
+}
+ 
+async function unlikeBlog(author, blogId) {
+    try {
+        const result = await Users_likes.deleteOne({
+            userId: mongoose.Types.ObjectId(author),
+            blogId: mongoose.Types.ObjectId(blogId)
+        });
+
+        if (!result) {
+            return {
+                success: false,
+                message: "Unlike blog failed!",
+                data: null
+            }
+        } else {
+            return {
+                success: true,
+                message: "Unlike blog successfully!",
+                data: result
+            }
+        }
+    } catch (e) {
+        return {
+            success: false,
+            message: `Unexpected error: ${e.message}`,
+            data: null
+        }
+    }
+}
+
+async function getLikedBlogsByUser(userId) {
+    const checkUserIdExists = await User.exists({ _id: mongoose.Types.ObjectId(userId) })
+    if (!checkUserIdExists) {
+        return {
+            success: false,
+            message: "User is not exists!",
+            data: null
+        }
+    }
+
+    try {
+        const result = await Users_likes.find({ userId: userId }).populate("blogId").select("-userId -_id")
+        if (!result) {
+            return {
+                success: false,
+                message: "Get liked blogs by user failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Get liked blogs by user successfully!",
+            data: result
+        }
+    } catch (e) {
+        return {
+            success: false,
+            message: `Unexpected error: ${e.message}`,
+            data: null
+        }
+    }
+}
+
 export const BlogService = {
     addNewBlog,
     updateBlog,
     getAllBlog,
     getBlogById,
-    getBlogByAuthor
+    getBlogByAuthor,
+    likeBlog,
+    getLikeNumber,
+    unlikeBlog,
+    getLikedBlogsByUser
 }

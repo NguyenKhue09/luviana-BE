@@ -241,6 +241,105 @@ async function getCommentList(req, res) {
     }
 }
 
+async function likeBlog(req, res) {
+    const { blogId, userId } = req.body;
+
+    if (!blogId || !userId) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing required field!",
+            data: null
+        })
+    }
+
+    try {
+        const response = await BlogService.likeBlog(userId, blogId);
+
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `Something went wrong: ${e.message}`,
+            data: null
+        })
+    }
+}
+
+async function getLikeNumber(req, res) {
+    const { blogId } = req.params;
+
+    if (!blogId) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide blog id.",
+            data: null
+        })
+    }
+
+    try {
+        const response = await BlogService.getLikeNumber(blogId);
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `Something went wrong: ${e.message}`,
+            data: null
+        })
+    }
+}
+
+async function unlikeBlog(req, res) {
+    const { blogId, userId } = req.body;
+
+    if (!blogId || !userId) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing required field!",
+            data: null
+        })
+    }
+
+    try {
+        const response = await BlogService.unlikeBlog(userId, blogId);
+
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `Something went wrong: ${e.message}`,
+            data: null
+        })
+    }
+}
+
+async function getLikedBlogsByUser(req, res) {
+    const { userId } = req.query;
+
+    if (!userId) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide author id.",
+            data: null
+        })
+    }
+
+    try {
+        const response = await BlogService.getLikedBlogsByUser(userId);
+
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `Something went wrong: ${e.message}`,
+            data: null
+        })
+    }
+}
+
 export const BlogController = {
     addNewBlog,
     updateBlog,
@@ -249,5 +348,9 @@ export const BlogController = {
     uploadImage,
     getBlogByAuthor,
     addComment,
-    getCommentList
+    getCommentList,
+    likeBlog,
+    getLikeNumber,
+    unlikeBlog,
+    getLikedBlogsByUser
 }
