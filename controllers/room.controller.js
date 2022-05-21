@@ -70,6 +70,27 @@ async function searchRoomV2 (req, res) {
     }
 }
 
+async function searchRoomAvailableOfAparment (req, res) {
+    try {
+        const { checkinDate, checkoutDate, people, apartmentId } = req.body;
+
+        var rooms = await RoomServices.searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, apartmentId)
+
+        if (rooms.success) {
+            if (rooms.data) return res.json(rooms)
+            else return res.status(404).json(rooms)
+        } else {
+            return res.status(500).json(rooms)
+        }
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error,
+            data: null
+        })
+    }
+}
+
 async function searchRoomByApartmentId (req, res) {
     try {
         const { apartmentId } = req.params;
@@ -184,6 +205,7 @@ export const RoomController = {
     searchRoom,
     searchRoomV2,
     searchRoomByApartmentId,
+    searchRoomAvailableOfAparment,
     postRoom,
     updateRoom,
     deleteRoom,
