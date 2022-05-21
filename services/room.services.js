@@ -1,5 +1,6 @@
 import Room from "../models/room.model.js";
 import Apartment from "../models/apartment.model.js";
+import mongoose from "mongoose"
 
 async function getRoomBySortPrice() {
   try {
@@ -438,9 +439,7 @@ async function searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, 
   try {
     const result = await Apartment.aggregate([
       {
-        $match: {
-          "_id": apartmentId,
-        },
+        $match: { _id: new mongoose.Types.ObjectId(apartmentId) }
       },
       {
         $lookup: {
@@ -582,7 +581,7 @@ async function searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, 
     return {
       success: true,
       message: "Find rooms available successfully",
-      data: result,
+      data: result[0].rooms,
     };
   } catch (error) {
     return {
