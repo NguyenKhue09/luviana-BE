@@ -450,125 +450,125 @@ async function searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, 
           as: "rooms",
         },
       },
-      {
-        $project: {
-          description: 0,
-          pictures: 0,
-          __v: 0,
-        },
-      },
-      {
-        $project: {
-          name: 1,
-          address: 1,
-          thumbnail: 1,
-          type: 1,
-          rating: 1,
-          rooms: {
-            $filter: {
-              input: "$rooms",
-              as: "room",
-              cond: {
-                $setIsSubset: [["$$room.capacity"], people],
-              },
-            },
-          },
-        },
-      },
-      {
-        $project: {
-          name: 1,
-          address: 1,
-          thumbnail: 1,
-          type: 1,
-          rating: 1,
-          rooms: 1,
-          capacities: {
-            $reduce: {
-              input: "$rooms",
-              initialValue: [],
-              in: {
-                $setUnion: ["$$value", ["$$this.capacity"]],
-              },
-            },
-          },
-        },
-      },
-      {
-        $match: {
-          $expr: {
-            $cond: {
-              if: { $setEquals: ["$capacities", people] },
-              then: true,
-              else: false,
-            },
-          },
-        },
-      },
-      {
-        $unwind: "$rooms",
-      },
-      {
-        $lookup: {
-          from: "bookingcalendars",
-          let: {
-            roomId: "$rooms._id",
-          },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $and: [
-                    { $eq: ["$room", "$$roomId"] },
-                    {
-                      $or: [
-                        {
-                          $and: [
-                            { $gte: ["$beginDate", new Date(checkinDate)] },
-                            { $lte: ["$endDate", new Date(checkoutDate)] },
-                          ],
-                        },
-                        {
-                          $and: [
-                            { $lte: ["$beginDate", new Date(checkinDate)] },
-                            { $gte: ["$endDate", new Date(checkinDate)] },
-                          ],
-                        },
-                        {
-                          $and: [
-                            { $lte: ["$beginDate", new Date(checkoutDate)] },
-                            { $gte: ["$endDate", new Date(checkoutDate)] },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-              },
-            },
-          ],
-          as: "rooms.bookingcalendar",
-        },
-      },
-      {
-        $match: {
-          $expr: { $eq: [{ $size: "$rooms.bookingcalendar" }, 0] },
-        },
-      },
-      {
-        $group: {
-          _id: "$_id",
-          name: { $first: "$name" },
-          address: { $first: "$address" },
-          thumbnail: { $first: "thumbnail" },
-          type: { $first: "$type" },
-          rating: { $first: "$rating" },
-          capacities: { $first: "$capacities" },
-          rooms: {
-            $push: "$rooms",
-          },
-        },
-      },
+      // {
+      //   $project: {
+      //     description: 0,
+      //     pictures: 0,
+      //     __v: 0,
+      //   },
+      // },
+      // {
+      //   $project: {
+      //     name: 1,
+      //     address: 1,
+      //     thumbnail: 1,
+      //     type: 1,
+      //     rating: 1,
+      //     rooms: {
+      //       $filter: {
+      //         input: "$rooms",
+      //         as: "room",
+      //         cond: {
+      //           $setIsSubset: [["$$room.capacity"], people],
+      //         },
+      //       },
+      //     },
+      //   },
+      // },
+      // {
+      //   $project: {
+      //     name: 1,
+      //     address: 1,
+      //     thumbnail: 1,
+      //     type: 1,
+      //     rating: 1,
+      //     rooms: 1,
+      //     capacities: {
+      //       $reduce: {
+      //         input: "$rooms",
+      //         initialValue: [],
+      //         in: {
+      //           $setUnion: ["$$value", ["$$this.capacity"]],
+      //         },
+      //       },
+      //     },
+      //   },
+      // },
+      // {
+      //   $match: {
+      //     $expr: {
+      //       $cond: {
+      //         if: { $setEquals: ["$capacities", people] },
+      //         then: true,
+      //         else: false,
+      //       },
+      //     },
+      //   },
+      // },
+      // {
+      //   $unwind: "$rooms",
+      // },
+      // {
+      //   $lookup: {
+      //     from: "bookingcalendars",
+      //     let: {
+      //       roomId: "$rooms._id",
+      //     },
+      //     pipeline: [
+      //       {
+      //         $match: {
+      //           $expr: {
+      //             $and: [
+      //               { $eq: ["$room", "$$roomId"] },
+      //               {
+      //                 $or: [
+      //                   {
+      //                     $and: [
+      //                       { $gte: ["$beginDate", new Date(checkinDate)] },
+      //                       { $lte: ["$endDate", new Date(checkoutDate)] },
+      //                     ],
+      //                   },
+      //                   {
+      //                     $and: [
+      //                       { $lte: ["$beginDate", new Date(checkinDate)] },
+      //                       { $gte: ["$endDate", new Date(checkinDate)] },
+      //                     ],
+      //                   },
+      //                   {
+      //                     $and: [
+      //                       { $lte: ["$beginDate", new Date(checkoutDate)] },
+      //                       { $gte: ["$endDate", new Date(checkoutDate)] },
+      //                     ],
+      //                   },
+      //                 ],
+      //               },
+      //             ],
+      //           },
+      //         },
+      //       },
+      //     ],
+      //     as: "rooms.bookingcalendar",
+      //   },
+      // },
+      // {
+      //   $match: {
+      //     $expr: { $eq: [{ $size: "$rooms.bookingcalendar" }, 0] },
+      //   },
+      // },
+      // {
+      //   $group: {
+      //     _id: "$_id",
+      //     name: { $first: "$name" },
+      //     address: { $first: "$address" },
+      //     thumbnail: { $first: "thumbnail" },
+      //     type: { $first: "$type" },
+      //     rating: { $first: "$rating" },
+      //     capacities: { $first: "$capacities" },
+      //     rooms: {
+      //       $push: "$rooms",
+      //     },
+      //   },
+      // },
     ]);
 
     if (result.length == 0) {
