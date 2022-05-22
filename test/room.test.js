@@ -154,7 +154,7 @@ describe('Fail room results', function() {
         .send(newRoom)
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-        expect(res.status).toBe(500)
+        expect(res.status).toBe(400)
     });
 
     test('Fail to update room - missing room id', async() => {
