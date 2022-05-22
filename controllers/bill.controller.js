@@ -6,8 +6,7 @@ async function createBill(req, res) {
         var result = await BillService.createBill(data);
 
         if (result.success) {
-            if (result.data) return res.json(result)
-            else return res.status(404).json(result)
+            return res.json(result)
         } else {
             return res.status(400).json(result)
         }
