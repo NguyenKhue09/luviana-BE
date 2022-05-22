@@ -217,7 +217,7 @@ async function addComment(req, res) {
 
 
 async function getCommentList(req, res) {
-    const { blogId } = req.params;
+    const { blogId } = req.query;
 
     if (!blogId) {
         return res.status(400).json({
@@ -228,7 +228,23 @@ async function getCommentList(req, res) {
     }
 
     try {
-        const response = await CommentService.getCommentList(blogId);
+        const page = parseInt(req.query.page) || 1;
+        if (page < 1) {
+            return res.status(400).json({
+                success: false,
+                message: "Page must be greater than 0",
+                data: null
+            })
+        }
+        const limit = parseInt(req.query.limit) || 10;
+        if (limit < 1) {
+            return res.status(400).json({
+                success: false,
+                message: "Limit must be greater than 0",
+                data: null
+            })
+        }
+        const response = await CommentService.getCommentList(blogId, page, limit);
 
         if (response.success) return res.json(response)
         else return res.status(500).json(response)

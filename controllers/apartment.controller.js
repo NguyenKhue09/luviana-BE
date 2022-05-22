@@ -30,7 +30,7 @@ async function getApartment(req, res) {
 }
 
 async function getApartmentByPage(req, res) {
-  let { currentPage, apartmentPerPage } = req.query;
+  let { currentPage, apartmentPerPage, type } = req.query;
 
   try {
     if (currentPage == null) currentPage = 0;
@@ -38,7 +38,8 @@ async function getApartmentByPage(req, res) {
 
     const response = await ApartmentService.getApartmentByPage(
       apartmentPerPage,
-      currentPage
+      currentPage,
+      type
     );
 
     if (response.success) {
