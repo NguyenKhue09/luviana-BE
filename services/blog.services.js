@@ -319,6 +319,58 @@ async function confirmBlog(blogId) {
     }
 }
 
+async function denyBlog(blogId) {
+    const checkBlogExists = await Blog.exists({ _id: mongoose.Types.ObjectId(blogId), isConfirm: false })
+    if (!checkBlogExists) {
+        return {
+            success: false,
+            message: "Blog is not exists or confirmed!",
+            data: null
+        }
+    }
+
+    try {
+        await Blog.findByIdAndDelete(blogId);
+        return {
+            success: true,
+            message: "Blog denied!",
+            data: null
+        }
+    } catch (e) {
+        return {
+            success: false,
+            message: "Unexpected error: " + e.message,
+            data: null
+        }
+    }
+}
+
+async function deleteBlog(blogId) {
+    const checkBlogExists = await Blog.exists({ _id: mongoose.Types.ObjectId(blogId) })
+    if (!checkBlogExists) {
+        return {
+            success: false,
+            message: "Blog is not exists!",
+            data: null
+        }
+    }
+
+    try {
+        await Blog.findOneAndDelete({ _id: mongoose.Types.ObjectId(blogId) });
+        return {
+            success: true,
+            message: "Delete blog successfully!",
+            data: null
+        }
+    } catch(e) {
+        return {
+            success: false,
+            message: `Unexpected error: ${e.message}`,
+            data: null
+        }
+    }
+}
+
 // End of Admin API
 
 async function getAllConfirmedBlog() {
@@ -360,5 +412,7 @@ export const BlogService = {
     unlikeBlog,
     getLikedBlogsByUser,
     confirmBlog,
-    getAllConfirmedBlog
+    getAllConfirmedBlog,
+    deleteBlog,
+    denyBlog
 }

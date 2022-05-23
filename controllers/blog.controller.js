@@ -373,6 +373,54 @@ async function confirmBlog(req, res) {
     }
 }
 
+async function deleteBlog(req, res) {
+    const { blogId } = req.body;
+
+    if (!blogId) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide blog id!",
+            data: null
+        })
+    }
+
+    try {
+        const response = await BlogService.deleteBlog(blogId);
+        if (response.success) {
+            return res.json(response)
+        } else return res.status(500).json(response)
+    } catch (e) {
+        return res.json(500).json({
+            success: false,
+            message: `Something went wrong: ${e.message}`,
+            data: null
+        })
+    }
+}
+
+async function denyBlog(req, res) {
+    const { blogId } = req.body;
+    if (!blogId) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide blog id!",
+            data: null
+        })
+    }
+
+    try {
+        const response = await BlogService.denyBlog(blogId);
+        if (response) return res.json(response)
+        else return res.status(500).json(response)
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `Something went wrong: ${e.message}`,
+            data: null
+        })
+    }
+}
+
 // End of Admin API
 
 async function getAllConfirmedBlog(req, res) {
@@ -405,5 +453,7 @@ export const BlogController = {
     unlikeBlog,
     getLikedBlogsByUser,
     confirmBlog,
-    getAllConfirmedBlog
+    getAllConfirmedBlog,
+    deleteBlog,
+    denyBlog
 }

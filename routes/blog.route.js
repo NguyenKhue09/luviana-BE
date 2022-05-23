@@ -8,6 +8,7 @@ BlogRouter.post("/", BlogController.addNewBlog);
 BlogRouter.get("/all", BlogController.getAllBlog);
 BlogRouter.get("/detail/:blogId", BlogController.getBlogById);
 BlogRouter.put("/update", BlogController.updateBlog);
+BlogRouter.delete("/delete", BlogController.deleteBlog)
 BlogRouter.post("/upload", upload.single('thumbnail'), BlogController.uploadImage);
 BlogRouter.get("/author/:author", BlogController.getBlogByAuthor)
 BlogRouter.route("/comment") 
@@ -21,5 +22,6 @@ BlogRouter.route("/like")
 BlogRouter.route("/confirm")
     .put(BlogController.confirmBlog)
     .get(BlogController.getAllConfirmedBlog)
+    .delete(BlogController.denyBlog)
 
 export { BlogRouter };
