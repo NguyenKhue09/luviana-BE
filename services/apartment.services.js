@@ -164,6 +164,7 @@ async function getApartmentByName(apartmentName) {
 async function updateApartment(apartmentId, apartmentData) {
   try {
     delete apartmentData.isPending
+    delete apartmentData.isDisable
 
     const apartment = await Apartment.findByIdAndUpdate(
       apartmentId,
@@ -343,7 +344,7 @@ async function removePendingApartment(apartmentId) {
 
 async function deleteApartment(apartmentId) {
   try {
-    const apartment = await Apartment.findByIdAndDelete(apartmentId)
+    const apartment = await Apartment.findByIdAndUpdate(apartmentId, {isDisable: true})
 
     if (!apartment) {
       return {
@@ -355,7 +356,7 @@ async function deleteApartment(apartmentId) {
 
     return {
       success: true,
-      message: "Delete pending apartment successfully!",
+      message: "Delete apartment successfully!",
       data: apartment,
     };
   } catch (error) {
@@ -377,5 +378,6 @@ export const ApartmentService = {
   updateApartment,
   confirmPendingApartment,
   removePendingApartment,
+  deleteApartment,
   filterApartment,
 };

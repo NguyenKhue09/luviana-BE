@@ -209,6 +209,29 @@ async function removePendingApartment(req, res) {
   }
 }
 
+async function deleteApartment(req, res) {
+  const {apartmentId} = req.query
+  try {
+    const apartment = await ApartmentService.deleteApartment(apartmentId)
+
+    if(apartment.success) {
+      return req.json(apartment)
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: apartment.message,
+        data: null,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+      data: null,
+    });
+  }
+}
+
 export const ApartmentController = {
   getApartment,
   getOneApartment,
@@ -217,5 +240,6 @@ export const ApartmentController = {
   getApartmentByPage,
   getAllPendingApartment,
   confirmPendingApartment,
-  removePendingApartment
+  removePendingApartment,
+  deleteApartment
 };

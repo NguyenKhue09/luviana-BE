@@ -59,7 +59,11 @@ const apartmentSchema = new mongoose.Schema({
     isPending: {
         type: Boolean,
         default: false
-    }
+    },
+    isDisable: {
+        type: Boolean,
+        default: false
+    },
 })
 
 const Apartment = mongoose.model("Apartment", apartmentSchema);

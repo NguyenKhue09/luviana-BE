@@ -13,5 +13,6 @@ ApartmentRouter.put("/update", ApartmentController.updateApartment)
 ApartmentRouter.get("/get-all-pending-apartment", ApartmentController.getAllPendingApartment)
 ApartmentRouter.put("/confirm-pending-apartment", ApartmentController.confirmPendingApartment)
 ApartmentRouter.delete("/remove-pending-apartment", ApartmentController.removePendingApartment)
+ApartmentRouter.put("/delete-apartment", ApartmentController.deleteApartment)
 
 export { ApartmentRouter };
