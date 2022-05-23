@@ -25,6 +25,10 @@ const blogSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: Comment
     }],
+    isConfirm: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const Blog = mongoose.model("Blog", blogSchema);

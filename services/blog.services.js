@@ -283,6 +283,72 @@ async function getLikedBlogsByUser(userId) {
     }
 }
 
+// Admin API
+
+async function confirmBlog(blogId) {
+    try {
+        const checkBlogExists = await Blog.exists({ _id: mongoose.Types.ObjectId(blogId) })
+        if (!checkBlogExists) {
+            return {
+                success: false,
+                message: "Blog is not exists!",
+                data: null
+            }
+        }
+
+        const result = await Blog.findByIdAndUpdate(blogId, { isConfirm: true }, { returnDocument: "after" })
+        if (!result) {
+            return {
+                success: false,
+                message: "Confirm blog failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Confirm blog successfully!",
+            data: result
+        }
+    } catch (e) {
+        return {
+            success: false,
+            message: `Unexpected error: ${e.message}`,
+            data: null
+        }
+    }
+}
+
+// End of Admin API
+
+async function getAllConfirmedBlog() {
+    try {
+
+        const result = await Blog.find({ isConfirm: true })
+
+        if(!result) {
+            return {
+                success: false,
+                message: "Get all confirmed blog failed!",
+                data: null
+            }
+        }
+
+        return {
+                success: true,
+                message: "List of confirmed blog fetched!",
+                data: result
+            }
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
+
 export const BlogService = {
     addNewBlog,
     updateBlog,
@@ -292,5 +358,7 @@ export const BlogService = {
     likeBlog,
     getLikeNumber,
     unlikeBlog,
-    getLikedBlogsByUser
+    getLikedBlogsByUser,
+    confirmBlog,
+    getAllConfirmedBlog
 }

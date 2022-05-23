@@ -18,5 +18,8 @@ BlogRouter.route("/like")
     .get(BlogController.getLikedBlogsByUser)
     .post(BlogController.likeBlog)
     .delete(BlogController.unlikeBlog)
+BlogRouter.route("/confirm")
+    .put(BlogController.confirmBlog)
+    .get(BlogController.getAllConfirmedBlog)
 
 export { BlogRouter };
