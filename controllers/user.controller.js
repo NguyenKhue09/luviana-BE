@@ -319,7 +319,7 @@ async function uploadAvatar(req, res) {
 async function updateUser (req, res) {
   try {
     const userId = req.userId
-    const { userData } = req.body
+    const userData = req.body
 
     if (!userData) {
       return res.status(400).json({ 
