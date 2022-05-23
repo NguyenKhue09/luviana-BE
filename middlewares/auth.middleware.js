@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import Admin from "../models/admin.model.js";
+import mongoose from "mongoose";
 
 //Function: middleware of user rights  
 //Input: userId from cookie
@@ -8,7 +10,7 @@ function requireUser (req, res, next) {
 
     console.log(authHeader)
 
-    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return  res.status(400).json({
+    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return res.status(401).json({
       success: false,
       message: "Authorize Failed",
       data: null
@@ -20,7 +22,7 @@ function requireUser (req, res, next) {
     try {
       decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
       if (decodedToken == null) {
-        return res.status(400).json({
+        return res.status(401).json({
           success: false,
           message: "Authorize Failed",
           data: null
@@ -31,7 +33,7 @@ function requireUser (req, res, next) {
       next();
     } catch (error) {
       console.log(error)
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
         message: error.message,
         data: null
@@ -43,27 +45,51 @@ function requireUser (req, res, next) {
 //Input: adminId from cookie 
 //Output:  allow it to go to the next function or not 
 function requireAdmin (req, res, next) { 
-    // var authHeader = req.headers['authorizationAdmintoken'];
+    var authHeader = req.headers['authorizationAdmintoken'];
 
-    // if (authHeader && authHeader.split(' ')[0] !== 'Bearer') resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
-    // if (_.isNil(authHeader)) return resHelper(res, 401, {error: 'Unauthorized'}, 'Unauthorized');
+    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return res.status(400).json({
+      success: false,
+      message: "Admin unauthorized!",
+      data: null
+    });
+    if (_.isNil(authHeader)) return res.status(401).json({
+      success: false,
+      message: "Admin unauthorized!",
+      data: null
+    });
     
-    // var token = authHeader.split(' ')[1];
-    // var decodedToken = null;
+    var token = authHeader.split(' ')[1];
+    var decodedToken = null;
     
-    // try {
-    //   decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    //   var currentUser = await User.get({name: decodedToken.userName});
-    //   if (_.isNil(currentUser)) return resHelper(res, 400, {error: 'bad request'}, 'Bad request');
-    //   res.locals.admin = currentUser;
-    // } catch (error) {
-    //   return resHelper(res, 400, {error: 'bad request'}, 'Bad request');
-    // }
+    try {
+      decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
+      if (decodedToken == null) {
+        return res.status(401).json({
+          success: false,
+          message: "Admin Unauthorized!",
+          data: null
+        })
+      }
 
-    // if (_.isNil(decodedToken)) return resHelper(res, 400, {error: 'bad request'}, 'Bad request');
-    // next();
+      const checkAdminExists = await Admin.exists({ _id: mongoose.Types.ObjectId(decodedToken.id) });
+      if (!checkAdminExists)
+        return res.status(401).json({
+          success: false,
+          message: "Admin Unauthorized!",
+          data: null
+        })
+      next();
+    } catch (error) {
+      console.log(error)
+      return res.status(401).json({
+        success: false,
+        message: error.message,
+        data: null
+      })
+    }  
 };
 
 export const AuthMiddleWare = {
-  requireUser
+  requireUser,
+  requireAdmin
 }
