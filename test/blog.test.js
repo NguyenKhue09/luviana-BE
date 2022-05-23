@@ -291,6 +291,21 @@ describe('Fail test result for blog', function() {
         expect(res.status).toBe(500)
     });
 
+    test('Fail respond to add comment - empty content', async() => {
+        const newComment = {
+            "author": "6284db11aecf83be28e02e48",
+            "blogId": "62852a59bd8e19a5aff1969f",
+            "content": ""
+        };
+
+        const res = await request(app)
+        .post('/blog/comment')
+        .send(newComment)
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(400)
+    });
+
     test('Fail espond to get blog like - missing blog id', async() => {
         const res = await request(app)
         .get('/blog/like/')
