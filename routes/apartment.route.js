@@ -9,4 +9,9 @@ ApartmentRouter.get("/detail/:id", ApartmentController.getOneApartment)
 ApartmentRouter.post("/add-new-apartment", ApartmentController.addNewApartment)
 ApartmentRouter.put("/update", ApartmentController.updateApartment)
 
+// admin
+ApartmentRouter.get("/get-all-pending-apartment", ApartmentController.getAllPendingApartment)
+ApartmentRouter.put("/confirm-pending-apartment", ApartmentController.confirmPendingApartment)
+ApartmentRouter.delete("/remove-pending-apartment", ApartmentController.removePendingApartment)
+
 export { ApartmentRouter };

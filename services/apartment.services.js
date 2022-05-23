@@ -341,6 +341,32 @@ async function removePendingApartment(apartmentId) {
       }
 }
 
+async function deleteApartment(apartmentId) {
+  try {
+    const apartment = await Apartment.findByIdAndDelete(apartmentId)
+
+    if (!apartment) {
+      return {
+        success: false,
+        message: "Apartments not found!",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Delete pending apartment successfully!",
+      data: apartment,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+}
+
 export const ApartmentService = {
   getAllApartment,
   getApartmentByName,

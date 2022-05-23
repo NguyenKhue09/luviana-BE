@@ -53,7 +53,11 @@ async function searchRoomV2 (req, res) {
     try {
         const { checkinDate, checkoutDate, people, city } = req.body;
 
-        var rooms = await RoomServices.searchRoomV3(checkinDate, checkoutDate, people, city)
+        let remasteredPeople = 2
+
+        if(people == 1) { remasteredPeople = 2 } else {remasteredPeople = people}
+
+        var rooms = await RoomServices.searchRoomV3(checkinDate, checkoutDate, remasteredPeople, city)
 
         if (rooms.success) {
             if (rooms.data) return res.json(rooms)
@@ -74,7 +78,11 @@ async function searchRoomAvailableOfAparment (req, res) {
     try {
         const { checkinDate, checkoutDate, people, apartmentId } = req.body;
 
-        var rooms = await RoomServices.searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, apartmentId)
+        let remasteredPeople = 2
+
+        if(people == 1) { remasteredPeople = 2 } else {remasteredPeople = people}
+
+        var rooms = await RoomServices.searchRoomAvailableOfAparment(checkinDate, checkoutDate, remasteredPeople, apartmentId)
 
         if (rooms.success) {
             if (rooms.data) return res.json(rooms)

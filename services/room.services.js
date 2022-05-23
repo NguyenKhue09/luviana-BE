@@ -1,6 +1,6 @@
 import Room from "../models/room.model.js";
 import Apartment from "../models/apartment.model.js";
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 async function getRoomBySortPrice() {
   try {
@@ -282,6 +282,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
       {
         $match: {
           "address.province": city,
+          isPending: false,
         },
       },
       {
@@ -311,7 +312,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
               input: "$rooms",
               as: "room",
               cond: {
-                $setIsSubset: [["$$room.capacity"], people],
+                $lte: ["$$room.capacity", people],
               },
             },
           },
@@ -334,19 +335,28 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
               },
             },
           },
-        },
-      },
-      {
-        $match: {
-          $expr: {
-            $cond: {
-              if: { $setEquals: ["$capacities", people] },
-              then: true,
-              else: false,
+          totalPeopleOfRoom: {
+            $reduce: {
+              input: "$rooms",
+              initialValue: 0,
+              in: {
+                $add: ["$$value", "$$this.capacity"],
+              },
             },
-          },
+          }
         },
       },
+      // {
+      //   $match: {
+      //     $expr: {
+      //       $cond: {
+      //         if: { $setEquals: ["$capacities", people] },
+      //         then: true,
+      //         else: false,
+      //       },
+      //     },
+      //   },
+      // },
       {
         $unwind: "$rooms",
       },
@@ -394,7 +404,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
       },
       {
         $match: {
-          $expr: { $eq: [{ $size: "$rooms.bookingcalendar" }, 0] },
+          $expr: { $and: [{$eq: [{ $size: "$rooms.bookingcalendar" }, 0]}, {$lte: [people, "$totalPeopleOfRoom"]}] },
         },
       },
       {
@@ -406,6 +416,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           type: { $first: "$type" },
           rating: { $first: "$rating" },
           capacities: { $first: "$capacities" },
+          totalPeopleOfRoom: { $first: "$totalPeopleOfRoom" },
           rooms: {
             $push: "$rooms",
           },
@@ -435,11 +446,19 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
   }
 }
 
-async function searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, apartmentId) {
+async function searchRoomAvailableOfAparment(
+  checkinDate,
+  checkoutDate,
+  people,
+  apartmentId
+) {
   try {
     const result = await Apartment.aggregate([
       {
-        $match: { _id: new mongoose.Types.ObjectId(apartmentId) }
+        $match: {
+          _id: new mongoose.Types.ObjectId(apartmentId),
+          isPending: false,
+        },
       },
       {
         $lookup: {
@@ -468,7 +487,7 @@ async function searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, 
               input: "$rooms",
               as: "room",
               cond: {
-                $setIsSubset: [["$$room.capacity"], people],
+                $lte: ["$$room.capacity", people],
               },
             },
           },
@@ -493,17 +512,17 @@ async function searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, 
           },
         },
       },
-      {
-        $match: {
-          $expr: {
-            $cond: {
-              if: { $setEquals: ["$capacities", people] },
-              then: true,
-              else: false,
-            },
-          },
-        },
-      },
+      // {
+      //   $match: {
+      //     $expr: {
+      //       $cond: {
+      //         if: { $setEquals: ["$capacities", people] },
+      //         then: true,
+      //         else: false,
+      //       },
+      //     },
+      //   },
+      // },
       {
         $unwind: "$rooms",
       },
@@ -551,7 +570,7 @@ async function searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, 
       },
       {
         $match: {
-          $expr: { $eq: [{ $size: "$rooms.bookingcalendar" }, 0] },
+          $expr: { $and: [{$eq: [{ $size: "$rooms.bookingcalendar" }, 0]}, {$lte: [people, "$totalPeopleOfRoom"]}] },
         },
       },
       {
@@ -563,6 +582,7 @@ async function searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, 
           type: { $first: "$type" },
           rating: { $first: "$rating" },
           capacities: { $first: "$capacities" },
+          totalPeopleOfRoom: { $first: "$totalPeopleOfRoom" },
           rooms: {
             $push: "$rooms",
           },
@@ -591,7 +611,6 @@ async function searchRoomAvailableOfAparment(checkinDate, checkoutDate, people, 
     };
   }
 }
-
 
 async function addNewRoom(data) {
   try {
@@ -725,26 +744,22 @@ async function getRoomById(roomId) {
   }
 }
 
-
 async function changeCapacity() {
   try {
-
-    const allRooms = await Room.find({}).select("capacity")
+    const allRooms = await Room.find({}).select("capacity");
     return {
       success: true,
       message: "Get all rooms success",
-      data: allRooms
-    }
-    
+      data: allRooms,
+    };
   } catch (error) {
     return {
       success: false,
       message: error.message,
-      data: null
-    }
+      data: null,
+    };
   }
 }
-
 
 export const RoomServices = {
   getRoomBySortPrice,
@@ -758,5 +773,5 @@ export const RoomServices = {
   addNewRoom,
   updateRoom,
   deleteRoom,
-  changeCapacity
+  changeCapacity,
 };
