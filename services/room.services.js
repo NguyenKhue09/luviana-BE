@@ -725,6 +725,27 @@ async function getRoomById(roomId) {
   }
 }
 
+
+async function changeCapacity() {
+  try {
+
+    const allRooms = await Room.find({}).select("capacity")
+    return {
+      success: true,
+      message: "Get all rooms success",
+      data: allRooms
+    }
+    
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null
+    }
+  }
+}
+
+
 export const RoomServices = {
   getRoomBySortPrice,
   getRoomBySortPriceReverse,
@@ -737,4 +758,5 @@ export const RoomServices = {
   addNewRoom,
   updateRoom,
   deleteRoom,
+  changeCapacity
 };

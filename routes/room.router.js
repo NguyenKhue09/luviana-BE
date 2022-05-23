@@ -12,9 +12,10 @@ RoomRouter
 
 
 RoomRouter.get("/search", RoomController.searchRoom);
-RoomRouter.get("/searchV2", RoomController.searchRoomV2);
+RoomRouter.post("/searchV2", RoomController.searchRoomV2);
 RoomRouter.get("/search-room-available-of-apartment", RoomController.searchRoomAvailableOfAparment);
 RoomRouter.get("/apartment/:apartmentId", RoomController.searchRoomByApartmentId);
-RoomRouter.get("/:roomId", RoomController.getRoomById);
+RoomRouter.get("/get-room-by-id/:roomId", RoomController.getRoomById);
+RoomRouter.get("/change-capacity", RoomController.changeCapacity);
 
 export default RoomRouter;

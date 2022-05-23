@@ -200,6 +200,26 @@ async function getRoomById(req, res) {
     }
 }
 
+async function changeCapacity(req, res) {
+    
+    try {
+        const response = await RoomServices.changeCapacity();
+        if (response.success) {
+            return res.status(200).json(response)
+        } else {
+            return res.status(400).json(response)
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong!",
+            data: null
+        })
+    }
+}
+
+
 export const RoomController = {
     getRoom, 
     searchRoom,
@@ -209,5 +229,6 @@ export const RoomController = {
     postRoom,
     updateRoom,
     deleteRoom,
-    getRoomById
+    getRoomById,
+    changeCapacity
 }
