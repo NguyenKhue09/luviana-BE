@@ -111,6 +111,28 @@ async function getOneApartment(req, res) {
   }
 }
 
+async function getAllPendingApartment(req, res) {
+  try {
+    const pendingApartments = await ApartmentService.getAllPendingApartment()
+
+    if(pendingApartments.success) {
+      return req.json(pendingApartments)
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: pendingApartments.message,
+        data: null,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+      data: null,
+    });
+  }
+}
+
 async function updateApartment(req, res) {
   const { apartmentId, apartmentData } = req.body;
 
@@ -141,10 +163,83 @@ async function updateApartment(req, res) {
   }
 }
 
+async function confirmPendingApartment(req, res) {
+  const {apartmentId} = req.query
+  try {
+    const apartment = await ApartmentService.confirmPendingApartment(apartmentId)
+
+    if(apartment.success) {
+      return req.json(apartment)
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: apartment.message,
+        data: null,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+      data: null,
+    });
+  }
+}
+
+async function removePendingApartment(req, res) {
+  const {apartmentId} = req.query
+  try {
+    const apartment = await ApartmentService.removePendingApartment(apartmentId)
+
+    if(apartment.success) {
+      return req.json(apartment)
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: apartment.message,
+        data: null,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+      data: null,
+    });
+  }
+}
+
+async function deleteApartment(req, res) {
+  const {apartmentId} = req.query
+  try {
+    const apartment = await ApartmentService.deleteApartment(apartmentId)
+
+    if(apartment.success) {
+      return req.json(apartment)
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: apartment.message,
+        data: null,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+      data: null,
+    });
+  }
+}
+
 export const ApartmentController = {
   getApartment,
   getOneApartment,
   addNewApartment,
   updateApartment,
-  getApartmentByPage
+  getApartmentByPage,
+  getAllPendingApartment,
+  confirmPendingApartment,
+  removePendingApartment,
+  deleteApartment
 };
