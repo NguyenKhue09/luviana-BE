@@ -25,7 +25,16 @@ const blogSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: Comment
     }],
+    isConfirm: {
+        type: Boolean,
+        default: false
+    }
 })
+
+blogSchema.post("findOneAndDelete", async function (doc) {
+    const commentList = doc.comments;
+    await Comment.deleteMany({ _id: { $in: commentList } })
+});
 
 const Blog = mongoose.model("Blog", blogSchema);
 
