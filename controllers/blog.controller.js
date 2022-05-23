@@ -183,14 +183,6 @@ async function addComment(req, res) {
         })
     }
 
-    if (content == "") {
-        return res.status(400).json({
-            success: false,
-            message: "Content cannot be empty!",
-            data: null
-        })
-    }
-
     try {
         const response = await CommentService.addComment(author, blogId, content);
 
