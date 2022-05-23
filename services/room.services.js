@@ -510,6 +510,15 @@ async function searchRoomAvailableOfAparment(
               },
             },
           },
+          totalPeopleOfRoom: {
+            $reduce: {
+              input: "$rooms",
+              initialValue: 0,
+              in: {
+                $add: ["$$value", "$$this.capacity"],
+              },
+            },
+          }
         },
       },
       // {
