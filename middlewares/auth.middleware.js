@@ -44,7 +44,7 @@ function requireUser (req, res, next) {
 //Function: middleware of admin rights  
 //Input: adminId from cookie 
 //Output:  allow it to go to the next function or not 
-function requireAdmin (req, res, next) { 
+async function requireAdmin (req, res, next) { 
     var authHeader = req.headers['authorizationAdmintoken'];
 
     if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return res.status(400).json({
@@ -72,6 +72,7 @@ function requireAdmin (req, res, next) {
       }
 
       const checkAdminExists = await Admin.exists({ _id: mongoose.Types.ObjectId(decodedToken.id) });
+    
       if (!checkAdminExists)
         return res.status(401).json({
           success: false,

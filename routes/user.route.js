@@ -5,7 +5,9 @@ import { AuthMiddleWare } from "../middlewares/auth.middleware.js";
 
 const UserRouter = express.Router()
 
-UserRouter.get("/", UserController.getUser)
+UserRouter
+    .get("/", UserController.getUser)
+    .put("/", AuthMiddleWare.requireUser, UserController.updateUser)
 UserRouter.post("/register", UserController.signUp)
 UserRouter.post("/login", UserController.login)
 UserRouter.post("/avatar", upload.single('avatar'), UserController.uploadAvatar)
