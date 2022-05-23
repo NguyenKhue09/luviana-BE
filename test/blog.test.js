@@ -81,6 +81,14 @@ describe('Good blog result', function() {
         expect(res.status).toBe(200)
     });
 
+    test('respond to get comment', async() => {
+        const res = await request(app)
+        .get('/blog/comment?blogId=62852a59bd8e19a5aff1969f')
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    });
+
     test('Respond to add comment', async() => {
         const newComment = {
             "author": "6284db11aecf83be28e02e48",
@@ -91,14 +99,6 @@ describe('Good blog result', function() {
         const res = await request(app)
         .post('/blog/comment')
         .send(newComment)
-
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-        expect(res.status).toBe(200)
-    });
-
-    test('Respond to get comment', async() => {
-        const res = await request(app)
-        .get('/blog/comment/628599850c93b49b7d0ee2d6')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -169,7 +169,7 @@ describe('Fail test result for blog', function() {
 
     test('Fail respond to add new blog - wrong data', async() => {
         const newBlog = {
-            "author": "623442ba82b88524caaeabcd",
+            "author": "abcd",
             "content": "This is a testing blog",
             "pictures": "https://assets.grab.com/wp-content/uploads/sites/11/2020/09/30172754/Hotels_Booking_1920x675.jpg",
             "date": "2022-05-30"
@@ -217,6 +217,22 @@ describe('Fail test result for blog', function() {
         expect(res.body["data"]).toStrictEqual([]);
     });
 
+    test('Fail respond to get comment - wrong blogId', async() => {
+        const res = await request(app)
+        .get('/blog/comment?blogId=abcd')
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(500)
+    });
+
+    test('Fail respond to get comment - missing blogId', async() => {
+        const res = await request(app)
+        .get('/blog/comment')
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(400)
+    });
+
     test('Fail respond to add comment - missing data', async() => {
         const newComment = {
             "author": "6284db11aecf83be28e02e48",
@@ -242,14 +258,6 @@ describe('Fail test result for blog', function() {
         const res = await request(app)
         .post('/blog/comment')
         .send(newComment)
-
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-        expect(res.status).toBe(500)
-    });
-
-    test('Fail respond to get comment', async() => {
-        const res = await request(app)
-        .get('/blog/comment/628599850c93b49b7d0eeeee')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(500)

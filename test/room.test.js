@@ -136,6 +136,27 @@ describe('Fail room results', function() {
         expect(res.status).toBe(400)
     });
 
+    test('Fail response to post create room - wrong data', async() => {
+        const newRoom = {
+            "name":"Your room name",
+            "apartmentId": "abcd",
+            "price": 1519384,
+            "bedName":"2 đơn",
+            "capacity":"3 người",
+            "square":"24",
+            "rating": 4,
+            "thumbnail":"https://media.istockphoto.com/vectors/man-sleeping-on-bed-vector-id1142805287?k=20&m=1142805287&s=612x612&w=0&h=PnEs5WJXlhs6JdiDfu-0pVOTHDIL9h3q4NJHFzKiftk=",
+            "isAvailable":true,
+            "facilities":[]
+        }
+        const res = await request(app)
+        .post('/room')
+        .send(newRoom)
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(400)
+    });
+
     test('Fail to update room - missing room id', async() => {
         const newData = {
             // "roomId": "625e72ad8f2277d7a34b7cbc",
@@ -168,7 +189,7 @@ describe('Fail room results', function() {
         expect(res.status).toBe(400)
     });
 
-    test('Fail response to delete room - missing data', async() => {
+    test('Fail response to delete room - wrong data', async() => {
         const res = await request(app)
         .put('/room')
         .send({

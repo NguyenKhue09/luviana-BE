@@ -127,7 +127,7 @@ async function postRoom (req, res) {
             return res.status(400).json(addNewRoom)
         }
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: error,
             data: null
