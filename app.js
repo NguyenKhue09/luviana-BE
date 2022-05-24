@@ -8,6 +8,7 @@ import { ApartmentRouter } from "./routes/apartment.route.js"
 import { BlogRouter } from "./routes/blog.route.js"
 import { BillRouter } from "./routes/bill.route.js"
 import { BookingCalendarRouter } from "./routes/booking_calendar.route.js"
+import { AdminRouter } from "./routes/admin.route.js";
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use(
     }),
 );
 
+app.use("/admin", AdminRouter);
 app.use("/user", UserRouter);
 app.use("/apartment", ApartmentRouter);
 app.use("/room", RoomRouter)

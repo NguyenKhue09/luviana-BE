@@ -2,7 +2,7 @@ import Apartment from "../models/apartment.model.js";
 
 async function getAllApartment() {
   try {
-    const apartments = await Apartment.find({});
+    const apartments = await Apartment.find({}).select("name address isPending thumbnail type description");
 
     if (apartments.length <= 0) {
       return {
@@ -368,6 +368,32 @@ async function deleteApartment(apartmentId) {
   }
 }
 
+async function getApartmentCities() {
+  try {
+    const apartment = await Apartment.distinct("address.province")
+
+    if (apartment.length == 0) {
+      return {
+        success: false,
+        message: "Apartment cities not found!",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Get apartment cites successfully!",
+      data: apartment,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+}
+
 export const ApartmentService = {
   getAllApartment,
   getApartmentByName,
@@ -380,4 +406,5 @@ export const ApartmentService = {
   removePendingApartment,
   deleteApartment,
   filterApartment,
+  getApartmentCities
 };

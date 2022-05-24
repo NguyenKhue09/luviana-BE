@@ -47,12 +47,13 @@ function requireUser (req, res, next) {
 async function requireAdmin (req, res, next) { 
     var authHeader = req.headers['authorizationAdmintoken'];
 
-    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return res.status(400).json({
+    if(!authHeader) return res.status(400).json({
       success: false,
       message: "Admin unauthorized!",
       data: null
     });
-    if (_.isNil(authHeader)) return res.status(401).json({
+
+    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return res.status(400).json({
       success: false,
       message: "Admin unauthorized!",
       data: null

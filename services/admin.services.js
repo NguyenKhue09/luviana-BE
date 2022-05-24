@@ -27,7 +27,7 @@ async function getAdmin(adminId) {
 
 async function updateAdmin(adminData, adminId) {
     try {
-        const  result = Admin.findByIdAndUpdate(adminId, adminData)
+        const  result = await Admin.findByIdAndUpdate(adminId, adminData)
 
         if(!result) {
             return {
@@ -51,9 +51,84 @@ async function updateAdmin(adminData, adminId) {
     }
 }
 
+async function createAdminAccount(data) {
+    try {
+        const  admin = await Admin.create(data)
+
+        if(!admin) {
+            return {
+                success: false,
+                message: "Create admin account failed!",
+                data: null
+            }
+        }
+
+        delete admin.password
+
+        const accessToken = await admin.getSignedToken()
+        const refreshToken = await admin.getRefreshToken()
+
+        return {
+            success: true,
+            message: "Create admin account successfully!",
+            data: {...admin, accessToken, refreshToken}
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        } 
+    }
+}
+
+async function loginAdminAccount(username, password) {
+    try {
+        const  admin = await Admin.findOne({username}).select("password")
+
+        if(!admin) {
+            return {
+                success: false,
+                message: "Login admin account failed!",
+                data: null
+            }
+        }
+
+        const passwordMatch = await admin.matchPasswords(password);
+
+        if (!passwordMatch) {
+            return {
+                success: false,
+                message: "Invalid credentials",
+                data: null
+            };
+        }
+
+        delete admin.password
+
+        const accessToken = await admin.getSignedToken()
+        const refreshToken = await admin.getRefreshToken()
+
+        return {
+            success: true,
+            message: "Login admin account successfully!",
+            data: {token: accessToken}
+        }
+
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        } 
+    }
+}
+
 
 export const AdminService = {
     getAdmin,
-    updateAdmin
+    updateAdmin,
+    createAdminAccount,
+    loginAdminAccount
 }
 
