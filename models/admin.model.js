@@ -4,7 +4,8 @@ import jwt from "jsonwebtoken"
 
 const adminSchema = new mongoose.Schema({
     username: String,
-    password: String
+    password: String,
+    isDisable: Boolean
 });
 
 adminSchema.pre('save', async function (next) {
