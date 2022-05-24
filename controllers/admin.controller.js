@@ -49,15 +49,20 @@ async function loginAdminAccount(req, res) {
     const { username, password } = req.body;
     const result = await AdminService.loginAdminAccount(username, password);
     if (result.success) {
-      return res.json(result);
+      return res.json({
+          status: 200,
+          token: result.data.token
+      });
     } else {
-      return res.status(401).json(result);
+      return res.status(401).json({
+        status: 401,
+        token: null
+    });
     }
   } catch (error) {
     return res.status(500).json({
-      success: false,
-      message: error.message,
-      data: null,
+        status: 500,
+        token: null
     });
   }
 }
