@@ -2,7 +2,7 @@ import Apartment from "../models/apartment.model.js";
 
 async function getAllApartment() {
   try {
-    const apartments = await Apartment.find({});
+    const apartments = await Apartment.find({}).select("name address isPending thumbnail type description");
 
     if (apartments.length <= 0) {
       return {
