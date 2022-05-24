@@ -1,32 +1,19 @@
 import { ApartmentService } from "../services/apartment.services.js";
 
 async function getApartment(req, res) {
-  let { name, district, province, country, page, apartmentPerPage } = req.query;
-  if (district != null) district = district.split(",");
-  if (country != null) country = country.split(",");
-  if (province != null) province = province.split(",");
-
-  console.log(district);
-
-  if (page != null || apartmentPerPage != null) {
-    if (page == null) page = 0;
-    if (apartmentPerPage == null) apartmentPerPage = 5;
-    const response = await ApartmentService.filterApartment(
-      name,
-      district,
-      province,
-      country,
-      apartmentPerPage,
-      page
-    );
-    if (response.success) {
-      return res.status(200).json(response);
-    } else return res.status(500).json(response);
+  try {
+    const result = await ApartmentService.getAllApartment();
+    if (result.success) {
+      return res.status(200).json(result);
+    } else return res.status(500).json(result);
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      data: null,
+    });
   }
-  const result = await ApartmentService.getAllApartment();
-  if (result.success) {
-    return res.status(200).json(result);
-  } else return res.status(500).json(result);
+ 
 }
 
 async function getApartmentByPage(req, res) {
