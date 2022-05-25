@@ -297,7 +297,6 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
       },
       {
         $project: {
-          description: 0,
           pictures: 0,
           __v: 0,
         },
@@ -476,7 +475,6 @@ async function searchRoomAvailableOfAparment(
       },
       {
         $project: {
-          description: 0,
           pictures: 0,
           __v: 0,
         },
