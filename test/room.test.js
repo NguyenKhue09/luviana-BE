@@ -89,7 +89,7 @@ describe('Good room results', function() {
         }
 
         const res = await request(app)
-        .get('/room/search')
+        .get('/room/searchV2')
         .send(searchData)
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
@@ -103,6 +103,22 @@ describe('Good room results', function() {
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
     });
+
+    test('Respond to search room available of apartment', async() => {
+        const searchData = {
+            "checkinDate": "05/22/2022",
+            "checkoutDate":"05/26/2022",
+            "people": 7,
+            "apartmentId": "62568ab0d6d1a4a941990909"
+        }
+
+        const res = request(app)
+        .post('/room/available-apartment')
+        .send(searchData)
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    })
 });
 
 describe('Fail room results', function() {
@@ -206,6 +222,37 @@ describe('Fail room results', function() {
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(404)
+    });
+
+    test('Fail respond to search room available of apartment - not found room', async() => {
+        const searchData = {
+            "checkinDate": "05/22/2022",
+            "checkoutDate":"05/26/2022",
+            "people": 7
+        }
+
+        const res = request(app)
+        .post('/room/available-apartment')
+        .send(searchData)
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(404)
+    });
+
+    test('Fail respond to search room available of apartment - wrong apartment id', async() => {
+        const searchData = {
+            "checkinDate": "05/22/2022",
+            "checkoutDate":"05/26/2022",
+            "people": 7,
+            "apartmentId": "abcd"
+        }
+
+        const res = request(app)
+        .post('/room/available-apartment')
+        .send(searchData)
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(500)
     });
 
 })

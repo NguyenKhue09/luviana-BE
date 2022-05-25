@@ -124,11 +124,37 @@ async function loginAdminAccount(username, password) {
     }
 }
 
+async function blockAdminAccount(adminId) {
+    try {
+        const result = await Admin.findOneAndUpdate(adminId, {isDisable: true});
+
+        if(!result) {
+            return {
+                success: false,
+                message: "Block admin failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Block admin successfully!",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        } 
+    }
+}
 
 export const AdminService = {
     getAdmin,
     updateAdmin,
     createAdminAccount,
-    loginAdminAccount
+    loginAdminAccount,
+    blockAdminAccount
 }
 
