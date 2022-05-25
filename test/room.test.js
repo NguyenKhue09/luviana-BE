@@ -82,8 +82,8 @@ describe('Good room results', function() {
 
     test('respond to search rooms', async() => {
         const searchData = {
-            "checkinDate": "04/19/2022",
-            "checkoutDate":"04/21/2022",
+            "checkinDate": "05/22/2022",
+            "checkoutDate":"05/26/2022",
             "people": "4 người",
             "city": "Đà Nẵng"
         }

@@ -1,12 +1,29 @@
 import request from 'supertest'
-import express from 'express'
+import express, { response } from 'express'
 import mongoose from "mongoose"
 import bodyParser from 'body-parser'
 import connectDB from "../config/config.js"
 import AdminRouter from "../routes/admin.router.js"
+import supertest from 'supertest'
+
+const app = new express()
 
 beforeEach((done) => {
     connectDB();
+
+    const adminLogin = {
+        "username": "admin",
+        "password": "admin"
+    }
+
+    supertest(app)
+    .post('/admin/login-admin-account')
+    .send(adminLogin)
+    .end((error, response) => {
+        token = response.body.token
+        done();
+    })
+
     done();
 });  
 
@@ -16,15 +33,13 @@ afterAll((done) => {
     done()
 });
 
-const app = new express()
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/admin", AdminRouter);
 
 describe('Good admin result', function() {
-    test('Good respond to admin', async () => {
+    test('Good respond to log in admin', async () => {
         const adminLogin = {
             "username": "admin",
             "password": "admin"
@@ -38,3 +53,4 @@ describe('Good admin result', function() {
         expect(res.status).toBe(200)
     })
 });
+

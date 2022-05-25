@@ -5,8 +5,24 @@ import bodyParser from 'body-parser'
 import connectDB from "../config/config.js"
 import { BlogRouter } from "../routes/blog.route.js"
 
+const app = new express()
+
 beforeEach((done) => {
     connectDB();
+
+    const adminLogin = {
+        "username": "admin",
+        "password": "admin"
+    }
+
+    supertest(app)
+    .post('/admin/login-admin-account')
+    .send(adminLogin)
+    .end((error, response) => {
+        token = response.body.token
+        done();
+    })
+
     done();
 });  
 
@@ -15,8 +31,6 @@ afterAll((done) => {
     mongoose.connection.close()
     done()
 });
-
-const app = new express()
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -43,6 +57,7 @@ describe('Good blog result', function() {
     test('Good respond to get all blogs', async() => {
         const res = await request(app)
         .get('/blog/all')
+        .set('Authorization', `Bearer ${token}`);
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)

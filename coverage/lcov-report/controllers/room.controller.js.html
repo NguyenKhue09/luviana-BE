@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.43% </span>
+                <span class="strong">20.58% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>29/102</span>
+                <span class='fraction'>21/102</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">21.42% </span>
+                <span class="strong">7.14% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>9/42</span>
+                <span class='fraction'>3/42</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">29.67% </span>
+                <span class="strong">23.07% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>27/91</span>
+                <span class='fraction'>21/91</span>
             </div>
         
             
@@ -311,8 +311,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -411,9 +411,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -459,10 +459,10 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -552,9 +552,9 @@ async function getRoom(req, res) {
         const { highToLow } = req.query;
         if (highToLow) {
             const response = await RoomServices.getRoomBySortPriceReverse()
-            if (response.success) {
-                return res.status(200).json(response)
-            } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+<span class="cstat-no" title="statement not covered" >            if (response.success) {</span>
+<span class="cstat-no" title="statement not covered" >                return res.status(200).json(response)</span>
+            } else {
 <span class="cstat-no" title="statement not covered" >                return res.status(400).json(response)</span>
             }
         } else <span class="missing-if-branch" title="else path not taken" >E</span>{
@@ -652,10 +652,10 @@ async function searchRoomByApartmentId (req, res) {
 &nbsp;
         var rooms = await RoomServices.getRomByApartmentId(apartmentId)
 &nbsp;
-        if (rooms.success) {
-            if (rooms.data) return res.json(rooms)
-            else return res.status(404).json(rooms)
-        } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+<span class="cstat-no" title="statement not covered" >        if (rooms.success) {</span>
+<span class="cstat-no" title="statement not covered" >            if (rooms.data) <span class="cstat-no" title="statement not covered" >return res.json(rooms)</span></span>
+            else <span class="cstat-no" title="statement not covered" >return res.status(404).json(rooms)</span>
+        } else {
 <span class="cstat-no" title="statement not covered" >            return res.status(400).json(rooms)</span>
         }
     } catch (error) {
@@ -699,9 +699,9 @@ async function updateRoom (req, res) {
 &nbsp;
         var updateRoom = await RoomServices.updateRoom(roomId, updateData);
 &nbsp;
-        if (updateRoom.success) {
-            if (updateRoom.data) return res.status(200).json(updateRoom)
-            else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>return res.status(404).json(updateRoom)</span>
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (updateRoom.success) {
+<span class="cstat-no" title="statement not covered" >            if (updateRoom.data) <span class="cstat-no" title="statement not covered" >return res.status(200).json(updateRoom)</span></span>
+            else <span class="cstat-no" title="statement not covered" >return res.status(404).json(updateRoom)</span>
         } else {
             return res.status(400).json(updateRoom)
         }
@@ -793,7 +793,7 @@ export const RoomController = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Wed May 25 2022 11:16:04 GMT+0700 (Indochina Time)
+                at Wed May 25 2022 13:39:10 GMT+0700 (Indochina Time)
             </div>
         <script src="../prettify.js"></script>
         <script>
