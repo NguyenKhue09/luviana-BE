@@ -485,6 +485,7 @@ async function searchRoomAvailableOfAparment(
           thumbnail: 1,
           type: 1,
           rating: 1,
+          description: 1,
           rooms: {
             $filter: {
               input: "$rooms",
@@ -503,6 +504,7 @@ async function searchRoomAvailableOfAparment(
           thumbnail: 1,
           type: 1,
           rating: 1,
+          description: 1,
           rooms: 1,
           capacities: {
             $reduce: {
@@ -593,6 +595,7 @@ async function searchRoomAvailableOfAparment(
           thumbnail: { $first: "thumbnail" },
           type: { $first: "$type" },
           rating: { $first: "$rating" },
+          description: {$first: "$description"},
           capacities: { $first: "$capacities" },
           totalPeopleOfRoom: { $first: "$totalPeopleOfRoom" },
           rooms: {
