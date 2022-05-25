@@ -7,8 +7,9 @@ import AdminRouter from "../routes/admin.router.js"
 import supertest from 'supertest'
 
 const app = new express()
+let token = ''
 
-beforeEach((done) => {
+beforeAll((done) => {
     connectDB();
 
     const adminLogin = {

@@ -4,10 +4,18 @@ import mongoose from "mongoose"
 import bodyParser from 'body-parser'
 import connectDB from "../config/config.js"
 import { BlogRouter } from "../routes/blog.route.js"
+import supertest from 'supertest'
 
 const app = new express()
+let adminToken = ''
+let userToken = ''
 
-beforeEach((done) => {
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use("/blog", BlogRouter);
+
+beforeAll((done) => {
     connectDB();
 
     const adminLogin = {
@@ -19,9 +27,22 @@ beforeEach((done) => {
     .post('/admin/login-admin-account')
     .send(adminLogin)
     .end((error, response) => {
-        token = response.body.token
+        adminToken = response.body.token
         done();
     })
+
+    const loginUser = {
+        "email": "19521789@gm.uit.edu.vn",
+        "password": "password"
+    }
+
+    supertest(app)
+    .post('/user/login')
+    .send(loginUser)
+    .end((error, response) => {
+        userToken = response.body.data.accessToken;
+    })
+
 
     done();
 });  
@@ -31,11 +52,6 @@ afterAll((done) => {
     mongoose.connection.close()
     done()
 });
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
-app.use("/blog", BlogRouter);
 
 describe('Good blog result', function() {
     test('Respond to add new blog', async() => {
@@ -57,7 +73,7 @@ describe('Good blog result', function() {
     test('Good respond to get all blogs', async() => {
         const res = await request(app)
         .get('/blog/all')
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${adminToken}`);
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -114,6 +130,7 @@ describe('Good blog result', function() {
         const res = await request(app)
         .post('/blog/comment')
         .send(newComment)
+        .set('authorizationtoken', `Bearer ${userToken}`);
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -121,13 +138,14 @@ describe('Good blog result', function() {
 
     test('Respond to like blog', async() => {
         const newBlogLike = {
-            "userId": "628513a4686cfbed34ad1be6",
-            "blogId": "628599850c93b49b7d0ee2d6"
+            "userId": "6285be37870e97473c4f4df5",
+            "blogId": "62852a59bd8e19a5aff1969f"
         };
 
         const res = await request(app)
         .post('/blog/like')
         .send(newBlogLike)
+        .set('authorizationtoken', `Bearer ${userToken}`);
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -135,7 +153,7 @@ describe('Good blog result', function() {
 
     test('Respond to get blog like', async() => {
         const res = await request(app)
-        .get('/blog/like/628599850c93b49b7d0ee2d6')
+        .get('/blog/like/6285be37870e97473c4f4df5')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -143,13 +161,13 @@ describe('Good blog result', function() {
 
     test('Respond to unlike blog', async() => {
         const unlikeBlog = {
-            "userId": "628513a4686cfbed34ad1be6",
-            "blogId": "628599850c93b49b7d0ee2d6"
+            "blogId": "6285be37870e97473c4f4df5"
         };
 
         const res = await request(app)
         .delete('/blog/like')
         .send(unlikeBlog)
+        .set('authorizationtoken', `Bearer ${userToken}`);
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -280,7 +298,7 @@ describe('Fail test result for blog', function() {
 
     test('Fail respond to like blog - missing data', async() => {
         const newBlogLike = {
-            // "userId": "628513a4686cfbed34ad1be6",
+            // "userId": "6285be37870e97473c4f4df5",
             "blogId": "628599850c93b49b7d0ee2d6"
         };
 
@@ -339,7 +357,7 @@ describe('Fail test result for blog', function() {
 
     test('Fail respond to unlike blog - missing data', async() => {
         const unlikeBlog = {
-            // "userId": "628513a4686cfbed34ad1be6",
+            // "userId": "6285be37870e97473c4f4df5",
             "blogId": "628599850c93b49b7d0ee2d6"
         };
 
@@ -353,7 +371,7 @@ describe('Fail test result for blog', function() {
 
     test('Fail respond to unlike blog - wrong data', async() => {
         const unlikeBlog = {
-            "userId": "628513a4686cfbed34ad1be6",
+            "userId": "6285be37870e97473c4f4df5",
             "blogId": "abcd"
         };
 
