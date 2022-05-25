@@ -184,6 +184,24 @@ async function resetPassord(password, userId) {
         }
     }
 }
+
+// Admin API 
+async function getUserList() {
+    try {
+        const users = await User.find()
+        return {
+            success: true,
+            message: "Get user list successfully!",
+            data: users
+        }
+    } catch (e) {
+        return {
+            success: false,
+            message: `Unexpected error: ${e.message}`,
+            data: null
+        }
+    }
+}
   
 export const UserService = { 
     getUser,
@@ -192,5 +210,6 @@ export const UserService = {
     updateUser,
     forgotPassword,
     resetPassord,
-    isExist
+    isExist,
+    getUserList
 }

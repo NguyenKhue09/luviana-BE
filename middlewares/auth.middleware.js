@@ -45,15 +45,15 @@ function requireUser (req, res, next) {
 //Input: adminId from cookie 
 //Output:  allow it to go to the next function or not 
 async function requireAdmin (req, res, next) { 
-    var authHeader = req.headers['authorizationAdmintoken'];
+    var authHeader = req.headers['authorization'];
 
-    if(!authHeader) return res.status(400).json({
+    if(!authHeader) return res.status(401).json({
       success: false,
       message: "Admin unauthorized!",
       data: null
     });
 
-    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return res.status(400).json({
+    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return res.status(401).json({
       success: false,
       message: "Admin unauthorized!",
       data: null
@@ -73,7 +73,7 @@ async function requireAdmin (req, res, next) {
       }
 
       const checkAdminExists = await Admin.exists({ _id: mongoose.Types.ObjectId(decodedToken.id) });
-    
+
       if (!checkAdminExists)
         return res.status(401).json({
           success: false,

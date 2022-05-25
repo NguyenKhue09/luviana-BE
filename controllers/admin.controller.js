@@ -67,7 +67,7 @@ async function loginAdminAccount(req, res) {
   }
 }
 
-async function crateAdminAccount(req, res) {
+async function createAdminAccount(req, res) {
     try {
       const { username, password } = req.body;
       const result = await AdminService.createAdminAccount({username, password});
@@ -126,5 +126,5 @@ export const AdminController = {
   updateAdmin,
   getAccessToken,
   loginAdminAccount,
-  crateAdminAccount
+  createAdminAccount
 };
