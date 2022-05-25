@@ -17,7 +17,7 @@ cloudinary.config({
   });
 
 async function getUser(req, res) {
-  const { userId } = req.query;
+  const  userId  = req.userId;
 
   const result = await UserService.getUser(userId);
 
@@ -345,6 +345,22 @@ async function updateUser (req, res) {
   }
 }
 
+// Admin API
+async function getUserList(req, res) {
+  try {
+    const response = await UserService.getUserList();
+    if (response.success) {
+      return res.json(response)
+    } else return res.status(500).json(response)
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+      message: `Something went wrong ${e.message}`,
+      data: null
+    });
+  }
+}
+
 export const UserController = {
   getUser,
   registerUser,
@@ -355,5 +371,6 @@ export const UserController = {
   signUp,
   activate,
   uploadAvatar,
-  updateUser
+  updateUser,
+  getUserList
 };
