@@ -3,11 +3,16 @@ import express, { response } from 'express'
 import mongoose from "mongoose"
 import bodyParser from 'body-parser'
 import connectDB from "../config/config.js"
-import AdminRouter from "../routes/admin.router.js"
+import { AdminRouter } from "../routes/admin.route.js"
 import supertest from 'supertest'
 
 const app = new express()
 let token = ''
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use("/admin", AdminRouter);
 
 beforeAll((done) => {
     connectDB();
@@ -33,11 +38,6 @@ afterAll((done) => {
     mongoose.connection.close()
     done()
 });
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
-app.use("/admin", AdminRouter);
 
 describe('Good admin result', function() {
     test('Good respond to log in admin', async () => {

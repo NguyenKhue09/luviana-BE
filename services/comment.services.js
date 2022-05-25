@@ -3,6 +3,15 @@ import Blog from "../models/blog.model.js";
 import mongoose from "mongoose";
 
 async function addComment(author, blogId, content) {
+    const checkBlogExists = await Blog.exists({ _id: mongoose.Types.ObjectId(blogId) })
+    if (!checkBlogExists) {
+        return {
+            success: false,
+            message: "Blog is not exists!",
+            data: null
+        }
+    }
+
     const session = await mongoose.startSession();
     session.startTransaction();
     let result

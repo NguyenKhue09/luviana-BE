@@ -13,6 +13,8 @@ cloudinary.config({
 async function addNewBlog(req, res) {
     const data = req.body;
 
+    data.author = req.userId;
+
     if (!data.author || !data.content) {
         return res.status(400).json({
             success: false,
@@ -39,7 +41,8 @@ async function addNewBlog(req, res) {
 }
 
 async function updateBlog(req, res) {
-    const { data, blogId, author } = req.body;
+    const { data, blogId } = req.body;
+    const author = req.userId;
 
     if (data.author != undefined) {
         delete data["author"];
@@ -173,7 +176,8 @@ async function getBlogByAuthor(req, res) {
 }
 
 async function addComment(req, res) {
-    const { author, blogId, content } = req.body;
+    const { blogId, content } = req.body;
+    const author = req.userId;
 
     if (!author || !blogId || !content) {
         return res.status(400).json({
@@ -240,7 +244,8 @@ async function getCommentList(req, res) {
 }
 
 async function likeBlog(req, res) {
-    const { blogId, userId } = req.body;
+    const { blogId } = req.body;
+    const userId = req.userId
 
     if (!blogId || !userId) {
         return res.status(400).json({
@@ -289,7 +294,8 @@ async function getLikeNumber(req, res) {
 }
 
 async function unlikeBlog(req, res) {
-    const { blogId, userId } = req.body;
+    const { blogId } = req.body;
+    const userId = req.userId;
 
     if (!blogId || !userId) {
         return res.status(400).json({
