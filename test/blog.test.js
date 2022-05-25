@@ -19,7 +19,7 @@ app.use("/blog", BlogRouter);
 app.use('/user', UserRouter)
 app.use("/admin", AdminRouter);
 
-beforeAll((done) => {
+beforeAll(async () => {
     connectDB();
 
     const adminLogin = {
@@ -27,28 +27,22 @@ beforeAll((done) => {
         "password": "admin"
     }
 
-    supertest(app)
+    const adminResult = await supertest(app)
     .post('/admin/login-admin-account')
     .send(adminLogin)
-    .end((error, response) => {
-        adminToken = response.body.token
-        done();
-    })
+
+    adminToken = adminResult.body.token
 
     const loginUser = {
         "email": "19521789@gm.uit.edu.vn",
         "password": "password"
     }
 
-    supertest(app)
+    const userResult = await supertest(app)
     .post('/user/login')
     .send(loginUser)
-    .end((error, response) => {
-        userToken = response.body.data.accessToken;
-    })
-
-
-    done();
+    
+    userToken = userResult.body.data.accessToken;
 });  
 
 afterAll((done) => {
@@ -60,7 +54,7 @@ afterAll((done) => {
 describe('Good blog result', function() {
     test('Respond to add new blog', async() => {
         const newBlog = {
-            "content": "This is a testing blog",
+            "content": "This is a testing blog by Khoile",
             "pictures": "https://assets.grab.com/wp-content/uploads/sites/11/2020/09/30172754/Hotels_Booking_1920x675.jpg",
             "date": "2022-05-30"
         };
@@ -69,6 +63,8 @@ describe('Good blog result', function() {
         .post('/blog')
         .send(newBlog)
         .set('authorizationtoken', `Bearer ${userToken}`);
+
+        console.log("Khoile Bearer " + adminToken)
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -101,10 +97,10 @@ describe('Good blog result', function() {
 
     test('Respond to update a blog', async() => {
         const updateBlog = {
-            "blogId": "6285bdbb52cfaaef2a6dbbbf",
+            "blogId": "628e5f7c1892c5ac255f8a3d",
             "data": {
-                    "content": "contenttttttttt"
-                }
+                "content": "contenttttttttt"
+            }
         };
 
         const res = await request(app)

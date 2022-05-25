@@ -4,6 +4,8 @@ import mongoose from "mongoose"
 import bodyParser from 'body-parser'
 import connectDB from "../config/config.js"
 import { ApartmentRouter } from '../routes/apartment.route.js'
+import { UserRouter } from "../routes/user.route.js"
+import { AdminRouter } from "../routes/admin.route.js"
 import supertest from 'supertest'
 
 const app = new express()
@@ -13,23 +15,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/apartment', ApartmentRouter)
+app.use('/user', UserRouter)
+app.use("/admin", AdminRouter);
 
-beforeAll((done) => {
+beforeAll(async () => {
     connectDB();
+
     const adminLogin = {
         "username": "admin",
         "password": "admin"
     }
 
-    supertest(app)
+    const adminResult = await supertest(app)
     .post('/admin/login-admin-account')
     .send(adminLogin)
-    .end((error, response) => {
-        token = response.body.token
-        done();
-    })
 
-    done();
+    token = adminResult.body.token
 });  
 
 afterAll((done) => {

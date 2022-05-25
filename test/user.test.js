@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/user', UserRouter)
 
-beforeAll((done) => {
+beforeAll(async () => {
     connectDB();
 
     const loginUser = {
@@ -22,14 +22,11 @@ beforeAll((done) => {
         "password": "password"
     }
 
-    supertest(app)
+    const userResult = await supertest(app)
     .post('/user/login')
     .send(loginUser)
-    .end((error, response) => {
-        token = response.body.data.accessToken;
-    })
 
-    done();
+    token = userResult.body.data.accessToken;
 });  
 
 afterAll((done) => {

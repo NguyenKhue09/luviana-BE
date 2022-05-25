@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/admin", AdminRouter);
 
-beforeAll((done) => {
+beforeAll(async () => {
     connectDB();
 
     const adminLogin = {
@@ -22,15 +22,11 @@ beforeAll((done) => {
         "password": "admin"
     }
 
-    supertest(app)
+    const adminResult = await supertest(app)
     .post('/admin/login-admin-account')
     .send(adminLogin)
-    .end((error, response) => {
-        token = response.body.token
-        done();
-    })
 
-    done();
+    token = adminResult.body.token
 });  
 
 afterAll((done) => {
