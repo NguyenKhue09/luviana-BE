@@ -10,7 +10,7 @@ function requireUser (req, res, next) {
 
     console.log(authHeader)
 
-    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return res.status(401).json({
+    if (!authHeader || authHeader.split(' ')[0] !== 'Bearer') return res.status(401).json({
       success: false,
       message: "Authorize Failed",
       data: null
@@ -54,7 +54,7 @@ async function requireAdmin (req, res, next) {
       data: null
     });
 
-    if (authHeader && authHeader.split(' ')[0] !== 'Bearer') return res.status(401).json({
+    if (!authHeader || authHeader.split(' ')[0] !== 'Bearer') return res.status(401).json({
       success: false,
       message: "Admin unauthorized!",
       data: null
