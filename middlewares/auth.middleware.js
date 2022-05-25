@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 //Input: userId from cookie
 //Output: allow it to go to the next function or not 
 function requireUser (req, res, next) {
-    var authHeader = req.headers['authorizationtoken'];
+    var authHeader = req.headers.authorizationtoken;
 
     console.log(authHeader)
 
@@ -46,6 +46,7 @@ function requireUser (req, res, next) {
 //Output:  allow it to go to the next function or not 
 async function requireAdmin (req, res, next) { 
     var authHeader = req.headers['authorization'];
+
 
     if(!authHeader) return res.status(401).json({
       success: false,
