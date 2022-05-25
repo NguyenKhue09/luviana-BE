@@ -44,6 +44,14 @@ async function updateBlog(req, res) {
     const { data, blogId } = req.body;
     const author = req.userId;
 
+    if (!blogId || !data) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing required field!",
+            data: null
+        })
+    }
+
     if (data.author != undefined) {
         delete data["author"];
     }
