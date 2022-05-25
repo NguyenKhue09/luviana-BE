@@ -297,7 +297,6 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
       },
       {
         $project: {
-          description: 0,
           pictures: 0,
           __v: 0,
         },
@@ -309,6 +308,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           thumbnail: 1,
           type: 1,
           rating: 1,
+          description: 1,
           rooms: {
             $filter: {
               input: "$rooms",
@@ -327,6 +327,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           thumbnail: 1,
           type: 1,
           rating: 1,
+          description: 1,
           rooms: 1,
           capacities: {
             $reduce: {
@@ -417,6 +418,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           thumbnail: { $first: "thumbnail" },
           type: { $first: "$type" },
           rating: { $first: "$rating" },
+          description: {$first: "$description"},
           capacities: { $first: "$capacities" },
           totalPeopleOfRoom: { $first: "$totalPeopleOfRoom" },
           rooms: {
@@ -473,7 +475,6 @@ async function searchRoomAvailableOfAparment(
       },
       {
         $project: {
-          description: 0,
           pictures: 0,
           __v: 0,
         },
@@ -485,6 +486,7 @@ async function searchRoomAvailableOfAparment(
           thumbnail: 1,
           type: 1,
           rating: 1,
+          description: 1,
           rooms: {
             $filter: {
               input: "$rooms",
@@ -503,6 +505,7 @@ async function searchRoomAvailableOfAparment(
           thumbnail: 1,
           type: 1,
           rating: 1,
+          description: 1,
           rooms: 1,
           capacities: {
             $reduce: {
@@ -593,6 +596,7 @@ async function searchRoomAvailableOfAparment(
           thumbnail: { $first: "thumbnail" },
           type: { $first: "$type" },
           rating: { $first: "$rating" },
+          description: {$first: "$description"},
           capacities: { $first: "$capacities" },
           totalPeopleOfRoom: { $first: "$totalPeopleOfRoom" },
           rooms: {

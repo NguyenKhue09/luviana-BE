@@ -17,7 +17,7 @@ cloudinary.config({
   });
 
 async function getUser(req, res) {
-  const { userId } = req.query;
+  const  userId  = req.userId;
 
   const result = await UserService.getUser(userId);
 
