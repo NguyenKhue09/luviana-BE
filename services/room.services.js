@@ -309,6 +309,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           thumbnail: 1,
           type: 1,
           rating: 1,
+          description: 1,
           rooms: {
             $filter: {
               input: "$rooms",
@@ -327,6 +328,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           thumbnail: 1,
           type: 1,
           rating: 1,
+          description: 1,
           rooms: 1,
           capacities: {
             $reduce: {
@@ -417,6 +419,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           thumbnail: { $first: "thumbnail" },
           type: { $first: "$type" },
           rating: { $first: "$rating" },
+          description: {$first: "$description"},
           capacities: { $first: "$capacities" },
           totalPeopleOfRoom: { $first: "$totalPeopleOfRoom" },
           rooms: {
