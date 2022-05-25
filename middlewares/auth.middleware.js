@@ -86,7 +86,7 @@ async function requireAdmin (req, res, next) {
       console.log(error)
       return res.status(401).json({
         success: false,
-        message: error.message,
+        message: "Admin Unauthorized!",
         data: null
       })
     }  
