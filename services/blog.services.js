@@ -146,26 +146,39 @@ async function getBlogByAuthor(author) {
 
 async function likeBlog(userId, blogId) {
 
-    const checkUserIdExists = await User.exists({ _id: mongoose.Types.ObjectId(userId) })
-    const checkBlogExists = await Blog.exists({ _id: mongoose.Types.ObjectId(blogId) })
-
-    if (!checkUserIdExists) {
-        return {
-            success: false,
-            message: "userId is not exists!",
-            data: null
-        }
-    }
-
-    if (!checkBlogExists) {
-        return {
-            success: false,
-            message: "Blog is not exists!",
-            data: null
-        }
-    }
-
     try {
+        const checkUserIdExists = await User.exists({ _id: mongoose.Types.ObjectId(userId) })
+        const checkBlogExists = await Blog.exists({ _id: mongoose.Types.ObjectId(blogId) })
+
+        if (!checkUserIdExists) {
+            return {
+                success: false,
+                message: "userId is not exists!",
+                data: null
+            }
+        }
+
+        if (!checkBlogExists) {
+            return {
+                success: false,
+                message: "Blog is not exists!",
+                data: null
+            }
+        }
+
+        const checkIfLiked = await Users_likes.exists({ 
+            userId: mongoose.Types.ObjectId(userId),
+            blogId: mongoose.Types.ObjectId(blogId)
+        })
+
+        if (checkIfLiked) {
+            return {
+                success: false,
+                message: "You have already liked this blog!",
+                data: null
+            }
+        }
+
         const result = await Users_likes.create({
             userId: mongoose.Types.ObjectId(userId),
             blogId: mongoose.Types.ObjectId(blogId)
@@ -233,6 +246,13 @@ async function unlikeBlog(author, blogId) {
                 message: "Unlike blog failed!",
                 data: null
             }
+        } else if (result.deletedCount == 0) {
+            return {
+                success: false,
+                message: "You have not liked this blog!",
+                data: null
+            }
+
         } else {
             return {
                 success: true,
