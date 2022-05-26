@@ -55,14 +55,20 @@ async function addNewApartment(req, res) {
     const type = req.body.type;
     const description = req.body.description;
     const thumbnail = req.body.thumbnail;
+    const pictures = req.body.pictures
+    const owner = req.body.owner
+    const isPending = true
 
     const result = await ApartmentService.addNewApartment(
-      address,
       name,
+      owner,
+      address,
+      thumbnail,
+      pictures,
       type,
       rating,
       description,
-      thumbnail
+      isPending
     );
 
     if (result.success) {
