@@ -8,8 +8,6 @@ import mongoose from "mongoose";
 function requireUser (req, res, next) {
     var authHeader = req.headers.authorizationtoken;
 
-    console.log(authHeader)
-
     if (!authHeader || authHeader.split(' ')[0] !== 'Bearer') return res.status(401).json({
       success: false,
       message: "Authorize Failed",
@@ -47,7 +45,6 @@ function requireUser (req, res, next) {
 async function requireAdmin (req, res, next) { 
     var authHeader = req.headers['authorization'];
 
-
     if(!authHeader) return res.status(401).json({
       success: false,
       message: "Admin unauthorized!",
@@ -81,6 +78,9 @@ async function requireAdmin (req, res, next) {
           message: "Admin Unauthorized!",
           data: null
         })
+      
+      req.adminId = decodedToken.id
+      
       next();
     } catch (error) {
       console.log(error)

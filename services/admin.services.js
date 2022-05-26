@@ -5,7 +5,7 @@ async function getAdmin(adminId) {
         const admin = await Admin.findById(adminId)
         if(!admin) {
             return {
-                success: true,
+                success: false,
                 message: "Admin not found!",
                 data: null
             }
@@ -126,7 +126,7 @@ async function loginAdminAccount(username, password) {
 
 async function blockAdminAccount(adminId) {
     try {
-        const result = await Admin.findOneAndUpdate(adminId, {isDisable: true});
+        const result = await Admin.findByIdAndUpdate({_id: adminId}, {isDisable: true});
 
         if(!result) {
             return {
@@ -150,11 +150,38 @@ async function blockAdminAccount(adminId) {
     }
 }
 
+async function unblockAdminAccount(adminId) {
+    try {
+        const result = await Admin.findByIdAndUpdate({_id: adminId}, {isDisable: false});
+
+        if(!result) {
+            return {
+                success: false,
+                message: "Unblock admin failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Unlock admin successfully!",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        } 
+    }
+}
+
 export const AdminService = {
     getAdmin,
     updateAdmin,
     createAdminAccount,
     loginAdminAccount,
-    blockAdminAccount
+    blockAdminAccount,
+    unblockAdminAccount
 }
 

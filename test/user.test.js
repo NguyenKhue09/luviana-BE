@@ -38,7 +38,7 @@ afterAll((done) => {
 describe('Good user results', function() {
     test('respond to get user', async() => {
         const res = await request(app)
-        .get('/user?userId=623442ba82b88524caae2232')
+        .get('/user')
         .set('authorizationtoken', `Bearer ${token}`);
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
@@ -76,17 +76,23 @@ describe('Good user results', function() {
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
     })
+
+    test('Respond to update user', async() => {
+        const updateUser = {
+
+        }
+
+        const res = await request(app)
+        .put('/user')
+        .send(updateUser)
+        .set('authorizationtoken', `Bearer ${token}`);
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    })
 });
 
 describe('Fail user results', function() {
-    test('Fail get user', async() => {
-        const res = await request(app)
-        .get('/user?userId=abcd')
-        .set('Authorization', `Bearer ${token}`);
-
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-        expect(res.status).toBe(500)
-    })
 
     test('Fail register user', async() => {
         const newUser = {
@@ -114,6 +120,19 @@ describe('Fail user results', function() {
         const res = await request(app)
         .post('/user/login')
         .send(auth)
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(401)
+    })
+
+    test('Fail respond to update user - ', async() => {
+        const updateUser = {
+
+        }
+
+        const res = await request(app)
+        .put('/user')
+        .send(updateUser)
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(401)

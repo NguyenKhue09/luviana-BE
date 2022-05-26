@@ -130,7 +130,28 @@ async function disableAdminAccount (req, res) {
         .status(400)
         .json({ success: false, message: "Please provide admin id now!", data: null });
     
-    const result = await AdminService.blockAdminAccount()
+    const result = await AdminService.blockAdminAccount(adminId)
+
+    if (result.success) return res.json(result)
+    else return res.status(500).json(result)
+
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ success: false, message: error.message, data: null });
+  }
+}
+
+async function undisableAdminAccount (req, res) {
+  try {
+    const { adminId } =  req.body;
+
+    if (!adminId) 
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide admin id now!", data: null });
+    
+    const result = await AdminService.unblockAdminAccount(adminId)
 
     if (result.success) return res.json(result)
     else return res.status(500).json(result)
@@ -148,5 +169,6 @@ export const AdminController = {
   getAccessToken,
   loginAdminAccount,
   createAdminAccount,
-  disableAdminAccount
+  disableAdminAccount,
+  undisableAdminAccount
 };

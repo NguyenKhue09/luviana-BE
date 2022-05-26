@@ -64,8 +64,6 @@ describe('Good blog result', function() {
         .send(newBlog)
         .set('authorizationtoken', `Bearer ${userToken}`);
 
-        console.log("Khoile Bearer " + adminToken)
-
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
     });

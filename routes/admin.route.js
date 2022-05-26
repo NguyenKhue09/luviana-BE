@@ -15,6 +15,9 @@ AdminRouter
 AdminRouter.post("/login-admin-account", AdminController.loginAdminAccount)
 AdminRouter.post("/create-admin-account", AdminController.createAdminAccount)
 AdminRouter.get("/get-admin-accesstoken", AdminController.getAccessToken)
-AdminRouter.post("/block", AuthMiddleWare.requireAdmin, AdminController.disableAdminAccount)
+
+AdminRouter
+.post("/block", AuthMiddleWare.requireAdmin, AdminController.disableAdminAccount)
+.delete("/block", AuthMiddleWare.requireAdmin, AdminController.undisableAdminAccount)
 
 export { AdminRouter };
