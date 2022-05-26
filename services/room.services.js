@@ -415,7 +415,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           _id: "$_id",
           name: { $first: "$name" },
           address: { $first: "$address" },
-          thumbnail: { $first: "thumbnail" },
+          thumbnail: { $first: "$thumbnail" },
           type: { $first: "$type" },
           rating: { $first: "$rating" },
           description: {$first: "$description"},
@@ -593,7 +593,7 @@ async function searchRoomAvailableOfAparment(
           _id: "$_id",
           name: { $first: "$name" },
           address: { $first: "$address" },
-          thumbnail: { $first: "thumbnail" },
+          thumbnail: { $first: "$thumbnail" },
           type: { $first: "$type" },
           rating: { $first: "$rating" },
           description: {$first: "$description"},
@@ -617,7 +617,7 @@ async function searchRoomAvailableOfAparment(
     return {
       success: true,
       message: "Find rooms available successfully",
-      data: result[0].rooms,
+      data: result[0],
     };
   } catch (error) {
     return {
