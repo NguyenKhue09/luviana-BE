@@ -415,7 +415,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           _id: "$_id",
           name: { $first: "$name" },
           address: { $first: "$address" },
-          thumbnail: { $first: "thumbnail" },
+          thumbnail: { $first: "$thumbnail" },
           type: { $first: "$type" },
           rating: { $first: "$rating" },
           description: {$first: "$description"},
