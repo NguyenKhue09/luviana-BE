@@ -178,6 +178,28 @@ describe('Good blog result', function() {
         expect(res.status).toBe(200)
     });
 
+    test('Respond to get confirmed blog list', async() => {
+        const res = await request(app)
+        .get('/blog/confirm?page=1&limit=2')
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    });
+
+    test('Repsond to confirm blog', async() => {
+        const newBlogConfirm = {
+            "blogId": "62845bfb638d4091909b7136"
+        };
+
+        const res = await request(app)
+        .put('/blog/confirm')
+        .send(newBlogConfirm)
+        .set('authorization', `Bearer ${adminToken}`);
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    })
+
 });
 
 describe('Fail test result for blog', function() {
