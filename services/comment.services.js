@@ -71,7 +71,8 @@ async function getCommentList(blogId, page, limit) {
                 data: []
             }
         }
-        const final = await Blog.populate(result, { path: "comments"});
+        let final = await Blog.populate(result, { path: "comments" });
+        final = await Blog.populate(final, { path: "comments.author" });
         final[0].currentPage = page
         final[0].maxPage = Math.ceil(result[0].total / limit);
         
