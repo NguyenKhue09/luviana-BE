@@ -393,10 +393,12 @@ async function deleteBlog(blogId) {
 
 // End of Admin API
 
-async function getAllConfirmedBlog() {
+async function getAllConfirmedBlog(page, limit) {
     try {
 
-        const result = await Blog.find({ isConfirm: true })
+        const result = await Blog.find({ isConfirm: true }).skip((page - 1) * limit).limit(limit);
+        const maxDocument = await Blog.countDocuments({ isConfirm: true });
+        const maxPage = Math.ceil(maxDocument / limit);
 
         if(!result) {
             return {
@@ -409,7 +411,8 @@ async function getAllConfirmedBlog() {
         return {
                 success: true,
                 message: "List of confirmed blog fetched!",
-                data: result
+                data: result,
+                maxPage
             }
         
     } catch (error) {

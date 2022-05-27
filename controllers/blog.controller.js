@@ -430,8 +430,11 @@ async function denyBlog(req, res) {
 // End of Admin API
 
 async function getAllConfirmedBlog(req, res) {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+
     try {
-        const response = await BlogService.getAllConfirmedBlog();
+        const response = await BlogService.getAllConfirmedBlog(page, limit);
 
         if (response.success) {
             return res.json(response)

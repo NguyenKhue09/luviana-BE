@@ -32,6 +32,14 @@ async function getUser(req, res) {
 async function registerUser(req, res) {
   const { avatar, username, password, email } = req.body;
 
+  if (!username, !password, !email) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing required field!",
+      data: null
+    })
+  }
+
   const result = await UserService.registerUser(
     avatar,
     username,
