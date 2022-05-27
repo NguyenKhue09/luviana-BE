@@ -23,7 +23,10 @@ async function addComment(author, blogId, content) {
             date: new Date()
         }, { session })
         await comment.save()
-        result = await Blog.findOneAndUpdate({ _id: mongoose.Types.ObjectId(blogId) }, { $push: { comments: comment._id } }, { session, returnDocument: "after" })
+        result = await Blog.findOneAndUpdate({ 
+            _id: mongoose.Types.ObjectId(blogId) }, 
+            { $push: { comments: { $each: [comment._id], $position: 0 } } }, 
+            { session, returnDocument: "after" })
         if (!result) {
             throw new Error("Comment not saved!")
         }
