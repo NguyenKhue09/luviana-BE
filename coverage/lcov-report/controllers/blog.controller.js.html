@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">63.41% </span>
+                <span class="strong">58.53% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>104/164</span>
+                <span class='fraction'>96/164</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.05% </span>
+                <span class="strong">62.35% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>57/85</span>
+                <span class='fraction'>53/85</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">65% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>13/20</span>
+                <span class='fraction'>12/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.84% </span>
+                <span class="strong">57.23% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>94/152</span>
+                <span class='fraction'>87/152</span>
             </div>
         
             
@@ -540,11 +540,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -552,12 +552,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1003,12 +1003,12 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET 
   });
 &nbsp;
-async function addNewBlog(req, res) {
-    const data = req.body;
+async function <span class="fstat-no" title="function not covered" >addNewBlog(</span>req, res) {
+    const data = <span class="cstat-no" title="statement not covered" >req.body;</span>
 &nbsp;
-    data.author = req.userId;
+<span class="cstat-no" title="statement not covered" >    data.author = req.userId;</span>
 &nbsp;
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!data.author || !data.content) {
+<span class="cstat-no" title="statement not covered" >    if (!data.author || !data.content) {</span>
 <span class="cstat-no" title="statement not covered" >        return res.status(400).json({</span>
             success: false,
             message: "Missing required field!",
@@ -1016,13 +1016,13 @@ async function addNewBlog(req, res) {
         })
     }
 &nbsp;
-    data.date = new Date();
+<span class="cstat-no" title="statement not covered" >    data.date = new Date();</span>
 &nbsp;
-    try {
-        const response = await BlogService.addNewBlog(data);
+<span class="cstat-no" title="statement not covered" >    try {</span>
+        const response = <span class="cstat-no" title="statement not covered" >await BlogService.addNewBlog(data);</span>
 &nbsp;
-        if (response.success) return res.json(response)
-        else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>return res.status(500).json(response)</span>
+<span class="cstat-no" title="statement not covered" >        if (response.success) <span class="cstat-no" title="statement not covered" >return res.json(response)</span></span>
+        else <span class="cstat-no" title="statement not covered" >return res.status(500).json(response)</span>
 &nbsp;
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >        return res.status(500).json({</span>
@@ -1462,7 +1462,7 @@ export const BlogController = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Fri May 27 2022 16:13:28 GMT+0700 (Indochina Time)
+                at Fri May 27 2022 20:03:03 GMT+0700 (Indochina Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

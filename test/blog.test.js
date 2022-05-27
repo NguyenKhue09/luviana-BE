@@ -52,21 +52,21 @@ afterAll((done) => {
 });
 
 describe('Good blog result', function() {
-    test('Respond to add new blog', async() => {
-        const newBlog = {
-            "content": "This is a testing blog by Khoile",
-            "pictures": "https://assets.grab.com/wp-content/uploads/sites/11/2020/09/30172754/Hotels_Booking_1920x675.jpg",
-            "date": "2022-05-30"
-        };
+    // test('Respond to add new blog', async() => {
+    //     const newBlog = {
+    //         "content": "This is a testing blog by Khoile",
+    //         "pictures": "https://assets.grab.com/wp-content/uploads/sites/11/2020/09/30172754/Hotels_Booking_1920x675.jpg",
+    //         "date": "2022-05-30"
+    //     };
 
-        const res = await request(app)
-        .post('/blog')
-        .send(newBlog)
-        .set('authorizationtoken', `Bearer ${userToken}`);
+    //     const res = await request(app)
+    //     .post('/blog')
+    //     .send(newBlog)
+    //     .set('authorizationtoken', `Bearer ${userToken}`);
 
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-        expect(res.status).toBe(200)
-    });
+    //     expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+    //     expect(res.status).toBe(200)
+    // });
 
     test('Good respond to get all blogs', async() => {
         const res = await request(app)
@@ -79,7 +79,7 @@ describe('Good blog result', function() {
 
     test('Good respond to get blog by id', async() => {
         const res = await request(app)
-        .get('/blog/detail/62845bfb638d4091909b7136')
+        .get('/blog/detail/6290add143148c83c33a1610')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -95,9 +95,9 @@ describe('Good blog result', function() {
 
     test('Respond to update a blog', async() => {
         const updateBlog = {
-            "blogId": "628e5f7c1892c5ac255f8a3d",
+            "blogId": "6290add143148c83c33a1610",
             "data": {
-                "content": "contenttttttttt"
+                "content": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
             }
         };
 
@@ -112,7 +112,7 @@ describe('Good blog result', function() {
 
     test('respond to get comment', async() => {
         const res = await request(app)
-        .get('/blog/comment?blogId=62852a59bd8e19a5aff1969f')
+        .get('/blog/comment?blogId=6290add143148c83c33a1610')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -121,8 +121,8 @@ describe('Good blog result', function() {
     test('Respond to add comment', async() => {
         const newComment = {
             "author": "6284db11aecf83be28e02e48",
-            "blogId": "62852a59bd8e19a5aff1969f",
-            "content": "This is a excellent movie"
+            "blogId": "6290add143148c83c33a1610",
+            "content": "This is a excellent room"
         };
 
         const res = await request(app)
@@ -136,7 +136,7 @@ describe('Good blog result', function() {
 
     test('Respond to like blog', async() => {
         const newBlogLike = {
-            "blogId": "6285bdbb52cfaaef2a6dbbbf"
+            "blogId": "6290add143148c83c33a1610"
         };
 
         const res = await request(app)
@@ -150,7 +150,7 @@ describe('Good blog result', function() {
 
     test('Respond to get blog like', async() => {
         const res = await request(app)
-        .get('/blog/like/6285be37870e97473c4f4df5')
+        .get('/blog/like/6290add143148c83c33a1610')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -158,7 +158,7 @@ describe('Good blog result', function() {
 
     test('Respond to unlike blog', async() => {
         const unlikeBlog = {
-            "blogId": "6285bdbb52cfaaef2a6dbbbf"
+            "blogId": "6290add143148c83c33a1610"
         };
 
         const res = await request(app)
@@ -188,7 +188,7 @@ describe('Good blog result', function() {
 
     test('Repsond to confirm blog', async() => {
         const newBlogConfirm = {
-            "blogId": "62845bfb638d4091909b7136"
+            "blogId": "6290add143148c83c33a1610"
         };
 
         const res = await request(app)
@@ -217,7 +217,7 @@ describe('Fail test result for blog', function() {
             //     "content": "",
             //     "pictures": "https://assets.grab.com/wp-content/uploads/sites/11/2020/09/30172754/Hotels_Booking_1920x675.jpg"
             // }, 
-            "blogId": "62845bfb638d4091909b7136"
+            "blogId": "6290add143148c83c33a1610"
         };
 
         const res = await request(app)
@@ -239,7 +239,7 @@ describe('Fail test result for blog', function() {
 
     test('Fail respond to get comment - wrong blogId', async() => {
         const res = await request(app)
-        .get('/blog/comment?blogId=abcd')
+        .get('/blog/comment?blogId=6290add143148c83c33a1999')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(500)
