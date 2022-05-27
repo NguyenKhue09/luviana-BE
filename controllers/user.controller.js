@@ -337,14 +337,15 @@ async function updateUser (req, res) {
       });
     }
 
-    const result = await UserService.updateUser(userData, userId);
-
-    if (result.success) {
-      return res.json(result)
+    const response = await UserService.updateUser(userData, userId);
+   
+    if (response.success) {
+      return res.json(response)
     } else {
-      return res.status(500).json(result)
+      return res.status(500).json(response)
     }
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
       success: false, 
       message: "Update user failed!",

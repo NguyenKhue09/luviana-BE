@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 import connectDB from "../config/config.js"
 import RoomRouter from "../routes/room.router.js"
 
-beforeEach((done) => {
+beforeAll((done) => {
     connectDB();
     done();
 });  
@@ -38,16 +38,19 @@ describe('Good room results', function() {
             "apartmentId": "624b0a0aec0a608727256e9c",
             "price": 1519384,
             "bedName":"2 đơn",
-            "capacity":"3 người",
+            "capacity": 3,
             "square":"24",
             "rating": 4,
             "thumbnail":"https://media.istockphoto.com/vectors/man-sleeping-on-bed-vector-id1142805287?k=20&m=1142805287&s=612x612&w=0&h=PnEs5WJXlhs6JdiDfu-0pVOTHDIL9h3q4NJHFzKiftk=",
             "isAvailable":true,
-            "facilities":[]
+            "facilities":[],
+            "isPending": true
         }
+
         const res = await request(app)
         .post('/room')
         .send(newRoom)
+        .set('Content-Type', 'application/json')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -82,14 +85,14 @@ describe('Good room results', function() {
 
     test('respond to search rooms', async() => {
         const searchData = {
-            "checkinDate": "04/19/2022",
-            "checkoutDate":"04/21/2022",
-            "people": "4 người",
+            "checkinDate": "05/22/2022",
+            "checkoutDate":"05/26/2022",
+            "people": 7,
             "city": "Đà Nẵng"
         }
 
         const res = await request(app)
-        .get('/room/search')
+        .post('/room/searchV2')
         .send(searchData)
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
@@ -103,6 +106,22 @@ describe('Good room results', function() {
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
     });
+
+    test('Respond to search room available of apartment', async() => {
+        const searchData = {
+            "checkinDate": "05/22/2022",
+            "checkoutDate":"05/26/2022",
+            "people": 7,
+            "apartmentId": "62568ab0d6d1a4a941990909"
+        }
+
+        const res = await request(app)
+        .post('/room/available-apartment')
+        .send(searchData)
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    })
 });
 
 describe('Fail room results', function() {
@@ -206,6 +225,37 @@ describe('Fail room results', function() {
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(404)
+    });
+
+    test('Fail respond to search room available of apartment - not found room', async() => {
+        const searchData = {
+            "checkinDate": "05/22/2022",
+            "checkoutDate":"05/26/2022",
+            "people": 7
+        }
+
+        const res = await request(app)
+        .post('/room/available-apartment')
+        .send(searchData)
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(404)
+    });
+
+    test('Fail respond to search room available of apartment - wrong apartment id', async() => {
+        const searchData = {
+            "checkinDate": "05/22/2022",
+            "checkoutDate":"05/26/2022",
+            "people": 7,
+            "apartmentId": "abcd"
+        }
+
+        const res = await request(app)
+        .post('/room/available-apartment')
+        .send(searchData)
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(500)
     });
 
 })

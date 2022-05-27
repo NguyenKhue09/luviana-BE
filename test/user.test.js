@@ -1,13 +1,32 @@
 import request from 'supertest'
-import express from 'express'
+import express, { response } from 'express'
 import mongoose from "mongoose"
 import bodyParser from 'body-parser'
 import connectDB from "../config/config.js"
 import { UserRouter } from "../routes/user.route.js"
+import supertest from 'supertest'
 
-beforeEach((done) => {
+const app = new express()
+let token = ''
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use('/user', UserRouter)
+
+beforeAll(async () => {
     connectDB();
-    done();
+
+    const loginUser = {
+        "email": "19521789@gm.uit.edu.vn",
+        "password": "password"
+    }
+
+    const userResult = await supertest(app)
+    .post('/user/login')
+    .send(loginUser)
+
+    token = userResult.body.data.accessToken;
 });  
 
 afterAll((done) => {
@@ -16,21 +35,15 @@ afterAll((done) => {
     done()
 });
 
-const app = new express()
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
-app.use('/user', UserRouter)
-
 describe('Good user results', function() {
-    // test('respond to get user', async() => {
-    //     const res = await request(app)
-    //     .get('/user?userId=623442ba82b88524caae2232')
+    test('respond to get user', async() => {
+        const res = await request(app)
+        .get('/user')
+        .set('authorizationtoken', `Bearer ${token}`);
 
-    //     expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-    //     expect(res.status).toBe(200)
-    // })
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    })
 
     // test('respond to register user', async() => {
     //     const newUser = {
@@ -58,6 +71,21 @@ describe('Good user results', function() {
         const res = await request(app)
         .post('/user/login')
         .send(auth)
+        .set('Authorization', `Bearer ${token}`);
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    })
+
+    test('Respond to update user', async() => {
+        const updateUser = {
+
+        }
+
+        const res = await request(app)
+        .put('/user')
+        .send(updateUser)
+        .set('authorizationtoken', `Bearer ${token}`);
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -65,13 +93,6 @@ describe('Good user results', function() {
 });
 
 describe('Fail user results', function() {
-    test('Fail get user', async() => {
-        const res = await request(app)
-        .get('/user?userId=abcd')
-
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-        expect(res.status).toBe(500)
-    })
 
     test('Fail register user', async() => {
         const newUser = {
@@ -99,6 +120,19 @@ describe('Fail user results', function() {
         const res = await request(app)
         .post('/user/login')
         .send(auth)
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(401)
+    })
+
+    test('Fail respond to update user - ', async() => {
+        const updateUser = {
+
+        }
+
+        const res = await request(app)
+        .put('/user')
+        .send(updateUser)
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(401)

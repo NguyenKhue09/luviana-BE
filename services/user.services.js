@@ -94,7 +94,7 @@ async function login(email, password) {
 
 async function updateUser(userData, userId) {
     try {
-        const  result = User.findByIdAndUpdate(userId, userData)
+        const  result = await User.findByIdAndUpdate(userId, userData)
 
         if(!result) {
             return {
