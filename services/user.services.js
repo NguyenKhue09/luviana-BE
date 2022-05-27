@@ -27,7 +27,6 @@ async function getUser(userId) {
 
 async function registerUser(avatar, username, password, email) {
     try {
-<<<<<<< HEAD
 
         const checkEmailExist = await User.exists({ email });
         if (checkEmailExist) {
@@ -38,10 +37,8 @@ async function registerUser(avatar, username, password, email) {
             }
         }
 
-        const user = await User.create({avatar, username, password, email})
-=======
         const user = await User.create({avatar, username, password, email}).select("-password")
->>>>>>> ea708fd08a53b513e36b36717784818a0d884cb0
+
         if(!user) {
             return {
                 success: false,
