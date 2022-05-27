@@ -27,6 +27,16 @@ async function getUser(userId) {
 
 async function registerUser(avatar, username, password, email) {
     try {
+
+        const checkEmailExist = await User.find({ email });
+        if (checkEmailExist) {
+            return {
+                success: false,
+                message: "Email is already taken",
+                data: null
+            }
+        }
+
         const user = await User.create({avatar, username, password, email})
         if(!user) {
             return {
