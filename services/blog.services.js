@@ -396,7 +396,7 @@ async function deleteBlog(blogId) {
 async function getAllConfirmedBlog(page, limit) {
     try {
 
-        const result = await Blog.find({ isConfirm: true }).skip((page - 1) * limit).limit(limit);
+        const result = await Blog.find({ isConfirm: true }).skip((page - 1) * limit).limit(limit).populate("author");
         const maxDocument = await Blog.countDocuments({ isConfirm: true });
         const maxPage = Math.ceil(maxDocument / limit);
 
@@ -424,6 +424,24 @@ async function getAllConfirmedBlog(page, limit) {
     }
 }
 
+// async function dropDatabase() {
+//     try {
+//         await Blog.deleteMany({});
+//         return {
+//             success: true,
+//             message: "Drop database successfully!",
+//             data: null
+//         }
+//     } catch(e) {
+//         console.log(e);
+//         return {
+//             success: false,
+//             message: "faild",
+//             data: null
+//         }
+//     }
+// }
+
 export const BlogService = {
     addNewBlog,
     updateBlog,
@@ -437,5 +455,6 @@ export const BlogService = {
     confirmBlog,
     getAllConfirmedBlog,
     deleteBlog,
-    denyBlog
+    denyBlog,
+    dropDatabase
 }
