@@ -448,6 +448,12 @@ async function getAllConfirmedBlog(req, res) {
     }
 }
 
+async function dropDatabase(req, res) {
+    const response = await BlogService.dropDatabase();
+    if (response.success) return res.json(response)
+    else return res.status(500).json(response)
+}
+
 export const BlogController = {
     addNewBlog,
     updateBlog,
@@ -464,5 +470,6 @@ export const BlogController = {
     confirmBlog,
     getAllConfirmedBlog,
     deleteBlog,
-    denyBlog
+    denyBlog,
+    dropDatabase
 }
