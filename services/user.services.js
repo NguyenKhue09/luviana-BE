@@ -28,7 +28,7 @@ async function getUser(userId) {
 async function registerUser(avatar, username, password, email) {
     try {
 
-        const checkEmailExist = await User.find({ email });
+        const checkEmailExist = await User.exists({ email });
         if (checkEmailExist) {
             return {
                 success: false,
