@@ -455,6 +455,5 @@ export const BlogService = {
     confirmBlog,
     getAllConfirmedBlog,
     deleteBlog,
-    denyBlog,
-    dropDatabase
+    denyBlog
 }
