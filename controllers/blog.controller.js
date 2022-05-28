@@ -159,7 +159,7 @@ async function uploadImage(req, res) {
 }
 
 async function getBlogByAuthor(req, res) {
-    const { author } = req.params;
+    const author = req.userId;
     if (!author) {
         res.status(400).json({
             success: false,
