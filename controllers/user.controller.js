@@ -418,7 +418,7 @@ async function getUserList(req, res) {
 }
 
 async function updateUserAdmin(req, res) {
-  const { userId, userData } = req.body;
+  const { userId, username, gender, phone, dob } = req.body;
 
   if (!userId) {
     return res.status(400).json({
@@ -428,24 +428,44 @@ async function updateUserAdmin(req, res) {
     });
   }
 
-  if (!userData) {
+  const userData = {
+    username, gender, phone, dob
+  }
+
+  if (Object.keys(req.body).length === 1) {
     return res.status(400).json({
       success: false,
-      message: "Please provide new user data!",
+      message: "Please provide user data",
       data: null
-    })
-  }
-
-  if (userData.password != undefined) {
-    delete userData.password;
-  }
-
-  if (userData.email != undefined) {
-    delete userData.email
+    });
   }
 
   try {
     const response = await UserService.updateUserAdmin(userId, userData);
+    if (response.success) {
+      return res.json(response)
+    } else return res.status(500).json(response)
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+      message: `Something went wrong ${e.message}`,
+      data: null
+    });
+  }
+}
+
+async function deleteUser(req, res) {
+  const { userId } = req.params;
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide user id!",
+      data: null
+    });
+  }
+
+  try {
+    const response = await UserService.deleteUser(userId);
     if (response.success) {
       return res.json(response)
     } else return res.status(500).json(response)
@@ -471,5 +491,6 @@ export const UserController = {
   updateUser,
   getUserList,
   updateUserAdmin,
-  getUserById
+  getUserById,
+  deleteUser
 };

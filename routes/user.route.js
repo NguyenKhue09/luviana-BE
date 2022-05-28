@@ -19,5 +19,6 @@ UserRouter.get("/user-list", AuthMiddleWare.requireAdmin, UserController.getUser
 UserRouter.post("/add", AuthMiddleWare.requireAdmin, UserController.registerUser)
 UserRouter.put("/update", AuthMiddleWare.requireAdmin, UserController.updateUserAdmin)
 UserRouter.get("/get/:userId", UserController.getUserById);
+UserRouter.delete("/delete/:userId", AuthMiddleWare.requireAdmin, UserController.deleteUser);
 
 export { UserRouter };

@@ -256,6 +256,30 @@ async function updateUserAdmin(userId, userData) {
         } 
     }
 }
+
+async function deleteUser(userId) {
+    try {
+        const result = await User.findByIdAndDelete(userId)
+        if(!result) {
+            return {
+                success: false,
+                message: "Delete user failed!",
+                data: null
+            }
+        }
+        return {
+            success: true,
+            message: "Delete user successfully!",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
   
 export const UserService = { 
     getUser,
@@ -267,5 +291,6 @@ export const UserService = {
     isExist,
     getUserList,
     updateUserAdmin,
-    getUserById
+    getUserById,
+    deleteUser
 }
