@@ -37,7 +37,7 @@ async function registerUser(username, password, email, gender, dob) {
             }
         }
 
-        const user = await User.create({username, password, email, gender, dob})
+        const user = await User.create({username, password, email, gender, phone, dob})
 
         if(!user) {
             return {

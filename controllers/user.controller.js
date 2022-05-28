@@ -30,7 +30,7 @@ async function getUser(req, res) {
 }
 
 async function registerUser(req, res) {
-  const { username, password, email, gender, dob } = req.body;
+  const { username, password, email, gender, phone, dob } = req.body;
 
   if (!username, !password, !email) {
     return res.status(400).json({
@@ -45,6 +45,7 @@ async function registerUser(req, res) {
     password,
     email,
     gender,
+    phone,
     dob
   );
   if (result.success) {
