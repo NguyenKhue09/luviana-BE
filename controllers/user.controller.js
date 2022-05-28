@@ -105,19 +105,19 @@ async function signUp(req, res) {
     })
   }
 
+  if (!passwordRegEx.test(req.body.password)) {
+    return res.status(400).json({
+      success: false,
+      message: "Password must contains letters, digits and at least 6 characters",
+      data: null
+    });
+  }
+
   const existingUser = await UserService.isExist(userData.email);
   if (existingUser) {
     return res.status(400).json({
       success: false,
       message: "Your email has been taken, please use other email to signup",
-      data: null
-    });
-  }
-
-  if (!passwordRegEx.test(req.body.password)) {
-    return res.status(400).json({
-      success: false,
-      message: "Password must contains letters, digits and at least 6 characters",
       data: null
     });
   }
@@ -389,6 +389,47 @@ async function getUserList(req, res) {
   }
 }
 
+async function updateUserAdmin(req, res) {
+  const { userId, userData } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide userId!",
+      data: null
+    });
+  }
+
+  if (!userData) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide new user data!",
+      data: null
+    })
+  }
+
+  if (userData.password != undefined) {
+    delete userData.password;
+  }
+
+  if (userData.email != undefined) {
+    delete userData.email
+  }
+
+  try {
+    const response = await UserService.updateUserAdmin(userId, userData);
+    if (response.success) {
+      return res.json(response)
+    } else return res.status(500).json(response)
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+      message: `Something went wrong ${e.message}`,
+      data: null
+    });
+  }
+}
+
 export const UserController = {
   getUser,
   registerUser,
@@ -400,5 +441,6 @@ export const UserController = {
   activate,
   uploadAvatar,
   updateUser,
-  getUserList
+  getUserList,
+  updateUserAdmin
 };

@@ -213,6 +213,32 @@ async function getUserList() {
         }
     }
 }
+
+async function updateUserAdmin(userId, userData) {
+    try {
+        const  result = await User.findByIdAndUpdate(userId, userData, {new: true})
+
+        if(!result) {
+            return {
+                success: false,
+                message: "Update user information failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Update user information successfully!",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        } 
+    }
+}
   
 export const UserService = { 
     getUser,
@@ -222,5 +248,6 @@ export const UserService = {
     forgotPassword,
     resetPassord,
     isExist,
-    getUserList
+    getUserList,
+    updateUserAdmin
 }
