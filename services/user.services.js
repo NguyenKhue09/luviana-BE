@@ -196,6 +196,23 @@ async function resetPassord(password, userId) {
     }
 }
 
+async function getUserById(userId) {
+    try {
+        const user = await User.findById(userId).select("-password")
+        return {
+            success: true,
+            message: "Get user information successfully!",
+            data: user
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
+
 // Admin API 
 async function getUserList() {
     try {
@@ -249,5 +266,6 @@ export const UserService = {
     resetPassord,
     isExist,
     getUserList,
-    updateUserAdmin
+    updateUserAdmin,
+    getUserById
 }

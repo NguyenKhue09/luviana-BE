@@ -17,4 +17,7 @@ UserRouter.post("/forgot-password", UserController.forgotPassword);
 UserRouter.post("/reset-password", AuthMiddleWare.requireUser, UserController.resetPassword);
 UserRouter.get("/user-list", AuthMiddleWare.requireAdmin, UserController.getUserList);
 UserRouter.post("/add", AuthMiddleWare.requireAdmin, UserController.registerUser)
+UserRouter.put("/update", AuthMiddleWare.requireAdmin, UserController.updateUserAdmin)
+UserRouter.get("/get/:userId", UserController.getUserById);
+
 export { UserRouter };

@@ -373,6 +373,34 @@ async function updateUser(req, res) {
   }
 }
 
+async function getUserById(req, res) {
+  const { userId } = req.params;
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide user id!",
+      data: null
+    });
+  }
+
+  try {
+    const response = await UserService.getUserById(userId);
+
+    if (response.success) {
+      return res.json(response)
+    } else {
+      return res.status(500).json(response)
+    }
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      success: false,
+      message: "Get user by id failed!",
+      data: null
+    })
+  }
+}
+
 // Admin API
 async function getUserList(req, res) {
   try {
@@ -442,5 +470,6 @@ export const UserController = {
   uploadAvatar,
   updateUser,
   getUserList,
-  updateUserAdmin
+  updateUserAdmin,
+  getUserById
 };
