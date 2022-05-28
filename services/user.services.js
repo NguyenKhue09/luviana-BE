@@ -25,7 +25,7 @@ async function getUser(userId) {
     }
 }
 
-async function registerUser(avatar, username, password, email) {
+async function registerUser(username, password, email, gender, dob) {
     try {
 
         const checkEmailExist = await User.exists({ email });
@@ -37,7 +37,7 @@ async function registerUser(avatar, username, password, email) {
             }
         }
 
-        const user = await User.create({avatar, username, password, email}).select("-password")
+        const user = await User.create({username, password, email, gender, dob})
 
         if(!user) {
             return {
@@ -50,7 +50,7 @@ async function registerUser(avatar, username, password, email) {
         return {
             success: true,
             message: "Create user successful!",
-            data: user
+            data: user._id
         };
     } catch (error) {
         return {

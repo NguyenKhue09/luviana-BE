@@ -30,7 +30,7 @@ async function getUser(req, res) {
 }
 
 async function registerUser(req, res) {
-  const { avatar, username, password, email } = req.body;
+  const { username, password, email, gender, dob } = req.body;
 
   if (!username, !password, !email) {
     return res.status(400).json({
@@ -41,10 +41,11 @@ async function registerUser(req, res) {
   }
 
   const result = await UserService.registerUser(
-    avatar,
     username,
     password,
-    email
+    email,
+    gender,
+    dob
   );
   if (result.success) {
     return res.json(result);
