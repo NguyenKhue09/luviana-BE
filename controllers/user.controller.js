@@ -10,14 +10,14 @@ const { CLIENT_URL } = process.env;
 
 
 const cloudinary = cloudinaryInstance.v2
-cloudinary.config({ 
-    cloud_name: process.env.CLOUD_NAME, 
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET 
-  });
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 async function getUser(req, res) {
-  const  userId  = req.userId;
+  const userId = req.userId;
 
   const result = await UserService.getUser(userId);
 
@@ -38,6 +38,24 @@ async function registerUser(req, res) {
       message: "Missing required field!",
       data: null
     })
+  }
+
+  const passwordRegEx = /^(?=.*\d)(?=.*[a-zA-Z]).{6,}$/;
+
+  if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email))) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid email address!",
+      data: null
+    })
+  }
+
+  if (!passwordRegEx.test(req.body.password)) {
+    res.status(400).json({
+      success: false,
+      message: "Password must contains letters, digits and at least 6 characters",
+      data: null
+    });
   }
 
   const result = await UserService.registerUser(
@@ -67,52 +85,52 @@ async function login(req, res) {
 
 // Sign up with mail authentication
 async function signUp(req, res) {
-    const userData = req.body;
+  const userData = req.body;
 
-    if (!userData.email || !userData.password) {
-        return res.status(400).json({
-            success: false,
-            message: "Missing required field!",
-            data: null
-        })
-    }
+  if (!userData.email || !userData.password) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing required field!",
+      data: null
+    })
+  }
 
-    const passwordRegEx = /^(?=.*\d)(?=.*[a-zA-Z]).{6,}$/;
+  const passwordRegEx = /^(?=.*\d)(?=.*[a-zA-Z]).{6,}$/;
 
-    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email))) {
-        return res.status(400).json({
-            success: false,
-            message: "Invalid email address!",
-            data: null
-        })
-    }
+  if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email))) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid email address!",
+      data: null
+    })
+  }
 
-    const existingUser = await UserService.isExist(userData.email);
-        if (existingUser) {
-            return res.status(400).json({
-                success: false,
-                message: "Your email has been taken, please use other email to signup",
-                data: null
-            });
-        }
-
-    if (!passwordRegEx.test(req.body.password)) { 
-        res.status(400).json({
-            success: false,
-            message: "Password must contains letters, digits and at least 6 characters",
-            data: null
-        });
-    }
-
-    const { email } = userData;
-    const token = jwt.sign(userData, process.env.SECRET_TOKEN, { expiresIn: "1h" }); // token hết hạn 1 giờ
-    const transporter = nodemailer.createTransport({
-        service: "Gmail",
-        auth: {
-            user: process.env.SENDER,
-            pass: process.env.PASSWORD,
-        },
+  const existingUser = await UserService.isExist(userData.email);
+  if (existingUser) {
+    return res.status(400).json({
+      success: false,
+      message: "Your email has been taken, please use other email to signup",
+      data: null
     });
+  }
+
+  if (!passwordRegEx.test(req.body.password)) {
+    res.status(400).json({
+      success: false,
+      message: "Password must contains letters, digits and at least 6 characters",
+      data: null
+    });
+  }
+
+  const { email } = userData;
+  const token = jwt.sign(userData, process.env.SECRET_TOKEN, { expiresIn: "1h" }); // token hết hạn 1 giờ
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.SENDER,
+      pass: process.env.PASSWORD,
+    },
+  });
 
   transporter.use(
     "compile",
@@ -237,10 +255,10 @@ async function resetPassword(req, res) {
 
     const result = await UserService.resetPassord(password, userId)
 
-    if(!result.success) {
-        return res
-      .status(500)
-      .json({ success: false, message: "Reset password failed", data: null });
+    if (!result.success) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Reset password failed", data: null });
     }
 
     return res.json(result)
@@ -255,7 +273,7 @@ async function resetPassword(req, res) {
 async function getAccessToken(req, res) {
   try {
     const { refreshtoken } = req.query;
-    
+
     if (!refreshtoken)
       return res
         .status(400)
@@ -289,57 +307,57 @@ async function getAccessToken(req, res) {
 }
 
 async function uploadAvatar(req, res) {
-    let streamUpload = (req) => {
-        return new Promise((resolve, reject) => {
-            let stream = cloudinary.uploader.upload_stream(
-                (error, result) => {
-                    if (result) {
-                        resolve(result);
-                    } else {
-                        reject(error);
-                    }
-                }
-            );
+  let streamUpload = (req) => {
+    return new Promise((resolve, reject) => {
+      let stream = cloudinary.uploader.upload_stream(
+        (error, result) => {
+          if (result) {
+            resolve(result);
+          } else {
+            reject(error);
+          }
+        }
+      );
 
-            streamifier.createReadStream(req.file.buffer).pipe(stream);
-        });
-    };
+      streamifier.createReadStream(req.file.buffer).pipe(stream);
+    });
+  };
 
-    async function upload(req) {
-        return await streamUpload(req);
-    }
+  async function upload(req) {
+    return await streamUpload(req);
+  }
 
-    try {
-        const result = await upload(req);
-        return res.json({
-            success: true,
-            message: "Upload avatar successfully",
-            data: result.secure_url
-        })
-    } catch (err) {
-        res.json(500).json({
-            success: false,
-            message: "Upload avatar failed",
-            data: null
-        })
-    }
+  try {
+    const result = await upload(req);
+    return res.json({
+      success: true,
+      message: "Upload avatar successfully",
+      data: result.secure_url
+    })
+  } catch (err) {
+    res.json(500).json({
+      success: false,
+      message: "Upload avatar failed",
+      data: null
+    })
+  }
 }
 
-async function updateUser (req, res) {
+async function updateUser(req, res) {
   try {
     const userId = req.userId
     const userData = req.body
 
     if (!userData) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Please provide new data!", 
-        data: null 
+      return res.status(400).json({
+        success: false,
+        message: "Please provide new data!",
+        data: null
       });
     }
 
     const response = await UserService.updateUser(userData, userId);
-   
+
     if (response.success) {
       return res.json(response)
     } else {
@@ -348,7 +366,7 @@ async function updateUser (req, res) {
   } catch (err) {
     console.log(err)
     return res.status(500).json({
-      success: false, 
+      success: false,
       message: "Update user failed!",
       data: null
     });
