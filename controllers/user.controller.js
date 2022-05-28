@@ -51,7 +51,7 @@ async function registerUser(req, res) {
   }
 
   if (!passwordRegEx.test(req.body.password)) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       message: "Password must contains letters, digits and at least 6 characters",
       data: null
@@ -115,7 +115,7 @@ async function signUp(req, res) {
   }
 
   if (!passwordRegEx.test(req.body.password)) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       message: "Password must contains letters, digits and at least 6 characters",
       data: null
