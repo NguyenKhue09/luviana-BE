@@ -199,6 +199,13 @@ async function resetPassord(password, userId) {
 async function getUserById(userId) {
     try {
         const user = await User.findById(userId).select("-password")
+        if (!user) {
+            return {
+                success: false,
+                message: "User not found!",
+                data: null
+            }
+        }
         return {
             success: true,
             message: "Get user information successfully!",
