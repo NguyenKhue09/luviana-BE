@@ -10,6 +10,10 @@ ApartmentRouter.get("/detail/:id", ApartmentController.getOneApartment)
 ApartmentRouter.post("/add-new-apartment", ApartmentController.addNewApartment)
 ApartmentRouter.put("/update", ApartmentController.updateApartment)
 ApartmentRouter.get("/apartment-cites", ApartmentController.getApartmentCities)
+ApartmentRouter.route("/review")
+    .post(AuthMiddleWare.requireUser, ApartmentController.addReview)
+    .get(ApartmentController.getReviews)
+ApartmentRouter.get("/avg-rating/:id", ApartmentController.getAvgRating)
 
 // admin
 ApartmentRouter.get("/all", AuthMiddleWare.requireAdmin, ApartmentController.getApartment)
