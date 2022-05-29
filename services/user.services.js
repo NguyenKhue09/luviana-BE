@@ -103,9 +103,9 @@ async function login(email, password) {
     }
 }
 
-async function updateUser(userData, userId) {
+async function updateUser(userId, userData) {
     try {
-        const  result = await User.findByIdAndUpdate(userId, userData)
+        const result = await User.findByIdAndUpdate(userId, userData, {new: true})
 
         if(!result) {
             return {

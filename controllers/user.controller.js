@@ -345,18 +345,19 @@ async function uploadAvatar(req, res) {
 
 async function updateUser(req, res) {
   try {
-    const userId = req.userId
-    const userData = req.body
-
-    if (!userData) {
+    const id = req.userId;
+    if (Object.keys(req.body).length === 0) {
       return res.status(400).json({
         success: false,
-        message: "Please provide new data!",
-        data: null
+        message: "Please provide data to update",
+        data: null,
       });
     }
+    const { username, avatar, phone, gender, dob } = req.body;
 
-    const response = await UserService.updateUser(userData, userId);
+    const userData = { username, avatar, phone, gender, dob }
+
+    const response = await UserService.updateUser(id, userData);
 
     if (response.success) {
       return res.json(response)
