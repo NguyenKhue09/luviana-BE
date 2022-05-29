@@ -88,6 +88,17 @@ async function getMonthlyRevenue(month, year) {
                     bookingCalendarId: { $first: "$bookingCalendarId" },
                     monthlyRevenue: {$sum: "$totalCost"}
                 }
+            },
+            {
+                $project: {
+                    monthlyRevenue: 1,
+                    bookingCalendarId: 1,
+                    beginDate: 1,
+                    apartmentId: 1,
+                    apartmentName: 1,
+                    apartmentId: "$_id.apartmentId",
+                    _id: 0
+                }
             }
         ])
 
