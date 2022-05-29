@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.53% </span>
+                <span class="strong">57.64% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>96/164</span>
+                <span class='fraction'>98/170</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.35% </span>
+                <span class="strong">60.43% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>53/85</span>
+                <span class='fraction'>55/91</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">57.14% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>12/20</span>
+                <span class='fraction'>12/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.23% </span>
+                <span class="strong">56.68% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>87/152</span>
+                <span class='fraction'>89/157</span>
             </div>
         
             
@@ -527,7 +527,17 @@
 <a name='L462'></a><a href='#L462'>462</a>
 <a name='L463'></a><a href='#L463'>463</a>
 <a name='L464'></a><a href='#L464'>464</a>
-<a name='L465'></a><a href='#L465'>465</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L465'></a><a href='#L465'>465</a>
+<a name='L466'></a><a href='#L466'>466</a>
+<a name='L467'></a><a href='#L467'>467</a>
+<a name='L468'></a><a href='#L468'>468</a>
+<a name='L469'></a><a href='#L469'>469</a>
+<a name='L470'></a><a href='#L470'>470</a>
+<a name='L471'></a><a href='#L471'>471</a>
+<a name='L472'></a><a href='#L472'>472</a>
+<a name='L473'></a><a href='#L473'>473</a>
+<a name='L474'></a><a href='#L474'>474</a>
+<a name='L475'></a><a href='#L475'>475</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -688,8 +698,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -697,11 +707,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -964,6 +974,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -972,9 +985,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1152,7 +1172,7 @@ async function <span class="fstat-no" title="function not covered" >uploadImage(
 }
 &nbsp;
 async function getBlogByAuthor(req, res) {
-    const { author } = req.params;
+    const author = req.userId;
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!author) {
 <span class="cstat-no" title="statement not covered" >        res.status(400).json({</span>
             success: false,
@@ -1423,8 +1443,11 @@ async function <span class="fstat-no" title="function not covered" >denyBlog(</s
 // End of Admin API
 &nbsp;
 async function getAllConfirmedBlog(req, res) {
+    const page = req.query.page || <span class="branch-1 cbranch-no" title="branch not covered" >1;</span>
+    const limit = req.query.limit || <span class="branch-1 cbranch-no" title="branch not covered" >10;</span>
+&nbsp;
     try {
-        const response = await BlogService.getAllConfirmedBlog();
+        const response = await BlogService.getAllConfirmedBlog(page, limit);
 &nbsp;
         if (response.success) {
             return res.json(response)
@@ -1436,6 +1459,12 @@ async function getAllConfirmedBlog(req, res) {
             data: null
         })
     }
+}
+&nbsp;
+async function <span class="fstat-no" title="function not covered" >dropDatabase(</span>req, res) {
+    const response = <span class="cstat-no" title="statement not covered" >await BlogService.dropDatabase();</span>
+<span class="cstat-no" title="statement not covered" >    if (response.success) <span class="cstat-no" title="statement not covered" >return res.json(response)</span></span>
+    else <span class="cstat-no" title="statement not covered" >return res.status(500).json(response)</span>
 }
 &nbsp;
 export const BlogController = {
@@ -1454,7 +1483,8 @@ export const BlogController = {
     confirmBlog,
     getAllConfirmedBlog,
     deleteBlog,
-    denyBlog
+    denyBlog,
+    dropDatabase
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1462,7 +1492,7 @@ export const BlogController = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Fri May 27 2022 20:03:03 GMT+0700 (Indochina Time)
+                at Sun May 29 2022 14:41:05 GMT+0700 (Indochina Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

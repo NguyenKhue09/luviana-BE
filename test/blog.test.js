@@ -34,8 +34,8 @@ beforeAll(async () => {
     adminToken = adminResult.body.token
 
     const loginUser = {
-        "email": "19521789@gm.uit.edu.vn",
-        "password": "password"
+        "email": "19521789@gmail.com",
+        "password": "password123"
     }
 
     const userResult = await supertest(app)
@@ -87,7 +87,9 @@ describe('Good blog result', function() {
 
     test('Respond to get blog by author', async()  => {
         const res = await request(app)
-        .get('/blog/author/6284db11aecf83be28e02e48')
+        .get('/blog/my-blog')
+        .set('authorizationtoken', `Bearer ${userToken}`);
+        console.log(userToken);
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -95,7 +97,7 @@ describe('Good blog result', function() {
 
     test('Respond to update a blog', async() => {
         const updateBlog = {
-            "blogId": "6290add143148c83c33a1610",
+            "blogId": "629322812408913218c377d4",
             "data": {
                 "content": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
             }
@@ -172,7 +174,7 @@ describe('Good blog result', function() {
 
     test('Respond to get liked blogs by user', async() => {
         const res = await request(app)
-        .get('/blog/like?userId=628513a4686cfbed34ad1be6')
+        .get('/blog/like?userId=6291baa7ef1c07211aae6372')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -229,13 +231,13 @@ describe('Fail test result for blog', function() {
         expect(res.status).toBe(400)
     });
 
-    test('Faild response to get blog by author - wrong id', async()  => {
-        const res = await request(app)
-        .get('/blog/author/6284db11aecf83be28abce99')
+    // test('Faild response to get blog by author - wrong id', async()  => {
+    //     const res = await request(app)
+    //     .get('/blog/author/6284db11aecf83be28abce99')
 
-        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
-        expect(res.body["data"]).toStrictEqual([]);
-    });
+    //     expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+    //     expect(res.body["data"]).toStrictEqual([]);
+    // });
 
     test('Fail respond to get comment - wrong blogId', async() => {
         const res = await request(app)
