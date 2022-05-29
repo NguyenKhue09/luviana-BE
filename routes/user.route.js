@@ -15,6 +15,7 @@ UserRouter.get("/activate/:token", UserController.activate)
 UserRouter.get("/refresh-token", UserController.getAccessToken)
 UserRouter.post("/forgot-password", UserController.forgotPassword);
 UserRouter.post("/reset-password", AuthMiddleWare.requireUser, UserController.resetPassword);
+UserRouter.put("/update-info", AuthMiddleWare.requireUser, UserController.updateUser);
 UserRouter.get("/user-list", AuthMiddleWare.requireAdmin, UserController.getUserList);
 UserRouter.post("/add", AuthMiddleWare.requireAdmin, UserController.registerUser)
 UserRouter.put("/update", AuthMiddleWare.requireAdmin, UserController.updateUserAdmin)
