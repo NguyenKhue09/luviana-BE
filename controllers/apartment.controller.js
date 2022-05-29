@@ -273,7 +273,9 @@ async function addReview(req, res) {
 }
 
 async function getReviews(req, res) {
-    let { id, page, limit } = req.query;
+    const { id } = req.query;
+    const page = parseInt(req.query.page || 1);
+    const limit = parseInt(req.query.limit || 10);
     if (!id) {
         return res.status(400).json({
             success: false,
@@ -281,8 +283,6 @@ async function getReviews(req, res) {
             data: null,
         });
     }
-    if (!page) { page = 1; }
-    if (!limit) { limit = 10; }
     try {
         const response = await ReviewService.getReviews(id, page, limit);
         if (response.success) {
