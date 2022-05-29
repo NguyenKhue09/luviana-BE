@@ -9,7 +9,8 @@ const apartmentSchema = new mongoose.Schema({
     },
     owner: {
         type: mongoose.Types.ObjectId,
-        ref: User
+        ref: User,
+        required: [true, "Owner of apartment is required!"]
     },
     address: {
         apartmentNumber: {
