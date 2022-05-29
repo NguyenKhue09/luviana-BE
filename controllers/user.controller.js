@@ -420,7 +420,7 @@ async function getUserList(req, res) {
 async function updateUserAdmin(req, res) {
   const { username, gender, phone, dob } = req.body;
   const userId = req.body._id
-
+  
   if (!userId) {
     return res.status(400).json({
       success: false,

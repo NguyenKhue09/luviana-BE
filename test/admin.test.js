@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import bodyParser from 'body-parser'
 import connectDB from "../config/config.js"
 import { AdminRouter } from "../routes/admin.route.js"
+import { UserRouter } from "../routes/user.route.js"
 import supertest from 'supertest'
 
 const app = new express()
@@ -13,6 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/admin", AdminRouter);
+app.use('/user', UserRouter);
 
 beforeAll(async () => {
     connectDB();
@@ -99,7 +101,34 @@ describe('Good admin result', function() {
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
-    })
+    });
+
+    test('Respond to get user by id', async() => {
+        const res = await request(app)
+        .get('/user/user-list')
+        .set('authorization', `Bearer ${token}`);
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    });
+
+    test('Respond to update user', async() => {
+        const updateUser = {
+            "_id": "6293281c2408913218c3786f",
+            "username": "Nguyễn Hữu Long",
+            "gender": "male",
+            "phone": "0999999999",
+            "dob": "2001-06-30T00:00:00.000+00:00"
+        }
+
+        const res = await request(app)
+        .put('/user/update')
+        .send(updateUser)
+        .set('authorization', `Bearer ${token}`);
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    });
 });
 
 describe('Fail admin result', function() {
@@ -171,5 +200,19 @@ describe('Fail admin result', function() {
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(500)
-    })
+    });
+
+    test('Fail respond to update user', async() => {
+        const updateUser = {
+           
+        }
+
+        const res = await request(app)
+        .put('/user/update')
+        .send(updateUser)
+        .set('authorization', `Bearer ${token}`);
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(400)
+    });
 });

@@ -7,7 +7,7 @@ import { UserRouter } from "../routes/user.route.js"
 import supertest from 'supertest'
 
 const app = new express()
-let token = ''
+let token = '';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -18,8 +18,8 @@ beforeAll(async () => {
     connectDB();
 
     const loginUser = {
-        "email": "19521789@gm.uit.edu.vn",
-        "password": "password"
+        "email": "19521789@gmail.com",
+        "password": "password123"
     }
 
     const userResult = await supertest(app)
@@ -64,8 +64,8 @@ describe('Good user results', function() {
 
     test('respond to login user', async() => {
         const auth = {
-            "email": "19521789@gm.uit.edu.vn",
-            "password": "password"
+            "email": "19521789@gmail.com",
+            "password": "password123"
         }
 
         const res = await request(app)
