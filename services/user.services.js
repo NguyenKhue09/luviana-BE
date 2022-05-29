@@ -25,9 +25,20 @@ async function getUser(userId) {
     }
 }
 
-async function registerUser(avatar, username, password, email) {
+async function registerUser(username, password, email, gender, phone, dob) {
     try {
-        const user = await User.create({avatar, username, password, email})
+
+        const checkEmailExist = await User.exists({ email });
+        if (checkEmailExist) {
+            return {
+                success: false,
+                message: "Email is already taken",
+                data: null
+            }
+        }
+
+        const user = await User.create({username, password, email, gender, phone, dob})
+
         if(!user) {
             return {
                 success: false,
@@ -39,7 +50,7 @@ async function registerUser(avatar, username, password, email) {
         return {
             success: true,
             message: "Create user successful!",
-            data: user
+            data: user._id
         };
     } catch (error) {
         return {
@@ -185,6 +196,30 @@ async function resetPassord(password, userId) {
     }
 }
 
+async function getUserById(userId) {
+    try {
+        const user = await User.findById(userId).select("-password")
+        if (!user) {
+            return {
+                success: false,
+                message: "User not found!",
+                data: null
+            }
+        }
+        return {
+            success: true,
+            message: "Get user information successfully!",
+            data: user
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
+
 // Admin API 
 async function getUserList() {
     try {
@@ -202,6 +237,56 @@ async function getUserList() {
         }
     }
 }
+
+async function updateUserAdmin(userId, userData) {
+    try {
+        const  result = await User.findByIdAndUpdate(userId, userData, {new: true})
+
+        if(!result) {
+            return {
+                success: false,
+                message: "Update user information failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Update user information successfully!",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        } 
+    }
+}
+
+async function deleteUser(userId) {
+    try {
+        const result = await User.findByIdAndDelete(userId)
+        if(!result) {
+            return {
+                success: false,
+                message: "Delete user failed!",
+                data: null
+            }
+        }
+        return {
+            success: true,
+            message: "Delete user successfully!",
+            data: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
   
 export const UserService = { 
     getUser,
@@ -211,5 +296,8 @@ export const UserService = {
     forgotPassword,
     resetPassord,
     isExist,
-    getUserList
+    getUserList,
+    updateUserAdmin,
+    getUserById,
+    deleteUser
 }

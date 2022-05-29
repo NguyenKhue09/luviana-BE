@@ -159,7 +159,7 @@ async function uploadImage(req, res) {
 }
 
 async function getBlogByAuthor(req, res) {
-    const { author } = req.params;
+    const author = req.userId;
     if (!author) {
         res.status(400).json({
             success: false,
@@ -430,8 +430,11 @@ async function denyBlog(req, res) {
 // End of Admin API
 
 async function getAllConfirmedBlog(req, res) {
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+
     try {
-        const response = await BlogService.getAllConfirmedBlog();
+        const response = await BlogService.getAllConfirmedBlog(page, limit);
 
         if (response.success) {
             return res.json(response)
@@ -443,6 +446,12 @@ async function getAllConfirmedBlog(req, res) {
             data: null
         })
     }
+}
+
+async function dropDatabase(req, res) {
+    const response = await BlogService.dropDatabase();
+    if (response.success) return res.json(response)
+    else return res.status(500).json(response)
 }
 
 export const BlogController = {
@@ -461,5 +470,6 @@ export const BlogController = {
     confirmBlog,
     getAllConfirmedBlog,
     deleteBlog,
-    denyBlog
+    denyBlog,
+    dropDatabase
 }
