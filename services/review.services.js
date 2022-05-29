@@ -130,7 +130,7 @@ async function getAvgRating(apartmentId) {
         const final = await Apartment.populate(result, { path: "reviews" });
         const avgRating = final[0].reviews.reduce((acc, cur) => acc + cur.rating, 0) / final[0].reviews.length;
         return {
-            success: false,
+            success: true,
             message: "Average rating calculated!",
             data: avgRating
         }
