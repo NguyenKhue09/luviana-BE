@@ -304,6 +304,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
       {
         $project: {
           name: 1,
+          owner: 1,
           address: 1,
           thumbnail: 1,
           type: 1,
@@ -323,6 +324,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
       {
         $project: {
           name: 1,
+          owner: 1,
           address: 1,
           thumbnail: 1,
           type: 1,
@@ -413,6 +415,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
       {
         $group: {
           _id: "$_id",
+          owner: { $first: "$owner" },
           name: { $first: "$name" },
           address: { $first: "$address" },
           thumbnail: { $first: "$thumbnail" },
@@ -487,6 +490,7 @@ async function searchRoomAvailableOfAparment(
           type: 1,
           rating: 1,
           description: 1,
+          owner: 1,
           rooms: {
             $filter: {
               input: "$rooms",
@@ -506,6 +510,7 @@ async function searchRoomAvailableOfAparment(
           type: 1,
           rating: 1,
           description: 1,
+          owner: 1,
           rooms: 1,
           capacities: {
             $reduce: {
@@ -591,6 +596,7 @@ async function searchRoomAvailableOfAparment(
       {
         $group: {
           _id: "$_id",
+          owner: { $first: "$owner" },
           name: { $first: "$name" },
           address: { $first: "$address" },
           thumbnail: { $first: "$thumbnail" },

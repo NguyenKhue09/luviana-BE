@@ -371,7 +371,6 @@ async function deleteApartment(apartmentId) {
 async function getApartmentCities() {
   try {
     const apartment = await Apartment.distinct("address.province")
-
     if (apartment.length == 0) {
       return {
         success: false,
@@ -383,6 +382,33 @@ async function getApartmentCities() {
     return {
       success: true,
       message: "Get apartment cites successfully!",
+      data: apartment,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+}
+
+async function updateAllOldApartmentOwner() {
+  try {
+    const apartment = await Apartment.updateMany({}, {owner: "628c9b7796dc4b39c79b4fc8"})
+
+    console.log(apartment)
+    if (apartment == 0) {
+      return {
+        success: false,
+        message: "Update owner failed!",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Update owner success",
       data: apartment,
     };
   } catch (error) {
