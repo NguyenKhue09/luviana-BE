@@ -7,7 +7,7 @@ import { UserRouter } from "../routes/user.route.js"
 import supertest from 'supertest'
 
 const app = new express()
-let token = ''
+let token = '';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
