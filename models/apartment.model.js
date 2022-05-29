@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import User from "./user.model.js";
-
+import Review from "./review.model.js";
 
 const apartmentSchema = new mongoose.Schema({
     name: {
@@ -64,6 +64,11 @@ const apartmentSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    reviews: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: Review,
+        default: []
+    }
 })
 
 const Apartment = mongoose.model("Apartment", apartmentSchema);
