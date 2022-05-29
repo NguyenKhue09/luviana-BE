@@ -79,7 +79,7 @@ describe('Good user results', function() {
 
     test('Respond to update user', async() => {
         const updateUser = {
-
+            "username": "Nguyễn Hữu Long"
         }
 
         const res = await request(app)

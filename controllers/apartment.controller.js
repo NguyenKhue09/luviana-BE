@@ -310,6 +310,7 @@ async function getAvgRating(req, res) {
 
     try {
         const response = await ReviewService.getAvgRating(id);
+
         if (response.success) {
             return res.json(response);
         } else return res.status(500).json(response);
