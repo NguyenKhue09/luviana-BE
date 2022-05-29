@@ -66,7 +66,7 @@ async function updateBlog(data, blogId, author) {
 async function getBlogById(blogId) {
     try {
 
-        const result = await Blog.findById(blogId)
+        const result = await Blog.findById(blogId).populate("author")
 
         if(!result) {
             return {
