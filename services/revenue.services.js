@@ -1,7 +1,4 @@
 import Bill from "../models/bill.model.js"
-import Apartment from "../models/apartment.model.js"
-import BookingCalendar from "../models/bookingCalendar.model.js"
-import Room from "../models/room.model.js"
 
 
 async function getMonthlyRevenue(month, year) {
@@ -30,28 +27,9 @@ async function getMonthlyRevenue(month, year) {
                     totalCost: 1,
                     bookingCalendarId: "$bookingCalendar._id",
                     beginDate: "$bookingCalendar.beginDate",
-                    room: "$bookingCalendar.room"
                 }
             },
-            {
-                $lookup: {
-                    from: "rooms",
-                    localField: "room",
-                    foreignField: "_id",
-                    as: "room",
-                },
-            },
-            {
-                $unwind: "$room"
-            },
-            {
-                $project: {
-                    totalCost: 1,
-                    bookingCalendarId: 1,
-                    beginDate: 1,
-                    apartmentId: "$room.apartmentId"
-                }
-            },
+           
             {
                 $lookup: {
                     from: "apartments",
