@@ -1,12 +1,11 @@
 import mongoose from "mongoose"
-import User from "./user.model.js"
 
 
 const commentSchema = new mongoose.Schema({
     author: {
         type: mongoose.Types.ObjectId,
         required: [true, "Author of comment is required!"],
-        ref: User
+        ref: "User"
     },
     content: {
         type: String,

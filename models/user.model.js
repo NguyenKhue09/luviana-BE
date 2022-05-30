@@ -3,6 +3,7 @@ import argon2 from "argon2"
 import dotenv from "dotenv"
 import jwt from "jsonwebtoken"
 import crypto from "crypto"
+import Blog from "./blog.model.js"
 
 
 dotenv.config()
@@ -103,6 +104,10 @@ userSchema.methods.getResetPasswordToken = function () {
 userSchema.methods.verifyRefreshToken = function (refreshToken) {
     return jwt.verify(refreshToken, process.env.SECRET_TOKEN_REFRESH);
 }
+
+userSchema.post("findOneAndDelete", async function (doc) {
+    await Blog.deleteMany({ author: doc._id })
+})
 
 const User = mongoose.model("User", userSchema);
 
