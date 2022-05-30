@@ -23,7 +23,28 @@ async function createBill(req, res) {
     }
 }
 
+async function getUserBill(req, res) {
+    const userId = req.userId
+    try {
+
+        var result = await BillService.getUserBill(userId);
+
+        if (result.success) {
+            return res.json(result)
+        } else {
+            return res.status(400).json(result)
+        }
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: error,
+            data: null
+        })
+    }
+}
+
 export const BillController = {
-    createBill
+    createBill,
+    getUserBill
 }
 
