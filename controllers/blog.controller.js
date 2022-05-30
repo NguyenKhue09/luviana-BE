@@ -355,7 +355,7 @@ async function getLikedBlogsByUser(req, res) {
 // Admin API
 
 async function confirmBlog(req, res) {
-    const { blogId } = req.body;
+    const blogId = req.body._id;
 
     if (!blogId) {
         return res.status(400).json({
