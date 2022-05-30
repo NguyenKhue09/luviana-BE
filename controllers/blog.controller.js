@@ -383,7 +383,7 @@ async function confirmBlog(req, res) {
 }
 
 async function deleteBlog(req, res) {
-    const { blogId } = req.body;
+    const { blogId } = req.params;
 
     if (!blogId) {
         return res.status(400).json({
