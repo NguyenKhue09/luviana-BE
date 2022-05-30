@@ -408,7 +408,7 @@ async function deleteBlog(req, res) {
 }
 
 async function denyBlog(req, res) {
-    const { blogId } = req.body;
+    const blogId = req.body._id;
     if (!blogId) {
         return res.status(400).json({
             success: false,
