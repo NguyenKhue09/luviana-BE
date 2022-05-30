@@ -22,6 +22,7 @@ async function createBill(data) {
 
         const billDocument = {
             userId: data.customer,
+            apartmentId: data.apartmentId,
             totalBookingPeople: data.totalBookingPeople,
             userBookingInfos: data.userBookingInfos,
             note: data.note,
