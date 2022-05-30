@@ -1,8 +1,12 @@
 import { BillService } from "../services/bill.services.js";
 
 async function createBill(req, res) {
-    const data = req.body
+    let data = req.body
+    const userId = req.userId
     try {
+
+        data = {...data, userId}
+
         var result = await BillService.createBill(data);
 
         if (result.success) {
