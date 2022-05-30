@@ -21,7 +21,8 @@ async function createBill(data) {
         const bookingCalendarDocumentSaved = await BookingCalendar.create(bookingCalendarDocuments, {session})
 
         const billDocument = {
-            userId: data.customer,
+            userId: data.userId,
+            apartmentId: data.apartmentId,
             totalBookingPeople: data.totalBookingPeople,
             userBookingInfos: data.userBookingInfos,
             note: data.note,
