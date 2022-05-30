@@ -315,7 +315,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
               input: "$rooms",
               as: "room",
               cond: {
-                $lte: ["$$room.capacity", people],
+                $gte: ["$$room.capacity", people],
               },
             },
           },
@@ -496,7 +496,7 @@ async function searchRoomAvailableOfAparment(
               input: "$rooms",
               as: "room",
               cond: {
-                $lte: ["$$room.capacity", people],
+                $gte: ["$$room.capacity", people],
               },
             },
           },
