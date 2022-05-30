@@ -126,7 +126,7 @@ async function getAllBlog(req, res) {
 }
 
 async function uploadImage(req, res) {
-    let streamUpload = (req) => {
+    let streamUpload = (file) => {
         return new Promise((resolve, reject) => {
             let stream = cloudinary.uploader.upload_stream(
                 (error, result) => {
@@ -138,20 +138,23 @@ async function uploadImage(req, res) {
                 }
             );
 
-            streamifier.createReadStream(req.file.buffer).pipe(stream);
+            streamifier.createReadStream(file.buffer).pipe(stream);
         });
     };
 
-    async function upload(req) {
-        return await streamUpload(req);
+    async function upload(files) {
+        let results = [];
+        for (const file of files)
+            results.push(await streamUpload(file));
+        return results.map(r => r.secure_url);
     }
 
     try {
-        const result = await upload(req);
+        const result = await upload(req.files);
         return res.json({
             success: true,
-            message: "Upload image successfully",
-            data: result.secure_url
+            message: "Upload images successfully",
+            data: result
         })
     } catch (err) {
         console.log(err);
