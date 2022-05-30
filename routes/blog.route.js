@@ -2,6 +2,7 @@ import express from "express";
 import { BlogController } from "../controllers/blog.controller.js";
 import upload from "../middlewares/upload.middleware.js";
 import { AuthMiddleWare } from "../middlewares/auth.middleware.js";
+import Blog from "../models/blog.model.js";
 
 const BlogRouter = express.Router();
 
@@ -24,5 +25,6 @@ BlogRouter.route("/confirm")
     .put(AuthMiddleWare.requireAdmin ,BlogController.confirmBlog)
     .get(BlogController.getAllConfirmedBlog)
     .delete(AuthMiddleWare.requireAdmin, BlogController.denyBlog)
+BlogRouter.get("/unconfirm", AuthMiddleWare.requireAdmin, BlogController.getAllUnconfirmedBlog)
 
 export { BlogRouter };

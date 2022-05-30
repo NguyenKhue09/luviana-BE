@@ -391,6 +391,31 @@ async function deleteBlog(blogId) {
     }
 }
 
+async function getAllUnconfirmedBlog() {
+    try {
+        const result = await Blog.find({ isConfirm: false }).populate("author")
+        if (!result) {
+            return {
+                success: false,
+                message: "Get all unconfirmed blog failed!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Get all unconfirmed blog successfully!",
+            data: result
+        }
+    } catch (e) {
+        return {
+            success: false,
+            message: `Unexpected error: ${e.message}`,
+            data: null
+        }
+    }
+}
+
 // End of Admin API
 
 async function getAllConfirmedBlog(page, limit) {
@@ -454,6 +479,7 @@ export const BlogService = {
     getLikedBlogsByUser,
     confirmBlog,
     getAllConfirmedBlog,
+    getAllUnconfirmedBlog,
     deleteBlog,
     denyBlog
 }

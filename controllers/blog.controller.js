@@ -427,6 +427,20 @@ async function denyBlog(req, res) {
     }
 }
 
+async function getAllUnconfirmedBlog(req, res) {
+    try {
+        const response = await BlogService.getAllUnconfirmedBlog();
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `Something went wrong: ${e.message}`,
+            data: null
+        })
+    }
+}
+
 // End of Admin API
 
 async function getAllConfirmedBlog(req, res) {
@@ -471,5 +485,6 @@ export const BlogController = {
     getAllConfirmedBlog,
     deleteBlog,
     denyBlog,
-    dropDatabase
+    dropDatabase,
+    getAllUnconfirmedBlog
 }
