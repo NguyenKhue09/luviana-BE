@@ -11,7 +11,7 @@ BlogRouter.get("/all", AuthMiddleWare.requireAdmin,BlogController.getAllBlog);
 BlogRouter.get("/detail/:blogId", BlogController.getBlogById);
 BlogRouter.put("/update", AuthMiddleWare.requireUser, BlogController.updateBlog);
 BlogRouter.delete("/delete", AuthMiddleWare.requireAdmin, BlogController.deleteBlog)
-BlogRouter.post("/upload", upload.single('thumbnail'), BlogController.uploadImage);
+BlogRouter.post("/upload", upload.array('thumbnail'), BlogController.uploadImage);
 BlogRouter.get("/my-blog", AuthMiddleWare.requireUser, BlogController.getBlogByAuthor)
 BlogRouter.route("/comment") 
     .get(BlogController.getCommentList)
