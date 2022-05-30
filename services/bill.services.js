@@ -1,6 +1,6 @@
 import Bill from "../models/bill.model.js";
 import BookingCalendar from "../models/bookingCalendar.model.js";
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 async function createBill(data) {
   try {
@@ -17,20 +17,22 @@ async function createBill(data) {
     });
 
     await session.withTransaction(async () => {
+      const bookingCalendarDocumentSaved = await BookingCalendar.create(
+        bookingCalendarDocuments,
+        { session }
+      );
 
-        const bookingCalendarDocumentSaved = await BookingCalendar.create(bookingCalendarDocuments, {session})
+      const billDocument = {
+        userId: data.userId,
+        apartmentId: data.apartmentId,
+        totalBookingPeople: data.totalBookingPeople,
+        userBookingInfos: data.userBookingInfos,
+        note: data.note,
+        bookingCalendar: bookingCalendarDocumentSaved.map((d) => d._id),
+        totalCost: data.totalCost,
+      };
 
-        const billDocument = {
-            userId: data.customer,
-            totalBookingPeople: data.totalBookingPeople,
-            userBookingInfos: data.userBookingInfos,
-            note: data.note,
-            bookingCalendar: bookingCalendarDocumentSaved.map((d) => d._id),
-            totalCost: data.totalCost
-        }
-
-        await Bill.create([billDocument], {session});
-
+      await Bill.create([billDocument], { session });
     });
 
     session.endSession();
@@ -48,6 +50,40 @@ async function createBill(data) {
   }
 }
 
+async function getUserBill(userId) {
+  try {
+    const bills = await Bill.find({ userId }).populate({
+      path: "bookingCalendar",
+      select: "beginDate endDate room",
+      populate: {
+        path: "room",
+        select: "name price bedName capacity square"
+      },
+    }).populate({path: "apartmentId"});
+
+    if (bills.length === 0) {
+      return {
+        success: false,
+        message: "Bill not found!",
+        data: null,
+      };
+    } else {
+      return {
+        success: true,
+        message: "Get all bill for user success",
+        data: bills,
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+}
+
 export const BillService = {
-    createBill,
+  createBill,
+  getUserBill,
 };
