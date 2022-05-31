@@ -310,15 +310,19 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           type: 1,
           rating: 1,
           description: 1,
-          rooms: {
-            $filter: {
-              input: "$rooms",
-              as: "room",
-              cond: {
-                $lte: ["$$room.capacity", people],
-              },
-            },
-          },
+          rooms: 1
+          // rooms: {
+          //   $filter: {
+          //     input: "$rooms",
+          //     as: "room",
+          //     cond: {
+          //       $or: [
+          //         {$lte: ["$$room.capacity", people]},
+          //         {$gte: ["$$room.capacity", people]}
+          //       ]
+          //     },
+          //   },
+          // },
         },
       },
       {
@@ -351,17 +355,6 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           }
         },
       },
-      // {
-      //   $match: {
-      //     $expr: {
-      //       $cond: {
-      //         if: { $setEquals: ["$capacities", people] },
-      //         then: true,
-      //         else: false,
-      //       },
-      //     },
-      //   },
-      // },
       {
         $unwind: "$rooms",
       },
@@ -491,15 +484,16 @@ async function searchRoomAvailableOfAparment(
           rating: 1,
           description: 1,
           owner: 1,
-          rooms: {
-            $filter: {
-              input: "$rooms",
-              as: "room",
-              cond: {
-                $lte: ["$$room.capacity", people],
-              },
-            },
-          },
+          rooms: 1,
+          // rooms: {
+          //   $filter: {
+          //     input: "$rooms",
+          //     as: "room",
+          //     cond: {
+          //       $gte: ["$$room.capacity", people],
+          //     },
+          //   },
+          // },
         },
       },
       {
@@ -532,17 +526,6 @@ async function searchRoomAvailableOfAparment(
           }
         },
       },
-      // {
-      //   $match: {
-      //     $expr: {
-      //       $cond: {
-      //         if: { $setEquals: ["$capacities", people] },
-      //         then: true,
-      //         else: false,
-      //       },
-      //     },
-      //   },
-      // },
       {
         $unwind: "$rooms",
       },
