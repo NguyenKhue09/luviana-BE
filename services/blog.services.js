@@ -466,7 +466,7 @@ async function adminUpdateBlog(blogId, data) {
         return {
                 success: true,
                 message: "Update blog successfully!",
-                data: result
+                data: null
             }
         
     } catch (error) {

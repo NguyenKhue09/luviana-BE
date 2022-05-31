@@ -472,7 +472,8 @@ async function getAllUnconfirmedBlog(req, res) {
 }
 
 async function adminUpdateBlog(req, res) {
-    const { content, pictures, blogId } = req.body;
+    const { content, pictures } = req.body;
+    const blogId = req.body._id;
 
     if (!blogId) {
         return res.status(400).json({
