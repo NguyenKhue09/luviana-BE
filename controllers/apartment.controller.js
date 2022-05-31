@@ -162,6 +162,7 @@ async function confirmPendingApartment(req, res) {
     try {
         const apartment = await ApartmentService.confirmPendingApartment(apartmentId)
 
+        console.log(apartment)
         if (apartment.success) {
             return req.json(apartment)
         } else {
