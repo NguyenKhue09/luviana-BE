@@ -14,6 +14,7 @@ ApartmentRouter.route("/review")
     .post(AuthMiddleWare.requireUser, ApartmentController.addReview)
     .get(ApartmentController.getReviews)
 ApartmentRouter.get("/avg-rating/:id", ApartmentController.getAvgRating)
+ApartmentRouter.get("/apartment-of-user", AuthMiddleWare.requireUser, ApartmentController.getApartmentOfUser)
 
 // admin
 ApartmentRouter.get("/all", AuthMiddleWare.requireAdmin, ApartmentController.getApartment)
