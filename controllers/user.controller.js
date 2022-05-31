@@ -185,7 +185,6 @@ async function activate(req, res) {
     }
     const { avatar, username, password } = userData;
     const user = await UserService.registerUser(
-      avatar,
       username,
       password,
       email
