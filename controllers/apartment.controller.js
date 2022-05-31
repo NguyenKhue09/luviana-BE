@@ -158,7 +158,7 @@ async function updateApartment(req, res) {
 }
 
 async function confirmPendingApartment(req, res) {
-    const { apartmentId } = req.query
+    const { apartmentId } = req.body
     try {
         const apartment = await ApartmentService.confirmPendingApartment(apartmentId)
 
@@ -204,7 +204,7 @@ async function removePendingApartment(req, res) {
 }
 
 async function deleteApartment(req, res) {
-    const { apartmentId } = req.query
+    const { apartmentId } = req.body
     try {
         const apartment = await ApartmentService.deleteApartment(apartmentId)
 
