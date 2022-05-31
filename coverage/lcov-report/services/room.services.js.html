@@ -845,24 +845,7 @@
 <a name='L780'></a><a href='#L780'>780</a>
 <a name='L781'></a><a href='#L781'>781</a>
 <a name='L782'></a><a href='#L782'>782</a>
-<a name='L783'></a><a href='#L783'>783</a>
-<a name='L784'></a><a href='#L784'>784</a>
-<a name='L785'></a><a href='#L785'>785</a>
-<a name='L786'></a><a href='#L786'>786</a>
-<a name='L787'></a><a href='#L787'>787</a>
-<a name='L788'></a><a href='#L788'>788</a>
-<a name='L789'></a><a href='#L789'>789</a>
-<a name='L790'></a><a href='#L790'>790</a>
-<a name='L791'></a><a href='#L791'>791</a>
-<a name='L792'></a><a href='#L792'>792</a>
-<a name='L793'></a><a href='#L793'>793</a>
-<a name='L794'></a><a href='#L794'>794</a>
-<a name='L795'></a><a href='#L795'>795</a>
-<a name='L796'></a><a href='#L796'>796</a>
-<a name='L797'></a><a href='#L797'>797</a>
-<a name='L798'></a><a href='#L798'>798</a>
-<a name='L799'></a><a href='#L799'>799</a>
-<a name='L800'></a><a href='#L800'>800</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L783'></a><a href='#L783'>783</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1144,13 +1127,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1325,16 +1301,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1973,15 +1939,19 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           type: 1,
           rating: 1,
           description: 1,
-          rooms: {
-            $filter: {
-              input: "$rooms",
-              as: "room",
-              cond: {
-                $lte: ["$$room.capacity", people],
-              },
-            },
-          },
+          rooms: 1
+          // rooms: {
+          //   $filter: {
+          //     input: "$rooms",
+          //     as: "room",
+          //     cond: {
+          //       $or: [
+          //         {$lte: ["$$room.capacity", people]},
+          //         {$gte: ["$$room.capacity", people]}
+          //       ]
+          //     },
+          //   },
+          // },
         },
       },
       {
@@ -2014,17 +1984,6 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           }
         },
       },
-      // {
-      //   $match: {
-      //     $expr: {
-      //       $cond: {
-      //         if: { $setEquals: ["$capacities", people] },
-      //         then: true,
-      //         else: false,
-      //       },
-      //     },
-      //   },
-      // },
       {
         $unwind: "$rooms",
       },
@@ -2154,15 +2113,16 @@ async function searchRoomAvailableOfAparment(
           rating: 1,
           description: 1,
           owner: 1,
-          rooms: {
-            $filter: {
-              input: "$rooms",
-              as: "room",
-              cond: {
-                $lte: ["$$room.capacity", people],
-              },
-            },
-          },
+          rooms: 1,
+          // rooms: {
+          //   $filter: {
+          //     input: "$rooms",
+          //     as: "room",
+          //     cond: {
+          //       $gte: ["$$room.capacity", people],
+          //     },
+          //   },
+          // },
         },
       },
       {
@@ -2195,17 +2155,6 @@ async function searchRoomAvailableOfAparment(
           }
         },
       },
-      // {
-      //   $match: {
-      //     $expr: {
-      //       $cond: {
-      //         if: { $setEquals: ["$capacities", people] },
-      //         then: true,
-      //         else: false,
-      //       },
-      //     },
-      //   },
-      // },
       {
         $unwind: "$rooms",
       },
@@ -2467,7 +2416,7 @@ export const RoomServices = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun May 29 2022 18:14:28 GMT+0700 (Indochina Time)
+                at Mon May 30 2022 16:39:58 GMT+0700 (Indochina Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -90,37 +90,42 @@
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import express from "express";
 import { BlogController } from "../controllers/blog.controller.js";
 import upload from "../middlewares/upload.middleware.js";
 import { AuthMiddleWare } from "../middlewares/auth.middleware.js";
+import Blog from "../models/blog.model.js";
 &nbsp;
 const BlogRouter = express.Router();
 &nbsp;
@@ -128,8 +133,8 @@ BlogRouter.post("/", AuthMiddleWare.requireUser, BlogController.addNewBlog);
 BlogRouter.get("/all", AuthMiddleWare.requireAdmin,BlogController.getAllBlog);
 BlogRouter.get("/detail/:blogId", BlogController.getBlogById);
 BlogRouter.put("/update", AuthMiddleWare.requireUser, BlogController.updateBlog);
-BlogRouter.delete("/delete", AuthMiddleWare.requireAdmin, BlogController.deleteBlog)
-BlogRouter.post("/upload", upload.single('thumbnail'), BlogController.uploadImage);
+BlogRouter.delete("/delete/:blogId", AuthMiddleWare.requireAdmin, BlogController.deleteBlog)
+BlogRouter.post("/upload", upload.array('thumbnail'), BlogController.uploadImage);
 BlogRouter.get("/my-blog", AuthMiddleWare.requireUser, BlogController.getBlogByAuthor)
 BlogRouter.route("/comment") 
     .get(BlogController.getCommentList)
@@ -143,6 +148,7 @@ BlogRouter.route("/confirm")
     .put(AuthMiddleWare.requireAdmin ,BlogController.confirmBlog)
     .get(BlogController.getAllConfirmedBlog)
     .delete(AuthMiddleWare.requireAdmin, BlogController.denyBlog)
+BlogRouter.get("/pending", AuthMiddleWare.requireAdmin, BlogController.getAllUnconfirmedBlog)
 &nbsp;
 export { BlogRouter };</pre></td></tr></table></pre>
 
@@ -151,7 +157,7 @@ export { BlogRouter };</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun May 29 2022 18:14:28 GMT+0700 (Indochina Time)
+                at Mon May 30 2022 16:39:58 GMT+0700 (Indochina Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

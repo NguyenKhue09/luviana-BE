@@ -31,6 +31,7 @@ const blogSchema = new mongoose.Schema({
 })
 
 blogSchema.post("findOneAndDelete", async function (doc) {
+    if (!doc) return;
     const commentList = doc.comments;
     await Comment.deleteMany({ _id: { $in: commentList } })
 });

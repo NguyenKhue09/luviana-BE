@@ -33,8 +33,9 @@ async function addNewBlog(data) {
 }
 
 async function updateBlog(data, blogId, author) {
-    try {
+    data.date = new Date();
 
+    try {
         const result = await Blog.findOneAndUpdate({
             _id: mongoose.Types.ObjectId(blogId),  
             author: mongoose.Types.ObjectId(author)
@@ -303,6 +304,36 @@ async function getLikedBlogsByUser(userId) {
     }
 }
 
+async function userDeleteBlog(userId, blogId) {
+    try {
+        const result = await Blog.findOneAndDelete({
+            _id: mongoose.Types.ObjectId(blogId),
+            author: mongoose.Types.ObjectId(userId)
+        }, { useFindAndModify: false })
+
+        if(!result) {
+            return {
+                success: false,
+                message: "You are not the author or blog is not exists!",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "Delete blog successfully!",
+            data: null
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            success: false,
+            message: `Unexpected error.`,
+            data: null
+        }
+    }
+}
+
 // Admin API
 
 async function confirmBlog(blogId) {
@@ -481,5 +512,6 @@ export const BlogService = {
     getAllConfirmedBlog,
     getAllUnconfirmedBlog,
     deleteBlog,
-    denyBlog
+    denyBlog,
+    userDeleteBlog
 }

@@ -355,6 +355,33 @@ async function getLikedBlogsByUser(req, res) {
     }
 }
 
+async function userDeleteBlog(req, res) {
+    const { blogId } = req.params;
+    const userId = req.userId;
+
+    if (!blogId) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide blog id.",
+            data: null
+        })
+    }
+
+    try {
+        const response = await BlogService.userDeleteBlog(userId, blogId);
+
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: `Something went wrong.`,
+            data: null
+        })
+    }
+}
+
 // Admin API
 
 async function confirmBlog(req, res) {
@@ -489,5 +516,6 @@ export const BlogController = {
     deleteBlog,
     denyBlog,
     dropDatabase,
-    getAllUnconfirmedBlog
+    getAllUnconfirmedBlog,
+    userDeleteBlog
 }

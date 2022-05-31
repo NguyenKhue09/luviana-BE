@@ -189,7 +189,7 @@ describe('Good blog result', function() {
 
     test('Repsond to confirm blog', async() => {
         const newBlogConfirm = {
-            "blogId": "6290add143148c83c33a1610"
+            "_id": "6290add143148c83c33a1610"
         };
 
         const res = await request(app)
@@ -199,7 +199,16 @@ describe('Good blog result', function() {
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
-    })
+    });
+
+    test('Respond to get unconfirmed blogs', async() => {
+        const res = await request(app)
+        .get('/blog/pending')
+        .set('authorization', `Bearer ${adminToken}`);
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    });
 
 });
 
