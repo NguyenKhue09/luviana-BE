@@ -294,7 +294,7 @@ async function getAllPendingApartment() {
 async function confirmPendingApartment(apartmentId) {
     try {
         const apartment = await Apartment.findByIdAndUpdate(apartmentId, {isPending: false})
-        console.log(apartment)
+        //console.log(apartment)
         if (!apartment) {
           return {
             success: false,
