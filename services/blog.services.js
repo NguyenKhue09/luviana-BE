@@ -38,7 +38,8 @@ async function updateBlog(data, blogId, author) {
     try {
         const result = await Blog.findOneAndUpdate({
             _id: mongoose.Types.ObjectId(blogId),  
-            author: mongoose.Types.ObjectId(author)
+            author: mongoose.Types.ObjectId(author),
+            isConfirm: false,
         }, data, { returnDocument: "after" })
 
         if(!result) {
