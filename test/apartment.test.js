@@ -29,7 +29,7 @@ beforeAll(async () => {
 
     const loginUser = {
         "email": "19521789@gmail.com",
-        "password": "password123"
+        "password": "password"
     }
 
     const adminResult = await supertest(app)
