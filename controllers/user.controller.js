@@ -191,10 +191,10 @@ async function activate(req, res) {
       email
     );
     const { _id } = user;
-    const accessToken = jwt.sign({ id }, process.env.SECRET_TOKEN, {
+    const accessToken = jwt.sign({ _id }, process.env.SECRET_TOKEN, {
       expiresIn: "1d",
     });
-    const refreshToken = jwt.sign({ id }, process.env.SECRET_TOKEN_REFRESH, {
+    const refreshToken = jwt.sign({ _id }, process.env.SECRET_TOKEN_REFRESH, {
       expiresIn: "1y",
     });
     // await saveToken(email, refreshToken, accessToken);
