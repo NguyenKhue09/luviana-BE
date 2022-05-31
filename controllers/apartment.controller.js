@@ -324,6 +324,27 @@ async function getAvgRating(req, res) {
     }
 }
 
+async function getApartmentOfUser(req, res) {
+    
+    try {
+        const userId = req.userId
+
+        const aparments = await ApartmentService.getApartmentOfUser(userId);
+
+        if (aparments.success) {
+            return res.json(aparments);
+        } else return res.status(500).json(aparments);
+    } catch(e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong.",
+            data: null
+        })
+    }
+}
+
+
 export const ApartmentController = {
     getApartment,
     getOneApartment,
@@ -337,5 +358,6 @@ export const ApartmentController = {
     getApartmentCities,
     addReview,
     getReviews,
-    getAvgRating
+    getAvgRating,
+    getApartmentOfUser
 };
