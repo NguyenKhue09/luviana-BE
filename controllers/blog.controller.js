@@ -471,6 +471,41 @@ async function getAllUnconfirmedBlog(req, res) {
     }
 }
 
+async function adminUpdateBlog(req, res) {
+    const { content, pictures, blogId } = req.body;
+
+    if (!blogId) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide blog id.",
+            data: null
+        })
+    }
+
+    const data = { content, pictures };
+
+    if (data.content == "") {
+        return res.status(400).json({
+            success: false,
+            message: "Content cannot be empty!",
+            data: null
+        })
+    }
+
+    try {
+        const response = await BlogService.adminUpdateBlog(blogId, data);
+
+        if (response.success) return res.json(response)
+        else return res.status(500).json(response)
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `Something went wrong: ${e.message}`,
+            data: null
+        })
+    }
+}
+
 // End of Admin API
 
 async function getAllConfirmedBlog(req, res) {
@@ -517,5 +552,6 @@ export const BlogController = {
     denyBlog,
     dropDatabase,
     getAllUnconfirmedBlog,
-    userDeleteBlog
+    userDeleteBlog,
+    adminUpdateBlog
 }

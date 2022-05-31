@@ -27,6 +27,6 @@ BlogRouter.route("/confirm")
     .delete(AuthMiddleWare.requireAdmin, BlogController.denyBlog)
 BlogRouter.get("/pending", AuthMiddleWare.requireAdmin, BlogController.getAllUnconfirmedBlog)
 
-BlogRouter.put("/update-admin", AuthMiddleWare.requireAdmin, BlogController.updateBlog);
+BlogRouter.put("/update-admin", AuthMiddleWare.requireAdmin, BlogController.adminUpdateBlog);
 
 export { BlogRouter };
