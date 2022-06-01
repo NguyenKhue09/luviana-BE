@@ -117,7 +117,7 @@ async function getMonthlyRevenue(month, year) {
         return {
             success: true,
             message: "Get monthly revenue success!",
-            data: {result, totalRevenueMonth}
+            data: {result, totalRevenueApartmentOfMonth}
         } 
 
     } catch (error) {
