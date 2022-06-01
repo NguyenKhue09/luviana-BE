@@ -196,16 +196,8 @@ async function activate(req, res) {
     const refreshToken = jwt.sign({ _id }, process.env.SECRET_TOKEN_REFRESH, {
       expiresIn: "1y",
     });
-    // await saveToken(email, refreshToken, accessToken);
-    // return res.redirect(`${process.env.SHOP_ADDR}/register-success/${accessToken}/${refreshToken}`);
-    return res.json({
-      success: true,
-      message: "Activate account successful",
-      data: {
-        accessToken,
-        refreshToken,
-      },
-    });
+    await saveToken(email, refreshToken, accessToken);
+    return res.redirect(`${process.env.CLIENT_URL}/register-success/${accessToken}/${refreshToken}`);
   } catch (err) {
     console.log(err.message);
     res.status(400).send({
