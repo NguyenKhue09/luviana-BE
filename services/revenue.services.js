@@ -48,8 +48,25 @@ async function getMonthlyRevenue(month, year) {
                     bookingCalendarId: 1,
                     beginDate: 1,
                     apartmentId: 1,
-                    apartmentName: "$apartment.name"
+                    apartmentName: "$apartment.name",
+                    owner: "$apartment.owner"
                 }
+            },
+            {
+                $lookup: {
+                    from: "admins",
+                    localField: "owner",
+                    foreignField: "_id",
+                    as: "owneradmin",
+                },
+            },
+            {
+                $lookup: {  
+                    from: "users",
+                    localField: "owner",
+                    foreignField: "_id",
+                    as: "owneruser",
+                },
             },
             {
                 $match: {
@@ -64,6 +81,9 @@ async function getMonthlyRevenue(month, year) {
                     beginDate: { $first: "$beginDate" },
                     apartmentName: { $first: "$apartmentName" },
                     apartmentId: { $first: "$apartmentId" },
+                    owner: { $first: "$owner" },
+                    owneradmin: { $first: "$owneradmin" },
+                    owneruser: { $first: "$owneruser" },
                     bookingCalendarId: { $first: "$bookingCalendarId" },
                     monthlyRevenue: {$sum: "$totalCost"}
                 }
@@ -75,6 +95,9 @@ async function getMonthlyRevenue(month, year) {
                     beginDate: 1,
                     apartmentId: 1,
                     apartmentName: 1,
+                    owner: 1,
+                    owneradmin: { $first: "$owneradmin" },
+                    owneruser: { $first: "$owneruser" },
                     apartmentId: "$_id.apartmentId",
                     _id: 0
                 }
@@ -89,10 +112,12 @@ async function getMonthlyRevenue(month, year) {
             }
         }
 
+        const totalRevenueApartmentOfMonth = result.reduce((partialSum, a) => partialSum + a.monthlyRevenue, 0);
+
         return {
             success: true,
             message: "Get monthly revenue success!",
-            data: result
+            data: {result, totalRevenueMonth}
         } 
 
     } catch (error) {
@@ -171,10 +196,12 @@ async function getYearlyRevenue(year) {
             }
         }
 
+        const totalRevenueMonth = result.reduce((partialSum, a) => partialSum + a.revenueOfMonth, 0);
+
         return {
             success: true,
             message: "Get monthly revenue success!",
-            data: result
+            data: {result, totalRevenueMonth}
         } 
 
     } catch (error) {
@@ -281,10 +308,12 @@ async function getAllYearlyRevenue() {
             }
         }
 
+        const totalRevenueYear = result.reduce((partialSum, a) => partialSum + a.totalRevenueMonthOfYear, 0);
+
         return {
             success: true,
             message: "Get monthly revenue success!",
-            data: result
+            data: {result, totalRevenueYear}
         } 
 
     } catch (error) {
