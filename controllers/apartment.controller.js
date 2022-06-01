@@ -50,6 +50,7 @@ async function addNewApartment(req, res) {
             district: req.body.district,
             province: req.body.province,
             country: req.body.country,
+            ward: req.body.ward
         };
         const name = req.body.name;
         const rating = req.body.rating;
