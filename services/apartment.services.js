@@ -1,4 +1,5 @@
 import Apartment from "../models/apartment.model.js";
+import mongoose from "mongoose";
 
 async function getAllApartment() {
   try {
@@ -420,6 +421,48 @@ async function updateAllOldApartmentOwner() {
   }
 }
 
+async function getApartmentOfUser(userId) {
+  try {
+    
+    const aparments = await Apartment.aggregate([
+      {
+        $match: {
+          owner: new mongoose.Types.ObjectId(userId)
+        }
+      },
+      {
+        $lookup: {
+          from: "rooms",
+          localField: "_id",
+          foreignField: "apartmentId",
+          as: "rooms",
+        },
+      },
+    ])
+
+    if(aparments.length === 0) {
+      return {
+        success: false,
+        message: "Apartment not found!",
+        data: null
+      }
+    }
+
+    return {
+      success: true,
+      message: "Get apartment of user success",
+      data: aparments
+    }
+
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null
+    }
+  }
+}
+
 export const ApartmentService = {
   getAllApartment,
   getApartmentByName,
@@ -432,5 +475,6 @@ export const ApartmentService = {
   removePendingApartment,
   deleteApartment,
   filterApartment,
-  getApartmentCities
+  getApartmentCities,
+  getApartmentOfUser
 };
