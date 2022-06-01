@@ -34,6 +34,7 @@ async function addNewBlog(data) {
 
 async function updateBlog(data, blogId, author) {
     data.date = new Date();
+    data.isConfirm = false;
 
     try {
         const result = await Blog.findOneAndUpdate({
@@ -447,6 +448,37 @@ async function getAllUnconfirmedBlog() {
     }
 }
 
+async function adminUpdateBlog(blogId, data) {
+    data.date = new Date();
+
+    try {
+        const result = await Blog.findOneAndUpdate({
+            _id: mongoose.Types.ObjectId(blogId)
+        }, data, { returnDocument: "after" })
+
+        if(!result) {
+            return {
+                success: false,
+                message: "Blog is not exists!",
+                data: null
+            }
+        }
+
+        return {
+                success: true,
+                message: "Update blog successfully!",
+                data: null
+            }
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            data: null
+        }
+    }
+}
+
 // End of Admin API
 
 async function getAllConfirmedBlog(page, limit) {
@@ -513,5 +545,6 @@ export const BlogService = {
     getAllUnconfirmedBlog,
     deleteBlog,
     denyBlog,
-    userDeleteBlog
+    userDeleteBlog,
+    adminUpdateBlog
 }

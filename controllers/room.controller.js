@@ -107,7 +107,7 @@ async function searchRoomByApartmentId (req, res) {
 
         if (rooms.success) {
             if (rooms.data) return res.json(rooms)
-            else return res.status(404).json(rooms)
+            else return res.status(204).json(rooms)
         } else {
             return res.status(400).json(rooms)
         }

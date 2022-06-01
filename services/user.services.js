@@ -37,7 +37,15 @@ async function registerUser(username, password, email, gender, phone, dob) {
             }
         }
 
-        const user = await User.create({username, password, email, gender, phone, dob})
+        const user = await User.create({
+            avatar: "https://res.cloudinary.com/decscyfze/image/upload/v1654009556/skmuanubkowmajt30tkc.jpg",
+            username,
+            password,
+            email,
+            gender,
+            phone,
+            dob
+        })
 
         if(!user) {
             return {
