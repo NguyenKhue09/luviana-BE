@@ -21,6 +21,9 @@ const apartmentSchema = new mongoose.Schema({
             type: String,
             required: [true, "Street is required!"]
         },
+        ward: {
+            type: String
+        },
         district: {
             type: String,
             required: [true, "District is required!"]
