@@ -145,8 +145,13 @@ async function postRoom (req, res) {
 
 async function updateRoom (req, res) {
     try {
-        const roomId = req.body.roomId;
-        const { updateData } = req.body;
+
+        const data = req.body
+        const { roomId } = data;
+
+        delete data.roomId
+
+        const updateData  = data;
 
         var updateRoom = await RoomServices.updateRoom(roomId, updateData);
 
