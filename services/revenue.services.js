@@ -101,7 +101,8 @@ async function getMonthlyRevenue(month, year) {
                     apartmentId: "$_id.apartmentId",
                     _id: 0
                 }
-            }
+            },
+            { $sort : { monthlyRevenue : 1 } }
         ])
 
         if(result.length === 0) {
