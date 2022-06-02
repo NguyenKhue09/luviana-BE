@@ -221,7 +221,7 @@ describe('Fail room results', function() {
 
     test('Fail respond to search rooms by apartments id', async() => {
         const res = await request(app)
-        .get('/room/apartment/62568eb25e56e6dbd7b788ac')
+        .get('/room/apartment/62568ae7d6d1a4a941990949')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(404)

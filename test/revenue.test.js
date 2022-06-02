@@ -35,7 +35,7 @@ beforeAll(async () => {
 
     const loginUser = {
         "email": "19521789@gmail.com",
-        "password": "password123"
+        "password": "password"
     }
 
     const userResult = await supertest(app)
@@ -54,7 +54,7 @@ afterAll((done) => {
 describe('Good revenue result', function() {
     test('Respond to get month revenue', async() => {
         const res = await request(app)
-        .get('/revenue/monthly?year=2022&month=5')
+        .get('/revenue/monthly?year=2022&month=6')
         .set('authorization', `Bearer ${adminToken}`);
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
