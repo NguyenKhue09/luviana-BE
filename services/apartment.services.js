@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 async function getAllApartment() {
   try {
-    const apartments = await Apartment.find({}).select("name address isPending thumbnail type description pictures");
+    const apartments = await Apartment.find({}).select("name address isPending thumbnail type description pictures isDisable");
 
     if (apartments.length <= 0) {
       return {
