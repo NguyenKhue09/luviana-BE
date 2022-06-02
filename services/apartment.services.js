@@ -184,9 +184,10 @@ async function updateApartment(apartmentId, apartmentData) {
     
     const apartment = await Apartment.findByIdAndUpdate(
       apartmentId,
-      updateObject
+      updateObject,
+      {new: true}
     );
-    
+
     //console.log(apartment)
 
     if (!apartment) {
@@ -481,7 +482,36 @@ async function getApartmentOfUser(userId) {
   }
 }
 
-// async function activateDisableApartment(apartmentId, ) 
+async function activateDisableApartment(apartmentId) {
+  try {
+    const apartment = await Apartment.findByIdAndUpdate(
+      apartmentId,
+      {isDisable: false},
+      {new: true}
+    );
+
+    if (!apartment) {
+      return {
+        success: false,
+        message: "Activate apartment failed!",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Activate apartment successful!",
+      data: apartment,
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+} 
 
 export const ApartmentService = {
   getAllApartment,
@@ -496,5 +526,6 @@ export const ApartmentService = {
   deleteApartment,
   filterApartment,
   getApartmentCities,
-  getApartmentOfUser
+  getApartmentOfUser,
+  activateDisableApartment
 };
