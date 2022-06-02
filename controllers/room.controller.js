@@ -145,12 +145,17 @@ async function postRoom (req, res) {
 
 async function updateRoom (req, res) {
     try {
-        const roomId = req.body.roomId;
-        const { apartmentId, price, description, capacity, rating, thumbnail, pictures, isAvailable, facilities} = req.body;
 
-        var updateData = { apartmentId, price, description, capacity, rating, thumbnail, pictures, isAvailable, facilities};
+        const data = req.body
+        const { roomId } = data;
+
+        delete data.roomId
+
+        const updateData  = data;
 
         var updateRoom = await RoomServices.updateRoom(roomId, updateData);
+
+        console.log(updateRoom)
 
         if (updateRoom.success) {
             if (updateRoom.data) return res.status(200).json(updateRoom)
@@ -159,6 +164,7 @@ async function updateRoom (req, res) {
             return res.status(400).json(updateRoom)
         }
     } catch (error) {
+        console.log(error)
         return res.status(400).json({
             success: false,
             message: error,
@@ -171,7 +177,28 @@ async function deleteRoom (req, res) {
     try {
         const roomId = req.body.roomId;
 
-        var deleteRoom = await RoomServices.deleteRoom(roomId);
+        var deleteRoom = await RoomServices.disableRoom(roomId);
+
+        if (deleteRoom.success) {
+            if (deleteRoom.data) return res.json(deleteRoom)
+            else return res.status(404).json(deleteRoom)
+        } else {
+            return res.status(400).json(deleteRoom)
+        }
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: error,
+            data: null
+        })
+    }
+}
+
+async function activateRoom (req, res) {
+    try {
+        const roomId = req.body.roomId;
+
+        var deleteRoom = await RoomServices.activateRoom(roomId);
 
         if (deleteRoom.success) {
             if (deleteRoom.data) return res.json(deleteRoom)
@@ -238,5 +265,6 @@ export const RoomController = {
     updateRoom,
     deleteRoom,
     getRoomById,
-    changeCapacity
+    changeCapacity,
+    activateRoom
 }

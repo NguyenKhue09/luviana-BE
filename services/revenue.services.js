@@ -101,12 +101,13 @@ async function getMonthlyRevenue(month, year) {
                     apartmentId: "$_id.apartmentId",
                     _id: 0
                 }
-            }
+            },
+            { $sort : { monthlyRevenue : -1 } }
         ])
 
         if(result.length === 0) {
             return {
-                success: false,
+                success: true,
                 message: "No data found!",
                 data: null
             }
@@ -190,7 +191,7 @@ async function getYearlyRevenue(year) {
 
         if(result.length === 0) {
             return {
-                success: false,
+                success: true,
                 message: "No data found!",
                 data: null
             }
@@ -302,7 +303,7 @@ async function getAllYearlyRevenue() {
 
         if(result.length === 0) {
             return {
-                success: false,
+                success: true,
                 message: "No data found!",
                 data: null
             }

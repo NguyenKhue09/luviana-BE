@@ -347,6 +347,27 @@ async function getApartmentOfUser(req, res) {
 }
 
 
+async function activateDisableApartment(req, res) {
+    const { apartmentId} = req.body;
+
+    if (!apartmentId) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide apartment id",
+            data: null,
+        });
+    }
+    const response = await ApartmentService.activateDisableApartment(
+        apartmentId
+    );
+
+    if (response.success) {
+        return res.status(200).json(response);
+    } else {
+        return res.status(400).json(response);
+    }
+}
+
 export const ApartmentController = {
     getApartment,
     getOneApartment,
@@ -361,5 +382,6 @@ export const ApartmentController = {
     addReview,
     getReviews,
     getAvgRating,
-    getApartmentOfUser
+    getApartmentOfUser,
+    activateDisableApartment
 };

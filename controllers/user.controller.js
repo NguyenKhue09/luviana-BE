@@ -189,14 +189,13 @@ async function activate(req, res) {
       password,
       email
     );
-    const { _id } = user;
+    const _id = user;
     const accessToken = jwt.sign({ _id }, process.env.SECRET_TOKEN, {
       expiresIn: "1d",
     });
     const refreshToken = jwt.sign({ _id }, process.env.SECRET_TOKEN_REFRESH, {
       expiresIn: "1y",
     });
-    await saveToken(email, refreshToken, accessToken);
     return res.redirect(`${process.env.CLIENT_URL}/register-success/${accessToken}/${refreshToken}`);
   } catch (err) {
     console.log(err.message);
