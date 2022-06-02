@@ -189,7 +189,7 @@ async function activate(req, res) {
       password,
       email
     );
-    const { _id } = user;
+    const _id = user;
     const accessToken = jwt.sign({ _id }, process.env.SECRET_TOKEN, {
       expiresIn: "1d",
     });
