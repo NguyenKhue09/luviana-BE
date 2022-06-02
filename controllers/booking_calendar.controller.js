@@ -20,6 +20,27 @@ async function getBookingCalendar(req, res) {
     }
 }
 
+async function getBookingCalendarOfUser(req, res) {
+    try {
+        const userId = req.userId
+        var result = await BookingCalendarServices.getBookingCalendarOfUser(userId);
+
+        if (result.success) {
+            if (result.data) return res.json(result)
+            else return res.status(404).json(result)
+        } else {
+            return res.status(400).json(result)
+        }
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: error,
+            data: null
+        })
+    }
+}
+
 export const BookingCalendarController = {
-    getBookingCalendar
+    getBookingCalendar,
+    getBookingCalendarOfUser
 }

@@ -50,6 +50,7 @@ async function addNewApartment(req, res) {
             district: req.body.district,
             province: req.body.province,
             country: req.body.country,
+            ward: req.body.ward
         };
         const name = req.body.name;
         const rating = req.body.rating;
@@ -158,12 +159,13 @@ async function updateApartment(req, res) {
 }
 
 async function confirmPendingApartment(req, res) {
-    const { apartmentId } = req.query
+    const { apartmentId } = req.body
     try {
         const apartment = await ApartmentService.confirmPendingApartment(apartmentId)
 
+        //console.log(apartment)
         if (apartment.success) {
-            return req.json(apartment)
+            return res.json(apartment)
         } else {
             return res.status(500).json({
                 success: false,
@@ -204,7 +206,7 @@ async function removePendingApartment(req, res) {
 }
 
 async function deleteApartment(req, res) {
-    const { apartmentId } = req.query
+    const { apartmentId } = req.body
     try {
         const apartment = await ApartmentService.deleteApartment(apartmentId)
 
