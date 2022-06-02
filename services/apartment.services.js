@@ -167,10 +167,12 @@ async function updateApartment(apartmentId, apartmentData) {
     delete apartmentData.isPending
     delete apartmentData.isDisable
 
+    console.log(apartmentData)
     const apartment = await Apartment.findByIdAndUpdate(
       apartmentId,
       apartmentData
     );
+    console.log(apartment)
     if (!apartment) {
       return {
         success: false,
