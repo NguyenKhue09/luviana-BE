@@ -463,6 +463,8 @@ async function getApartmentOfUser(userId) {
   }
 }
 
+// async function activateDisableApartment(apartmentId, ) 
+
 export const ApartmentService = {
   getAllApartment,
   getApartmentByName,
