@@ -152,6 +152,8 @@ async function updateRoom (req, res) {
 
         var updateRoom = await RoomServices.updateRoom(roomId, updateData);
 
+        console.log(updateRoom)
+
         if (updateRoom.success) {
             if (updateRoom.data) return res.status(200).json(updateRoom)
             else return res.status(404).json(updateRoom)
@@ -159,6 +161,7 @@ async function updateRoom (req, res) {
             return res.status(400).json(updateRoom)
         }
     } catch (error) {
+        console.log(error)
         return res.status(400).json({
             success: false,
             message: error,
