@@ -278,7 +278,6 @@ async function searchRoomV2(checkinDate, checkoutDate, people, city) {
 
 async function searchRoomV3(checkinDate, checkoutDate, people, city) {
   try {
-    await Apartment.updateMany({}, {isDisable: false})
     const result = await Apartment.aggregate([
       {
         $match: {
@@ -458,7 +457,7 @@ async function searchRoomAvailableOfAparment(
         $match: {
           _id: new mongoose.Types.ObjectId(apartmentId),
           isPending: false,
-          isDisable:false
+          isDisable: false
         },
       },
       {
