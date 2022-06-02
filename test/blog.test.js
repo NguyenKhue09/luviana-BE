@@ -35,7 +35,7 @@ beforeAll(async () => {
 
     const loginUser = {
         "email": "19521789@gmail.com",
-        "password": "password123"
+        "password": "password"
     }
 
     const userResult = await supertest(app)
@@ -79,7 +79,7 @@ describe('Good blog result', function() {
 
     test('Good respond to get blog by id', async() => {
         const res = await request(app)
-        .get('/blog/detail/6290add143148c83c33a1610')
+        .get('/blog/detail/62961faaa738d6262f1345ea')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -96,7 +96,7 @@ describe('Good blog result', function() {
 
     test('Respond to update a blog', async() => {
         const updateBlog = {
-            "blogId": "629328862408913218c37895",
+            "blogId": "62961faaa738d6262f1345ea",
             "data": {
                 "content": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
             }
@@ -113,7 +113,7 @@ describe('Good blog result', function() {
 
     test('respond to get comment', async() => {
         const res = await request(app)
-        .get('/blog/comment?blogId=6290add143148c83c33a1610')
+        .get('/blog/comment?blogId=62961faaa738d6262f1345ea')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -122,7 +122,7 @@ describe('Good blog result', function() {
     test('Respond to add comment', async() => {
         const newComment = {
             "author": "6284db11aecf83be28e02e48",
-            "blogId": "6290add143148c83c33a1610",
+            "blogId": "62961faaa738d6262f1345ea",
             "content": "This is a excellent room"
         };
 
@@ -137,7 +137,7 @@ describe('Good blog result', function() {
 
     test('Respond to like blog', async() => {
         const newBlogLike = {
-            "blogId": "6290add143148c83c33a1610"
+            "blogId": "62961faaa738d6262f1345ea"
         };
 
         const res = await request(app)
@@ -151,7 +151,7 @@ describe('Good blog result', function() {
 
     test('Respond to get blog like', async() => {
         const res = await request(app)
-        .get('/blog/like/6290add143148c83c33a1610')
+        .get('/blog/like/62961faaa738d6262f1345ea')
 
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
@@ -159,7 +159,7 @@ describe('Good blog result', function() {
 
     test('Respond to unlike blog', async() => {
         const unlikeBlog = {
-            "blogId": "6290add143148c83c33a1610"
+            "blogId": "62961faaa738d6262f1345ea"
         };
 
         const res = await request(app)
@@ -189,7 +189,7 @@ describe('Good blog result', function() {
 
     test('Repsond to confirm blog', async() => {
         const newBlogConfirm = {
-            "_id": "6290add143148c83c33a1610"
+            "_id": "62961faaa738d6262f1345ea"
         };
 
         const res = await request(app)
@@ -209,6 +209,31 @@ describe('Good blog result', function() {
         expect(res.header['content-type']).toBe('application/json; charset=utf-8')
         expect(res.status).toBe(200)
     });
+
+    test('Respond to update blog', async() => {
+        const updateData = {
+            "blogId": "62961faaa738d6262f1345ea",
+            "data": {
+                    "content": "This is a wonderful place",
+                    "pictures": ["https://images.unsplash.com/photo-1585255318859-f5c15f4cffe9?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&ixlib=rb-1.2.1&q=80&w=500",
+          "https://images.unsplash.com/photo-1584226761916-3fd67ab5ac3a?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&ixlib=rb-1.2.1&q=80&w=500",
+          "https://images.unsplash.com/photo-1585179292338-45ba1f62f082?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&ixlib=rb-1.2.1&q=80&w=500",
+          "https://images.unsplash.com/photo-1584753987666-ead137ec0614?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&ixlib=rb-1.2.1&q=80&w=500",
+          "https://images.unsplash.com/photo-1584691267914-91c0bee55964?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&ixlib=rb-1.2.1&q=80&w=500",
+          "https://images.unsplash.com/photo-1585084335487-f653d0859c14?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&ixlib=rb-1.2.1&q=80&w=500",
+          "https://images.unsplash.com/photo-1583217874534-581393fd5325?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=500&ixlib=rb-1.2.1&q=80&w=500",
+          "https://themes.getmotopress.com/luviana/wp-content/uploads/sites/27/2019/06/superior-double-room-992x992.jpg"]
+                }
+        }
+
+        const res = await request(app)
+        .put('/blog/update')
+        .send(updateData)
+        .set('authorizationtoken', `Bearer ${userToken}`);
+
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8')
+        expect(res.status).toBe(200)
+    })
 
 });
 

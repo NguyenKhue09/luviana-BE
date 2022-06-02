@@ -53,6 +53,12 @@ app.use(
     }),
 );
 
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 15 minutes
+  max: 150 // limit each IP to 150 requests per windowMs
+});
+app.use(limiter);
+
 app.use("/admin", AdminRouter);
 app.use("/user", UserRouter);
 app.use("/apartment", ApartmentRouter);

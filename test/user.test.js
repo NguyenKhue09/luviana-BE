@@ -19,7 +19,7 @@ beforeAll(async () => {
 
     const loginUser = {
         "email": "19521789@gmail.com",
-        "password": "password123"
+        "password": "password"
     }
 
     const userResult = await supertest(app)
@@ -65,7 +65,7 @@ describe('Good user results', function() {
     test('respond to login user', async() => {
         const auth = {
             "email": "19521789@gmail.com",
-            "password": "password123"
+            "password": "password"
         }
 
         const res = await request(app)
