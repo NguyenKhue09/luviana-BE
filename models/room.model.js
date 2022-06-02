@@ -49,7 +49,11 @@ const roomSchema = new mongoose.Schema({
     isPending: {
         type: Boolean,
         default: false
-    }
+    },
+    isDisable: {
+        type: Boolean,
+        default: false
+    },
 })
 
 const Room = mongoose.model("Room", roomSchema);

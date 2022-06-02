@@ -102,7 +102,7 @@ async function getMonthlyRevenue(month, year) {
                     _id: 0
                 }
             },
-            { $sort : { monthlyRevenue : 1 } }
+            { $sort : { monthlyRevenue : -1 } }
         ])
 
         if(result.length === 0) {

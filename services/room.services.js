@@ -278,7 +278,6 @@ async function searchRoomV2(checkinDate, checkoutDate, people, city) {
 
 async function searchRoomV3(checkinDate, checkoutDate, people, city) {
   try {
-    await Apartment.updateMany({}, {isDisable: false})
     const result = await Apartment.aggregate([
       {
         $match: {
@@ -310,19 +309,15 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           type: 1,
           rating: 1,
           description: 1,
-          rooms: 1
-          // rooms: {
-          //   $filter: {
-          //     input: "$rooms",
-          //     as: "room",
-          //     cond: {
-          //       $or: [
-          //         {$lte: ["$$room.capacity", people]},
-          //         {$gte: ["$$room.capacity", people]}
-          //       ]
-          //     },
-          //   },
-          // },
+          rooms: {
+            $filter: {
+              input: "$rooms",
+              as: "room",
+              cond: {
+                  $lte: ["$$room.isDisable", false]
+              },
+            },
+          },
         },
       },
       {
@@ -458,7 +453,7 @@ async function searchRoomAvailableOfAparment(
         $match: {
           _id: new mongoose.Types.ObjectId(apartmentId),
           isPending: false,
-          isDisable:false
+          isDisable: false
         },
       },
       {
@@ -484,16 +479,15 @@ async function searchRoomAvailableOfAparment(
           rating: 1,
           description: 1,
           owner: 1,
-          rooms: 1,
-          // rooms: {
-          //   $filter: {
-          //     input: "$rooms",
-          //     as: "room",
-          //     cond: {
-          //       $gte: ["$$room.capacity", people],
-          //     },
-          //   },
-          // },
+          rooms: {
+            $filter: {
+              input: "$rooms",
+              as: "room",
+              cond: {
+                  $lte: ["$$room.isDisable", false]
+              },
+            },
+          },
         },
       },
       {
@@ -645,6 +639,8 @@ async function addNewRoom(data) {
 
 async function updateRoom(roomId, data) {
   try {
+    delete data.isDisable
+
     const result = await Room.findByIdAndUpdate(roomId, data);
 
     if (!result) {
@@ -764,6 +760,10 @@ async function changeCapacity() {
       data: null,
     };
   }
+}
+
+async function disableRoom(roomId) {
+  
 }
 
 export const RoomServices = {
