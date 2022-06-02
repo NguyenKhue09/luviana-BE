@@ -174,7 +174,7 @@ async function updateApartment(apartmentId, apartmentData) {
     let updateObject = {}
 
     if(updateData.pictures != null) {
-      updateObject = {...updateObject, $set: {"pictures": updateData.pictures}}
+      updateObject = {$set: {"pictures": updateData.pictures}}
       delete updateData.pictures
     }
 
@@ -182,8 +182,10 @@ async function updateApartment(apartmentId, apartmentData) {
 
     const apartment = await Apartment.findByIdAndUpdate(
       apartmentId,
+      updateData,
       updateObject
     );
+    
     console.log(apartment)
     if (!apartment) {
       return {
