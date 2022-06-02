@@ -33,7 +33,10 @@ async function getBookingCalendarOfUser(userId) {
     const result = await BookingCalendar.aggregate([
       {
         $match: {
-          beginDate: {$gte:  new Date(Date.now())},
+          $and: [
+            {beginDate: {$gte:  new Date(Date.now())}},
+            {endDate: {$gte:  new Date(Date.now())}}
+          ],
           owner: new mongoose.Types.ObjectId(userId)
         },
       },
