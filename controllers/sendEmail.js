@@ -3,7 +3,7 @@ import { pugEngine } from "nodemailer-pug-engine"
 
 export const sendEmail = async(email, username, url, txt) => {
     const transporter = nodemailer.createTransport({
-        service: "Gmail",
+        service: "hotmail",
         auth: {
             user: process.env.SENDER,
             pass: process.env.PASSWORD,
