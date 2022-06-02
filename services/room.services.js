@@ -283,7 +283,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
         $match: {
           "address.province": city,
           isPending: false,
-          isDisable:false
+          isDisable: false,
         },
       },
       {
@@ -314,7 +314,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
               input: "$rooms",
               as: "room",
               cond: {
-                  $lte: ["$$room.isDisable", false]
+                $lte: ["$$room.isDisable", false],
               },
             },
           },
@@ -347,7 +347,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
                 $add: ["$$value", "$$this.capacity"],
               },
             },
-          }
+          },
         },
       },
       {
@@ -397,7 +397,12 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
       },
       {
         $match: {
-          $expr: { $and: [{$eq: [{ $size: "$rooms.bookingcalendar" }, 0]}, {$lte: [people, "$totalPeopleOfRoom"]}] },
+          $expr: {
+            $and: [
+              { $eq: [{ $size: "$rooms.bookingcalendar" }, 0] },
+              { $lte: [people, "$totalPeopleOfRoom"] },
+            ],
+          },
         },
       },
       {
@@ -409,7 +414,7 @@ async function searchRoomV3(checkinDate, checkoutDate, people, city) {
           thumbnail: { $first: "$thumbnail" },
           type: { $first: "$type" },
           rating: { $first: "$rating" },
-          description: {$first: "$description"},
+          description: { $first: "$description" },
           capacities: { $first: "$capacities" },
           totalPeopleOfRoom: { $first: "$totalPeopleOfRoom" },
           rooms: {
@@ -453,7 +458,7 @@ async function searchRoomAvailableOfAparment(
         $match: {
           _id: new mongoose.Types.ObjectId(apartmentId),
           isPending: false,
-          isDisable: false
+          isDisable: false,
         },
       },
       {
@@ -484,7 +489,7 @@ async function searchRoomAvailableOfAparment(
               input: "$rooms",
               as: "room",
               cond: {
-                  $lte: ["$$room.isDisable", false]
+                $lte: ["$$room.isDisable", false],
               },
             },
           },
@@ -517,7 +522,7 @@ async function searchRoomAvailableOfAparment(
                 $add: ["$$value", "$$this.capacity"],
               },
             },
-          }
+          },
         },
       },
       {
@@ -567,7 +572,12 @@ async function searchRoomAvailableOfAparment(
       },
       {
         $match: {
-          $expr: { $and: [{$eq: [{ $size: "$rooms.bookingcalendar" }, 0]}, {$lte: [people, "$totalPeopleOfRoom"]}] },
+          $expr: {
+            $and: [
+              { $eq: [{ $size: "$rooms.bookingcalendar" }, 0] },
+              { $lte: [people, "$totalPeopleOfRoom"] },
+            ],
+          },
         },
       },
       {
@@ -579,7 +589,7 @@ async function searchRoomAvailableOfAparment(
           thumbnail: { $first: "$thumbnail" },
           type: { $first: "$type" },
           rating: { $first: "$rating" },
-          description: {$first: "$description"},
+          description: { $first: "$description" },
           capacities: { $first: "$capacities" },
           totalPeopleOfRoom: { $first: "$totalPeopleOfRoom" },
           rooms: {
@@ -639,7 +649,7 @@ async function addNewRoom(data) {
 
 async function updateRoom(roomId, data) {
   try {
-    delete data.isDisable
+    delete data.isDisable;
 
     const result = await Room.findByIdAndUpdate(roomId, data);
 
@@ -665,31 +675,31 @@ async function updateRoom(roomId, data) {
   }
 }
 
-async function deleteRoom(roomId) {
-  try {
-    const result = await Room.findByIdAndDelete(roomId);
+// async function deleteRoom(roomId) {
+//   try {
+//     const result = await Room.findByIdAndDelete(roomId);
 
-    if (!result) {
-      return {
-        success: false,
-        message: "Delete room failed!",
-        data: null,
-      };
-    }
+//     if (!result) {
+//       return {
+//         success: false,
+//         message: "Delete room failed!",
+//         data: null,
+//       };
+//     }
 
-    return {
-      success: true,
-      message: "Delete room successfully",
-      data: result,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      message: error.message,
-      data: null,
-    };
-  }
-}
+//     return {
+//       success: true,
+//       message: "Delete room successfully",
+//       data: result,
+//     };
+//   } catch (error) {
+//     return {
+//       success: false,
+//       message: error.message,
+//       data: null,
+//     };
+//   }
+// }
 
 // get room by apartmentId
 async function getRomByApartmentId(apartmentId) {
@@ -763,7 +773,55 @@ async function changeCapacity() {
 }
 
 async function disableRoom(roomId) {
-  
+  try {
+    const result = await Room.findByIdAndUpdate(roomId, {isDisable: true});
+
+    if (!result) {
+      return {
+        success: false,
+        message: "Disable room failed!",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Disable room successfully",
+      data: result,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+}
+
+async function activateRoom(roomId) {
+  try {
+    const result = await Room.findByIdAndUpdate(roomId, {isDisable: false});
+
+    if (!result) {
+      return {
+        success: false,
+        message: "Activate room failed!",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Activate room successfully",
+      data: result,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
 }
 
 export const RoomServices = {
@@ -777,6 +835,7 @@ export const RoomServices = {
   searchRoomAvailableOfAparment,
   addNewRoom,
   updateRoom,
-  deleteRoom,
+  disableRoom,
+  activateRoom,
   changeCapacity,
 };

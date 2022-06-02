@@ -171,7 +171,28 @@ async function deleteRoom (req, res) {
     try {
         const roomId = req.body.roomId;
 
-        var deleteRoom = await RoomServices.deleteRoom(roomId);
+        var deleteRoom = await RoomServices.disableRoom(roomId);
+
+        if (deleteRoom.success) {
+            if (deleteRoom.data) return res.json(deleteRoom)
+            else return res.status(404).json(deleteRoom)
+        } else {
+            return res.status(400).json(deleteRoom)
+        }
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: error,
+            data: null
+        })
+    }
+}
+
+async function activateRoom (req, res) {
+    try {
+        const roomId = req.body.roomId;
+
+        var deleteRoom = await RoomServices.activateRoom(roomId);
 
         if (deleteRoom.success) {
             if (deleteRoom.data) return res.json(deleteRoom)
@@ -238,5 +259,6 @@ export const RoomController = {
     updateRoom,
     deleteRoom,
     getRoomById,
-    changeCapacity
+    changeCapacity,
+    activateRoom
 }
