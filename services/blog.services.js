@@ -96,7 +96,7 @@ async function getBlogById(blogId) {
 async function getAllBlog() {
     try {
 
-        const result = await Blog.find({})
+        const result = await Blog.find({}).sort({date: -1})
 
         if(!result) {
             return {
@@ -123,7 +123,7 @@ async function getAllBlog() {
 
 async function getBlogByAuthor(author) {
     try {
-        const result = await Blog.find({ author: author })
+        const result = await Blog.find({ author: author }).sort({date: -1})
         if (!result) {
             return {
                 success: false,
@@ -282,7 +282,7 @@ async function getLikedBlogsByUser(userId) {
     }
 
     try {
-        const result = await Users_likes.find({ userId: userId }).populate("blogId").select("-userId -_id")
+        const result = await Users_likes.find({ userId: userId }).populate("blogId").select("-userId -_id").sort({date: -1})
         if (!result) {
             return {
                 success: false,
@@ -425,7 +425,7 @@ async function deleteBlog(blogId) {
 
 async function getAllUnconfirmedBlog() {
     try {
-        const result = await Blog.find({ isConfirm: false }).populate("author")
+        const result = await Blog.find({ isConfirm: false }).sort({date: -1}).populate("author")
         if (!result) {
             return {
                 success: false,
@@ -484,7 +484,7 @@ async function adminUpdateBlog(blogId, data) {
 async function getAllConfirmedBlog(page, limit) {
     try {
 
-        const result = await Blog.find({ isConfirm: true }).skip((page - 1) * limit).limit(limit).populate("author");
+        const result = await Blog.find({ isConfirm: true }).sort({date: -1}).skip((page - 1) * limit).limit(limit).populate("author");
         const maxDocument = await Blog.countDocuments({ isConfirm: true });
         const maxPage = Math.ceil(maxDocument / limit);
 

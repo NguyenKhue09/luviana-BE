@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 async function getAllApartment() {
   try {
-    const apartments = await Apartment.find({}).select("name address isPending thumbnail type description");
+    const apartments = await Apartment.find({}).select("name address isPending thumbnail type description pictures");
 
     if (apartments.length <= 0) {
       return {
@@ -167,10 +167,29 @@ async function updateApartment(apartmentId, apartmentData) {
     delete apartmentData.isPending
     delete apartmentData.isDisable
 
+    //console.log(apartmentData)
+
+    let updateData = apartmentData
+
+    let updateObject = {}
+
+    if(updateData.pictures != null) {
+      updateObject = {...updateObject, $set: {"pictures": updateData.pictures}}
+      delete updateData.pictures
+    }
+
+    updateObject = {...updateData, ...updateObject}
+
+    console.log(updateObject)
+    
     const apartment = await Apartment.findByIdAndUpdate(
       apartmentId,
-      apartmentData
+      updateObject,
+      {new: true}
     );
+
+    //console.log(apartment)
+
     if (!apartment) {
       return {
         success: false,
@@ -463,7 +482,36 @@ async function getApartmentOfUser(userId) {
   }
 }
 
-// async function activateDisableApartment(apartmentId, ) 
+async function activateDisableApartment(apartmentId) {
+  try {
+    const apartment = await Apartment.findByIdAndUpdate(
+      apartmentId,
+      {isDisable: false},
+      {new: true}
+    );
+
+    if (!apartment) {
+      return {
+        success: false,
+        message: "Activate apartment failed!",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Activate apartment successful!",
+      data: apartment,
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+} 
 
 export const ApartmentService = {
   getAllApartment,
@@ -478,5 +526,6 @@ export const ApartmentService = {
   deleteApartment,
   filterApartment,
   getApartmentCities,
-  getApartmentOfUser
+  getApartmentOfUser,
+  activateDisableApartment
 };
