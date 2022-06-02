@@ -167,26 +167,28 @@ async function updateApartment(apartmentId, apartmentData) {
     delete apartmentData.isPending
     delete apartmentData.isDisable
 
-    console.log(apartmentData)
+    //console.log(apartmentData)
 
     let updateData = apartmentData
 
     let updateObject = {}
 
     if(updateData.pictures != null) {
-      updateObject = {$set: {"pictures": updateData.pictures}}
+      updateObject = {...updateObject, $set: {"pictures": updateData.pictures}}
       delete updateData.pictures
     }
 
     updateObject = {...updateData, ...updateObject}
 
+    console.log(updateObject)
+    
     const apartment = await Apartment.findByIdAndUpdate(
       apartmentId,
-      updateData,
       updateObject
     );
     
-    console.log(apartment)
+    //console.log(apartment)
+
     if (!apartment) {
       return {
         success: false,
