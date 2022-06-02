@@ -649,7 +649,10 @@ async function addNewRoom(data) {
 
 async function updateRoom(roomId, data) {
   try {
-    //delete data.isDisable;
+
+    console.log("updateRoommmmmmmmmmmmmm")
+    console.log(data)
+    delete data.isDisable;
 
     const result = await Room.findByIdAndUpdate(roomId, data);
 
