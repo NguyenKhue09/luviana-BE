@@ -20,10 +20,10 @@ RoomRouter.get("/change-capacity", RoomController.changeCapacity);
 
 // Admin
 RoomRouter.put("/disable-admin-room", AuthMiddleWare.requireAdmin, RoomController.deleteRoom)
-RoomRouter.put("activate-admin-room", AuthMiddleWare.requireAdmin, RoomController.activateRoom)
+RoomRouter.put("/activate-admin-room", AuthMiddleWare.requireAdmin, RoomController.activateRoom)
 
 // User
 RoomRouter.put("/disable-user-room", AuthMiddleWare.requireUser, RoomController.deleteRoom)
-RoomRouter.put("activate-user-room", AuthMiddleWare.requireUser, RoomController.activateRoom)
+RoomRouter.put("/activate-user-room", AuthMiddleWare.requireUser, RoomController.activateRoom)
 
 export default RoomRouter;

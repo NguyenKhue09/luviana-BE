@@ -649,10 +649,14 @@ async function addNewRoom(data) {
 
 async function updateRoom(roomId, data) {
   try {
+
+    console.log("updateRoommmmmmmmmmmmmm")
+    console.log(data)
     delete data.isDisable;
 
     const result = await Room.findByIdAndUpdate(roomId, data);
 
+    console.log(result)
     if (!result) {
       return {
         success: false,
@@ -666,6 +670,7 @@ async function updateRoom(roomId, data) {
       message: "Update room successfully",
       data: result,
     };
+
   } catch (error) {
     return {
       success: false,
