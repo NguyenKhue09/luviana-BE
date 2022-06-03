@@ -125,7 +125,7 @@ async function signUp(req, res) {
   const { email } = userData;
   const token = jwt.sign(userData, process.env.SECRET_TOKEN, { expiresIn: "1h" }); // token hết hạn 1 giờ
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
+    service: "hotmail",
     auth: {
       user: process.env.SENDER,
       pass: process.env.PASSWORD,
@@ -223,7 +223,7 @@ async function forgotPassword(req, res) {
     const url = `${CLIENT_URL}/user/reset-password/${access_token}`;
 
     const result = await sendEmail(email, user.data.username, url, "Luviana - Reset your password");
-
+ 
     if (!result.success) {
       return res
         .status(500)
