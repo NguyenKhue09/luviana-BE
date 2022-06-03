@@ -157,7 +157,7 @@ async function uploadImage(req, res) {
             data: result
         })
     } catch (err) {
-        console.log(err);
+        //console.log(err);
     }
 }
 
@@ -373,7 +373,7 @@ async function userDeleteBlog(req, res) {
         if (response.success) return res.json(response)
         else return res.status(500).json(response)
     } catch (e) {
-        console.log(e);
+        //console.log(e);
         return res.status(500).json({
             success: false,
             message: `Something went wrong.`,

@@ -180,7 +180,7 @@ async function updateApartment(apartmentId, apartmentData) {
 
     updateObject = {...updateData, ...updateObject}
 
-    console.log(updateObject)
+    //console.log(updateObject)
     
     const apartment = await Apartment.findByIdAndUpdate(
       apartmentId,

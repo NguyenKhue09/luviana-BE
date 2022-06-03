@@ -122,7 +122,7 @@ async function searchRoomV2(checkinDate, checkoutDate, people, city) {
   const x = new Date(checkinDate).toUTCString();
   const y = new Date(checkoutDate).toUTCString();
 
-  console.log(x + " " + y);
+  //console.log(x + " " + y);
   try {
     const result = await Apartment.aggregate([
       {
