@@ -132,42 +132,50 @@ async function signUp(req, res) {
     },
   });
 
-  transporter.use(
-    "compile",
-    pugEngine({
-      templateDir: "./template",
-      pretty: true,
+  try {
+    transporter.use(
+      "compile",
+      pugEngine({
+        templateDir: "./template",
+        pretty: true,
+      })
+    );
+
+    const mailOptions = {
+      from: process.env.SENDER,
+      to: `${email}`,
+      subject: "Luviana - Activate your account",
+      template: "template",
+      ctx: {
+        name: userData.username,
+        url: process.env.SERVER_URL + "/user/activate/" + token,
+      },
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+        return res.status(400).json({
+          message: `Error when send email to ${email}`,
+          data: null,
+          success: false,
+        });
+      } else {
+        console.log("Email sent: " + info.response);
+        return res.json({
+          message: `Email has been sent to ${email}`,
+          success: true,
+          data: null,
+        });
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error when send email to " + email,
+      data: null,
     })
-  );
-
-  const mailOptions = {
-    from: process.env.SENDER,
-    to: `${email}`,
-    subject: "Luviana - Activate your account",
-    template: "template",
-    ctx: {
-      name: userData.username,
-      url: process.env.SERVER_URL + "/user/activate/" + token,
-    },
-  };
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-      return res.status(400).json({
-        message: `Error when send email to ${email}`,
-        data: null,
-        success: false,
-      });
-    } else {
-      console.log("Email sent: " + info.response);
-      return res.json({
-        message: `Email has been sent to ${email}`,
-        success: true,
-        data: null,
-      });
-    }
-  });
+  }
 }
 
 async function activate(req, res) {
@@ -223,7 +231,7 @@ async function forgotPassword(req, res) {
     const url = `${CLIENT_URL}/user/reset-password/${access_token}`;
 
     const result = await sendEmail(email, user.data.username, url, "Luvistay - Reset your password");
- 
+
     if (!result.success) {
       return res
         .status(500)
@@ -411,7 +419,7 @@ async function getUserList(req, res) {
 async function updateUserAdmin(req, res) {
   const { username, gender, phone, dob } = req.body;
   const userId = req.body._id
-  
+
   if (!userId) {
     return res.status(400).json({
       success: false,
