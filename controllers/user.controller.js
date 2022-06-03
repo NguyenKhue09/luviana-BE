@@ -144,7 +144,7 @@ async function signUp(req, res) {
     const mailOptions = {
       from: process.env.SENDER,
       to: `${email}`,
-      subject: "Luviana - Activate your account",
+      subject: "LuviStay - Activate your account",
       template: "template",
       ctx: {
         name: userData.username,
