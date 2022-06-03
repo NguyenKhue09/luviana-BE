@@ -222,7 +222,7 @@ async function forgotPassword(req, res) {
 
     const url = `${CLIENT_URL}/user/reset-password/${access_token}`;
 
-    const result = await sendEmail(email, user.data.username, url, "Luviana - Reset your password");
+    const result = await sendEmail(email, user.data.username, url, "Luvistay - Reset your password");
  
     if (!result.success) {
       return res
