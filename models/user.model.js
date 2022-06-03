@@ -69,7 +69,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.matchPasswords = async function (password) {
 
-    console.log(await this.model("User").find({}));
+    //console.log(await this.model("User").find({}));
 
     return await argon2.verify(this.password, password);
 };
@@ -94,7 +94,7 @@ userSchema.methods.getResetPasswordToken = function () {
       .update(resetToken)
       .digest("hex");
   
-    console.log("User: ", this.resetPasswordToken);
+    //console.log("User: ", this.resetPasswordToken);
   
     this.resetPasswordExpire = Date.now() + (10 * 60 * 1000);
   

@@ -155,7 +155,7 @@ async function updateRoom (req, res) {
 
         var updateRoom = await RoomServices.updateRoom(roomId, updateData);
 
-        console.log(updateRoom)
+        //console.log(updateRoom)
 
         if (updateRoom.success) {
             if (updateRoom.data) return res.status(200).json(updateRoom)
@@ -164,7 +164,7 @@ async function updateRoom (req, res) {
             return res.status(400).json(updateRoom)
         }
     } catch (error) {
-        console.log(error)
+        //console.log(error)
         return res.status(400).json({
             success: false,
             message: error,
@@ -226,7 +226,7 @@ async function getRoomById(req, res) {
             return res.status(400).json(response)
         }
     } catch (e) {
-        console.log(e)
+        //console.log(e)
         res.status(500).json({
             success: false,
             message: "Something went wrong!",
@@ -245,7 +245,7 @@ async function changeCapacity(req, res) {
             return res.status(400).json(response)
         }
     } catch (e) {
-        console.log(e)
+        //console.log(e)
         res.status(500).json({
             success: false,
             message: "Something went wrong!",

@@ -206,7 +206,7 @@ async function activate(req, res) {
     });
     return res.redirect(`${process.env.CLIENT_URL}/register-success/${accessToken}/${refreshToken}`);
   } catch (err) {
-    console.log(err.message);
+    //console.log(err.message);
     res.status(400).send({
       success: false,
       message: "Your link has been expired, please signup again",
@@ -363,7 +363,7 @@ async function updateUser(req, res) {
       return res.status(500).json(response)
     }
   } catch (err) {
-    console.log(err)
+    //console.log(err)
     return res.status(500).json({
       success: false,
       message: "Update user failed!",
@@ -391,7 +391,7 @@ async function getUserById(req, res) {
       return res.status(500).json(response)
     }
   } catch (e) {
-    console.log(e);
+    //console.log(e);
     return res.status(500).json({
       success: false,
       message: "Get user by id failed!",
