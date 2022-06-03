@@ -61,7 +61,7 @@ async function addReview(user, apartmentId, content, rating) {
             data: result
         }
     } catch (e) {
-        console.log(e);
+        //console.log(e);
         return {
             success: false,
             message: "Unexpected error!",
@@ -103,7 +103,7 @@ async function getReviews(apartmentId, page, limit) {
             data: final[0],
         }
     } catch (e) {
-        console.log(e);
+        //console.log(e);
         return {
             success: false,
             message: "Unexpected error!",
@@ -140,7 +140,7 @@ async function getAvgRating(apartmentId) {
             data: avgRating
         }
     } catch(e) {
-        console.log(e);
+       // console.log(e);
         return {
             success: false,
             message: "Unexpected error!",

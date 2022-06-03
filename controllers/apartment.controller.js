@@ -79,7 +79,7 @@ async function addNewApartment(req, res) {
             return res.status(500).json(result);
         }
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return res.status(500).json({
             success: false,
             message: error,
@@ -265,7 +265,7 @@ async function addReview(req, res) {
             return res.json(response);
         } else return res.status(500).json(response);
     } catch (e) {
-        console.log(e);
+       // console.log(e);
         return res.status(500).json({
             success: false,
             message: "Something went wrong.",
@@ -291,7 +291,7 @@ async function getReviews(req, res) {
             return res.json(response);
         } else return res.status(500).json(response);
     } catch (e) {
-        console.log(e);
+        //console.log(e);
         return res.status(500).json({
             success: false,
             message: "Something went wrong.",
@@ -317,7 +317,7 @@ async function getAvgRating(req, res) {
             return res.json(response);
         } else return res.status(500).json(response);
     } catch(e) {
-        console.log(e);
+        //console.log(e);
         return res.status(500).json({
             success: false,
             message: "Something went wrong.",
@@ -337,7 +337,7 @@ async function getApartmentOfUser(req, res) {
             return res.json(aparments);
         } else return res.status(500).json(aparments);
     } catch(e) {
-        console.log(e);
+        //console.log(e);
         return res.status(500).json({
             success: false,
             message: "Something went wrong.",
