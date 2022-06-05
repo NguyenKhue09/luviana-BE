@@ -111,7 +111,7 @@ async function getAllPendingApartment(req, res) {
         const pendingApartments = await ApartmentService.getAllPendingApartment()
 
         if (pendingApartments.success) {
-            return req.json(pendingApartments)
+            return res.json(pendingApartments)
         } else {
             return res.status(500).json({
                 success: false,
